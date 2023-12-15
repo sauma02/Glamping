@@ -99,6 +99,15 @@ public class UsuarioServicio implements UserDetailsService {
 
         }
     }
+    public Rol buscarRolPorId(String id){
+        Optional<Usuario> res = ur.findById(id);
+        if(res.isPresent()){
+            Usuario u1 = res.get();
+            return u1.getRol();
+        }else{
+            return null;
+        }
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,9 +34,28 @@ public class PortalControlador {
     public String index(){
         return "index.html";
     }
+    @GetMapping("/{id}")
+    //GetId para verificar usuario
+    public String vista(@PathVariable String id, ModelMap mo) throws MiException{
+        try {
+          Rol r = us.buscarRolPorId(id);
+        if(r.equals(r.USUARIO)){
+            mo.put("Exito", "Bienvenido");
+            return "indexUsuario.html";
+        }else{
+            return "index.html";
+        }
+            
+        
+        } catch (Exception ex) {
+            mo.put("Error", ex);
+            throw new MiException("Error");
+        
+        }
+    }
     @GetMapping("/inicio")
     public String inicio(){
-        return "inicio.html";
+        return "index.html";
     }
     @GetMapping("/registro")
     public String registro(){
@@ -49,7 +69,7 @@ public class PortalControlador {
         try {
             us.crearUsuario(nombre, email, password, contactoEmergencia, fechaNacimiento, ciudad, Rol.USUARIO);
             modelo.put("Exito", "Usuario registrado con exito");
-            return "inicio.html";
+            return "index.html";
             
         } catch (MiException ex) {
             modelo.put("Error", ex);

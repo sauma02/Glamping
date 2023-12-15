@@ -29,7 +29,7 @@ public class SeguridadWeb {
                 //Se esta indicando que todos pueden tener acceso a la vista general del controlador /
              .authorizeHttpRequests((authRequest) ->
               authRequest
-                   .requestMatchers("/**").permitAll()
+                   .requestMatchers("/auth/**").permitAll()
                       //A todos los request se les pide que autentiquen
                     .anyRequest().authenticated()
                     )
