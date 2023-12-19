@@ -9,13 +9,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +38,7 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name="usuario_id")
     private String id;
     private String nombre;
     private Date fechaNacimiento;
@@ -41,13 +48,22 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String email;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private Rol rol;
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(
+    name="usuario_rol_junction",
+     joinColumns = {@JoinColumn(name="usuario_id")},
+     inverseJoinColumns = {@JoinColumn(name="rol_id")}
+     
+    )
+    private Set<Role> authorities;
 
     public Usuario() {
+        //Se crea constructor para que el role no llegue vacio
+        super();
+        this.authorities = new HashSet<Role>();
     }
 
-    public Usuario(String id, String nombre, Date fechaNacimiento, String contactoEmergencia, String ciudad, String email, String password, Rol rol) {
+    public Usuario(String id, String nombre, Date fechaNacimiento, String contactoEmergencia, String ciudad, String email, String password, Set<Role> authorities) {
         this.id = id;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
@@ -55,8 +71,10 @@ public class Usuario implements UserDetails {
         this.ciudad = ciudad;
         this.email = email;
         this.password = password;
-        this.rol = rol;
+        this.authorities = authorities;
     }
+
+  
 
     public String getId() {
         return id;
@@ -114,13 +132,6 @@ public class Usuario implements UserDetails {
         this.password = password;
     }
 
-    public Rol getRol() {
-        return rol;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
     
     @Override
     public String toString() {
@@ -129,7 +140,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(rol.name()));
+        return null;
     }
 
     @Override
@@ -139,22 +150,22 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return true;
     }
     
     

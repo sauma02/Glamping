@@ -34,25 +34,7 @@ public class PortalControlador {
     public String index(){
         return "index.html";
     }
-    @GetMapping("/{id}")
-    //GetId para verificar usuario
-    public String vista(@PathVariable String id, ModelMap mo) throws MiException{
-        try {
-          Rol r = us.buscarRolPorId(id);
-        if(r.equals(r.USUARIO)){
-            mo.put("Exito", "Bienvenido");
-            return "indexUsuario.html";
-        }else{
-            return "index.html";
-        }
-            
-        
-        } catch (Exception ex) {
-            mo.put("Error", ex);
-            throw new MiException("Error");
-        
-        }
-    }
+   
     @GetMapping("/inicio")
     public String inicio(){
         return "index.html";

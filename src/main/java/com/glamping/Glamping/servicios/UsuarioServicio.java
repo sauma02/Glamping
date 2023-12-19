@@ -38,7 +38,7 @@ public class UsuarioServicio implements UserDetailsService {
         u1.setFechaNacimiento(fechaNacimiento);
         u1.setCiudad(ciudad);
         u1.setContactoEmergencia(contactoEmergencia);
-        u1.setRol(Rol.USUARIO);
+       
         ur.save(u1);
     }
     public Usuario buscarUsuarioPorId(String id){
@@ -99,15 +99,7 @@ public class UsuarioServicio implements UserDetailsService {
 
         }
     }
-    public Rol buscarRolPorId(String id){
-        Optional<Usuario> res = ur.findById(id);
-        if(res.isPresent()){
-            Usuario u1 = res.get();
-            return u1.getRol();
-        }else{
-            return null;
-        }
-    }
+   
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
