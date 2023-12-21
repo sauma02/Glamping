@@ -11,6 +11,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -33,13 +34,14 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @Entity
 //No se puede repeti el Email, lo establecemos desde la anotacion table
-@Table(name= "usuario", uniqueConstraints ={@UniqueConstraint(columnNames = {"email"})})
+@Table(name= "usuario", uniqueConstraints ={@UniqueConstraint(columnNames = {"email", "username"})})
 public class Usuario implements UserDetails {
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="usuario_id")
-    private String id;
+    private Integer id;
+    @Column(nullable = false)
+    private String username;
     private String nombre;
     private Date fechaNacimiento;
     private String contactoEmergencia;
@@ -48,6 +50,7 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String email;
     private String password;
+    //Se hace el fetch con esta anotacion para que apenas se cree el candidato se haga el fetch
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
     name="usuario_rol_junction",
@@ -62,9 +65,16 @@ public class Usuario implements UserDetails {
         super();
         this.authorities = new HashSet<Role>();
     }
-
-    public Usuario(String id, String nombre, Date fechaNacimiento, String contactoEmergencia, String ciudad, String email, String password, Set<Role> authorities) {
+    public Usuario(Integer id, String username, String password, Set<Role> authority){
         this.id = id;
+        this.username = username;
+        this.password = password;
+        this.authorities = authority;
+    }
+
+    public Usuario(Integer id, String username, String nombre, Date fechaNacimiento, String contactoEmergencia, String ciudad, String email, String password, Set<Role> authorities) {
+        this.id = id;
+        this.username = username;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.contactoEmergencia = contactoEmergencia;
@@ -74,13 +84,17 @@ public class Usuario implements UserDetails {
         this.authorities = authorities;
     }
 
-  
+   
 
-    public String getId() {
+  
+    public void setUsername(String username){
+        this.username = username; 
+    }
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -131,11 +145,13 @@ public class Usuario implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+    
 
     
     @Override
     public String toString() {
-        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", fechaNacimiento=" + fechaNacimiento + ", contactoEmergencia=" + contactoEmergencia + ", ciudad=" + ciudad + ", email=" + email + ", password=" + password + '}';
+        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", fechaNacimiento=" + fechaNacimiento + ", contactoEmergencia=" + contactoEmergencia + 
+                ", ciudad=" + ciudad + ", email=" + email + ", password=" + password + ", username=" + username + '}';
     }
 
     @Override
@@ -145,7 +161,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return username;
     }
 
     @Override

@@ -45,11 +45,11 @@ public class PortalControlador {
     }
     //Se utiliza el metodo el postMapping para luego utilizarlo en el form
     @PostMapping("/registrar")
-    public String registrarUsuario(@RequestParam String nombre, @RequestParam String email,
+    public String registrarUsuario(@RequestParam String username, @RequestParam String nombre, @RequestParam String email,
                         @RequestParam String password, @RequestParam String contactoEmergencia,
                                 @RequestParam Date fechaNacimiento, @RequestParam String ciudad, ModelMap modelo){
         try {
-            us.crearUsuario(nombre, email, password, contactoEmergencia, fechaNacimiento, ciudad, Rol.USUARIO);
+            us.crearUsuario(username, nombre, email, password, contactoEmergencia, fechaNacimiento, ciudad, Rol.USUARIO);
             modelo.put("Exito", "Usuario registrado con exito");
             return "index.html";
             

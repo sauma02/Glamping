@@ -4,18 +4,16 @@
  */
 package com.glamping.Glamping.repositorios;
 
-import com.glamping.Glamping.entidades.Usuario;
+import com.glamping.Glamping.entidades.Role;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author USUARIO
+ * @author Admin
  */
 @Repository
-public interface UsuarioRepositorio extends JpaRepository<Usuario, String> {
-   Optional<Usuario> findByUsername(String username);
-
-    
+public interface RoleRepositorio extends JpaRepository<Role, Integer> {
+    Optional<Role> findByAuthority(String authority);
 }

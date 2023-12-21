@@ -7,6 +7,7 @@ package com.glamping.Glamping.entidades;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
@@ -21,27 +22,34 @@ import org.springframework.security.core.GrantedAuthority;
 public class Role implements GrantedAuthority {
 //Se crea el modelo role y se implementa la interfaz grantedAuthority esto nos ayudara a dar accesos
     @Id
-    @GeneratedValue(generator="uuid")
-    @GenericGenerator(name="uuid", strategy="uuid2")
+    @GeneratedValue(strategy=GenerationType.AUTO)
+ 
     @Column(name="rol_id")
-    private String id;
+    private Integer id;
     private String authority;
 
     public Role() {
+        super();
     }
 
-    public Role(String id, String authority) {
+    public Role(String authority) {
+        this.authority = authority;
+    }
+    
+    public Role(Integer id, String authority) {
         this.id = id;
         this.authority = authority;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
+
+   
 
     @Override
     public String toString() {
