@@ -40,14 +40,15 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="usuario_id")
     private Integer id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique=true)
+    //Se le pone el parametro unique como true para evitar repetidos
     private String username;
     private String nombre;
     private Date fechaNacimiento;
     private String contactoEmergencia;
     private String ciudad;
     //Esta anotacion con este parametro no va a permitir ingresar nada en la base de datos si no esta el email
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
     private String password;
     //Se hace el fetch con esta anotacion para que apenas se cree el candidato se haga el fetch
