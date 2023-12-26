@@ -12,6 +12,8 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,11 +25,17 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -47,7 +55,15 @@ public class SecurityConfiguration {
     
     @Bean
     public PasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
+         String idForEncode = "bcrypt";
+        Map<String, PasswordEncoder> encoders = new HashMap<>();
+        encoders.put(idForEncode, new BCryptPasswordEncoder());
+        encoders.put("noop", NoOpPasswordEncoder.getInstance());
+        encoders.put("sha256", new StandardPasswordEncoder());
+
+        PasswordEncoder passwordEncoder = new DelegatingPasswordEncoder(idForEncode, encoders);
+        return passwordEncoder;
+        
     }
     @Bean
     //Esto facilita que el programa acceda al userdetailservice de UsuarioServicio y de esta manera proceder con la verificacion
@@ -59,8 +75,7 @@ public class SecurityConfiguration {
     }
     @Bean
      public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-         return http
-                 .csrf(csrf->csrf.disable())
+            http.csrf(csrf->csrf.disable())
                  //Se establece este authorizeHttpRequests y el auth que apunte a permitir cualquier llamado
                  //De esta manera se podra acceder a la vista general
                  //Ahora se reemplaza con un authenticated para que solo las personas logueadas puedan ingresar
@@ -68,17 +83,22 @@ public class SecurityConfiguration {
                      //Se establece un requestMacthers para dar los accesos a las url
                         //en este caso todo lo relacionado con los auth/**
                  auth.requestMatchers("/auth/**").permitAll();
+                 auth.requestMatchers("/admin/**").hasRole("ADMIN");
+                 auth.requestMatchers("/inicio/**").hasAnyRole("ADMIN", "USUARIO");
+                 
                  auth.anyRequest().authenticated();
-                 })      
+                 });      
                  //Se establece el httpBasic para que se logueen por form
                  //.httpBasic().and(),  se cambia a oauth2 resource server para 
                  //la uatenticacion por token, se establece el auto2 configurer
                  //con el parametro:: de jwt
-                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+            http.oauth2ResourceServer()
+                 .jwt()
+                 .jwtAuthenticationConverter(jwtAuthConverter());
                  //Lo configuramos para que sea stateless
-                 .sessionManagement(session -> 
-                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                 .build();
+            http.sessionManagement(session -> 
+                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                 return http.build();
      }
      //Vamos a añadir un metodo con la anotacion bean para hacer la decodificacion
      @Bean
@@ -96,5 +116,19 @@ public class SecurityConfiguration {
          JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
          //Se devuelve el nimbus encoder
          return new NimbusJwtEncoder(jwks);
+     }
+     @Bean
+     //Se crea para dar diferentes permisos
+     public JwtAuthenticationConverter jwtAuthConverter(){
+         //Se renombra los roles para ponerle los prefijos
+         //Para hacer los matchs y decodes directamente se le pone el ROLE_ 
+         //para que spring security pueda interpretar los permisos
+         JwtGrantedAuthoritiesConverter jwtAuthGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+         jwtAuthGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
+         jwtAuthGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+         jwtConverter.setJwtGrantedAuthoritiesConverter(jwtAuthGrantedAuthoritiesConverter);
+         return jwtConverter;
+       
      }
 }

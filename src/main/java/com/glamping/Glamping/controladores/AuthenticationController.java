@@ -4,6 +4,7 @@
  */
 package com.glamping.Glamping.controladores;
 
+import com.glamping.Glamping.entidades.LoginResponseDTO;
 import com.glamping.Glamping.entidades.RegistrationDTO;
 import com.glamping.Glamping.entidades.Usuario;
 import com.glamping.Glamping.servicios.AuthServicio;
@@ -35,6 +36,11 @@ public class AuthenticationController {
     public Usuario registrarUsuario(@RequestBody RegistrationDTO body){
         return aS.registrarUsuario(body.getUsername(), body.getPassword(), body.getEmail());
     }
-    
+    @PostMapping("/login")
+    public LoginResponseDTO loginUsuario(@RequestBody RegistrationDTO body){
+        //Se llama al login del respositorio
+        return aS.login(body.getUsername(), body.getPassword());
+        
+    }
     
 }
