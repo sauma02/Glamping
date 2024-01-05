@@ -2,14 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.glamping.Glamping.exceptions;
+package glamping.glamping.excepciones;
 
 /**
  *
- * @author USUARIO
+ * @author Admin
  */
-public class MiException extends Exception {
-    public MiException (String msg){
+
+public class MiExcepcion extends Exception {
+    public MiExcepcion(String msg){
         super(msg);
     }
 }

@@ -2,20 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package com.glamping.Glamping.repositorios;
+package glamping.glamping.repositorios;
 
-import com.glamping.Glamping.entidades.Usuario;
-import java.util.Optional;
+import com.glamping.Glamping.entidades.Cabania;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author USUARIO
+ * @author Admin
  */
 @Repository
-public interface UsuarioRepositorio extends JpaRepository<Usuario, String> {
-   Optional<Usuario> findByUsername(String username);
-
+public interface CabaniaRepositorio extends JpaRepository<Cabania, Integer> {
     
 }
