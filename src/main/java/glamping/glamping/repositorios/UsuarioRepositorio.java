@@ -4,7 +4,9 @@
  */
 package glamping.glamping.repositorios;
 
-import com.glamping.Glamping.entidades.Usuario;
+
+
+import glamping.glamping.entidades.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
     public Usuario findByUsername(String username);
+
+ 
 }

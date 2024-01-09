@@ -4,7 +4,8 @@
  */
 package glamping.glamping.repositorios;
 
-import com.glamping.Glamping.entidades.Cabania;
+
+import glamping.glamping.entidades.Cabania;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

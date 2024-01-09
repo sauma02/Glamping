@@ -32,6 +32,7 @@ public class Cabania {
     private Integer id;
     private String nombre;
     private Integer capacidad;
+    private String imagen;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="Reserva_id")
     private Reserva reserva;
