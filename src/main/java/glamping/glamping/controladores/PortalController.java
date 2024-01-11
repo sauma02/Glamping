@@ -4,14 +4,17 @@
  */
 package glamping.glamping.controladores;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author Admin
  */
-@RestController
+@Controller
+@RequestMapping("/")
 public class PortalController {
     @GetMapping("/")
     public String inicio(){

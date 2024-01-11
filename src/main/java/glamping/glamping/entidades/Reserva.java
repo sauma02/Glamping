@@ -12,8 +12,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import java.util.Date;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,29 +33,38 @@ public class Reserva {
     private Integer id;
     private String nombre;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumns({
-     @JoinColumn(name="Usuario_id", referencedColumnName="id"),
-     @JoinColumn(name="Nombre de usuario", referencedColumnName="nombre")
-    }
+   @JoinTable(
+    name="ReservaCabaniaUsuario",
+    joinColumns = @JoinColumn(name="Reserva_id"),
+    inverseJoinColumns = @JoinColumn(name="Usuario_id")
     )
-    private Usuario usuario;
+    private List<Usuario> usuario;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumns({
-        @JoinColumn(name="Cabania_id", referencedColumnName="id")
-    })
-    private Cabania cabania;
+    @JoinTable(
+    name="ReservaCabaniaUsuario",
+    joinColumns = @JoinColumn(name="Reserva_id"),
+    inverseJoinColumns = @JoinColumn(name="Cabania_id")
+    )
+    private List<Cabania> cabania;
     private Date fecha;
 
     public Reserva() {
     }
 
-    public Reserva(Integer id, String nombre, Usuario usuario, Cabania cabania, Date fecha) {
+    public Reserva(Integer id, String nombre, List<Usuario> usuario, List<Cabania> cabania, Date fecha) {
         this.id = id;
         this.nombre = nombre;
         this.usuario = usuario;
         this.cabania = cabania;
         this.fecha = fecha;
     }
+
+    
+
+    
+   
+    
+    
 
     @Override
     public String toString() {

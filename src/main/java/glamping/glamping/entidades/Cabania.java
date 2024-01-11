@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumns;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,20 +35,27 @@ public class Cabania {
     private Integer capacidad;
     private String imagen;
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="Reserva_id")
-    private Reserva reserva;
+    @JoinTable(
+    name="ReservaCabaniaUsuario",
+    joinColumns = @JoinColumn(name="Cabania_id"),
+    inverseJoinColumns = @JoinColumn(name="Reserva_id")
+    )
+    private List<Reserva> reserva;
     private boolean estado;
 
     public Cabania() {
     }
 
-    public Cabania(Integer id, String nombre, Integer capacidad, Reserva reserva, boolean estado) {
+    public Cabania(Integer id, String nombre, Integer capacidad, String imagen, List<Reserva> reserva, boolean estado) {
         this.id = id;
         this.nombre = nombre;
         this.capacidad = capacidad;
+        this.imagen = imagen;
         this.reserva = reserva;
         this.estado = estado;
     }
+
+    
 
     @Override
     public String toString() {

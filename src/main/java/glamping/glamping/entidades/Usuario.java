@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,17 +47,18 @@ public class Usuario implements UserDetails {
     @OneToMany(fetch = FetchType.EAGER)
     private List<Roles> roles;
     @OneToMany(fetch= FetchType.EAGER)
-    @JoinColumn(name="Reserva_id")
+    @JoinTable(
+    name="ReservaCabaniaUsuario",
+            joinColumns=@JoinColumn(name="Usuario_id"),
+            inverseJoinColumns=@JoinColumn(name="Reserva_id")
+    )
     
-    private Reserva reserva;
+    private List<Reserva> reserva;
 
     public Usuario() {
     }
 
-    public Usuario(Integer id, String nombre, String username, 
-            String password, String contactoEmergencia, String contacto, 
-            String NombreContactoEmergencia, String parentesco, Date fechaNacimiento, 
-            String email, List<Roles> roles, Reserva reserva) {
+    public Usuario(Integer id, String nombre, String username, String password, String contactoEmergencia, String contacto, String NombreContactoEmergencia, String parentesco, Date fechaNacimiento, String email, List<Roles> roles, List<Reserva> reserva) {
         this.id = id;
         this.nombre = nombre;
         this.username = username;
@@ -70,12 +72,14 @@ public class Usuario implements UserDetails {
         this.roles = roles;
         this.reserva = reserva;
     }
+
+  
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorityList = new ArrayList();
         for (Roles rol : roles) {
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rol.getNombre());
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rol.getName());
            authorityList.add(authority);
             
         }

@@ -24,20 +24,24 @@ public class Roles {
     @GeneratedValue(strategy =GenerationType.SEQUENCE)
     @Column(name="Rol_id")
     private Integer id;
-    @Column(name="Rol")
-    private String nombre;
+    @Column(name="nombre")
+    private String name;
 
     public Roles() {
     }
 
-    public Roles(Integer id, String nombre) {
+    public Roles(Integer id, String name) {
         this.id = id;
-        this.nombre = nombre;
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Roles{" + "id=" + id + ", nombre=" + nombre + '}';
+        return "Roles{" + "id=" + id + ", name=" + name + '}';
     }
+
+  
+
+    
     
 }

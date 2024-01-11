@@ -4,15 +4,19 @@
  */
 package glamping.glamping.config;
 
-import com.glamping.Glamping.servicios.UsuarioServicio;
+
+import glamping.glamping.excepciones.MiExcepcion;
+import glamping.glamping.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 
 /**
  *
@@ -28,12 +32,18 @@ public class SecurityConfig {
     }
     @Bean 
     public SecurityFilterChain securityFilterChain(HttpSecurity https) throws Exception{
+        try {
         return https.formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
-                .requestMatchers("/logjn/**").permitAll()
+                .requestMatchers("/").permitAll()
+                .requestMatchers("/login/**").permitAll()
                 .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                .requestMatchers("/usuario/").hasAnyAuthority("ADMIN", "USER")
+                .requestMatchers("/usuario/**").hasAnyAuthority("ADMIN", "USER")
                 .anyRequest().authenticated())
-               .userDetailsService(usuarioServicio).build();
+               .userDetailsService(usuarioServicio).build();    
+        } catch (MiExcepcion e) {
+            throw new MiExcepcion("Error");
+        }
+        
     }
 }

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author Admin
  */
 @Service
-public class CabaniaUsuario {
+public class CabaniaServicio {
     @Autowired
     private CabaniaRepositorio cabaniaRepositorio;
     @Transactional

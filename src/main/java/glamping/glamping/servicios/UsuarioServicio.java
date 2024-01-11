@@ -18,6 +18,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,14 +28,14 @@ import org.springframework.stereotype.Service;
  * @author Admin
  */
 @Service
-public class UsuarioServicio {
+public class UsuarioServicio implements UserDetailsService {
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
     @Transactional
     public void crearUsuarioAdmin(String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, Date fechaNacimiento, Roles rol){
         List<Roles> rolLista = new ArrayList();
-        rol.setNombre("admin");
+        rol.setName("admin");
         
         rolLista.add(rol);
         Usuario admin = new Usuario();
@@ -48,7 +51,7 @@ public class UsuarioServicio {
         validar(nombre, username, password, email, fechaNacimiento);
         List<Roles> roles = new ArrayList();
         
-        rol.setNombre("usuario");
+        rol.setName("usuario");
         roles.add(rol);
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
@@ -119,6 +122,11 @@ public class UsuarioServicio {
             if(fechaNacimiento == null){
             throw new MiExcepcion("El fechaNacimiento no puede ser nulo");
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return usuarioRepositorio.findByUsername(username);
     }
     
 }
