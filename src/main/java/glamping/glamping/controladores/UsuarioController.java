@@ -7,26 +7,14 @@ package glamping.glamping.controladores;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author Admin
  */
 @Controller
-@RequestMapping("/")
-public class PortalController {
-    @GetMapping("/")
-    public String inicio(){
-        return "inicio.html";
-    }
-    @GetMapping("/usuario")
-    public String usuario(){
-        return "usuario.html";
-    }
-    @GetMapping("/admin")
-    public String admin(){
-        return "admin.html";
-    }
+@RequestMapping("/usuario")
+public class UsuarioController {
+
     
 }

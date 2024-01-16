@@ -4,7 +4,6 @@
  */
 package glamping.glamping.entidades;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,36 +22,30 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Roles {
-    @Id
-    @GeneratedValue(strategy =GenerationType.SEQUENCE)
-    @Column(name="Rol_id")
+public class Privilegios {
+   @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
-    @Column(name="nombre")
+
     private String name;
-       @ManyToMany
-    @JoinTable(
-        name = "roles_privileges", 
-        joinColumns = @JoinColumn(
-          name = "role_id", referencedColumnName = "id"), 
-        inverseJoinColumns = @JoinColumn(
-          name = "privilege_id", referencedColumnName = "id"))
-    private Collection<Privilegios> privilegios;
-    public Roles() {
+
+    @ManyToMany(mappedBy = "privileges")
+    private Collection<Roles> roles;
+
+    public Privilegios() {
     }
 
-    public Roles(Integer id, String name) {
+   
+
+    public Privilegios(Integer id, String name, Collection<Roles> roles) {
         this.id = id;
         this.name = name;
+        this.roles = roles;
     }
 
     @Override
     public String toString() {
-        return "Roles{" + "id=" + id + ", name=" + name + '}';
+        return "Privilegios{" + "id=" + id + ", name=" + name + ", roles=" + roles + '}';
     }
-
-  
-
-    
     
 }
