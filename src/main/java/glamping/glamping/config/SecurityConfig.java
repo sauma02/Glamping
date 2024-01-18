@@ -36,14 +36,15 @@ public class SecurityConfig {
         return https.formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
                 .requestMatchers("/").permitAll()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                .requestMatchers("/usuario/**").hasAnyAuthority("ADMIN", "USER")
+                .requestMatchers("/login/**").permitAll()
+                .requestMatchers("/admin/**").hasAnyAuthority("admin")
+                .requestMatchers("/usuario/**").hasAnyAuthority("admin", "usuario")
                 .anyRequest().authenticated())
-               .userDetailsService(usuarioServicio).build();    
+                .userDetailsService(usuarioServicio).build();    
         } catch (MiExcepcion e) {
             throw new MiExcepcion("Error");
         }
         
     }
+    //https://www.baeldung.com/spring-redirect-after-login
 }

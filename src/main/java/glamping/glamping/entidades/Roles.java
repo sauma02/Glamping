@@ -30,14 +30,7 @@ public class Roles {
     private Integer id;
     @Column(name="nombre")
     private String name;
-       @ManyToMany
-    @JoinTable(
-        name = "roles_privileges", 
-        joinColumns = @JoinColumn(
-          name = "role_id", referencedColumnName = "id"), 
-        inverseJoinColumns = @JoinColumn(
-          name = "privilege_id", referencedColumnName = "id"))
-    private Collection<Privilegios> privilegios;
+ 
     public Roles() {
     }
 

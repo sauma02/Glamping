@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Admin
  */
-@Controller
-@RequestMapping("/")
+@RestController
+
 public class PortalController {
     @GetMapping("/")
     public String inicio(){
-        return "inicio.html";
+        return "inicio";
     }
     @GetMapping("/usuario")
     public String usuario(){
-        return "usuario.html";
+        return "usuario";
     }
     @GetMapping("/admin")
     public String admin(){
-        return "admin.html";
+        return "admin";
     }
     
 }

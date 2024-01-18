@@ -22,6 +22,20 @@ public class GlampingApplication {
         public CommandLineRunner commandLineRunner(UsuarioRepositorio usuarioRepositorio, RolesRepositorio rolesRepositorio,  PasswordEncoder passwordEncoder){
             return args ->{
                 Roles adminRol = rolesRepositorio.findByName("admin");
+                Roles usuario = rolesRepositorio.findByName("usuario");
+                if(usuario == null){
+                    Roles user = new Roles();
+                    user.setName("usuario");
+                    rolesRepositorio.save(user);
+                    List<Roles> listaRoles = new ArrayList();
+                    listaRoles.add(user);
+                    Usuario user1 = new Usuario(Integer.SIZE, "jose", "user", passwordEncoder.encode("password"), null, null, 
+                        null, null, null, 
+                        "josedavids123@live.com", listaRoles, null);
+                    usuarioRepositorio.save(user1);
+                }else{
+                    System.out.println("Usuario ya existe");
+                }
                 if(adminRol == null){
                 Roles admin = new Roles();
                 admin.setName("admin");
