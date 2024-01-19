@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
 /**
@@ -40,11 +41,21 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasAnyAuthority("admin")
                 .requestMatchers("/usuario/**").hasAnyAuthority("admin", "usuario")
                 .anyRequest().authenticated())
+                .formLogin()
+                    .loginPage("/login.html")
+                    .loginProcessingUrl("/login")
+                    .successHandler(myAuthenticationSuccessHanlfer())
+                .and()
                 .userDetailsService(usuarioServicio).build();    
         } catch (MiExcepcion e) {
             throw new MiExcepcion("Error");
         }
         
     }
+    @Bean
+    //Se crea el bean nuevo para poder redireccionar basado en el rol de la persona
+    public AuthenticationSuccessHandler myAuthenticationSuccessHanlfer(){
+            return new MySimpleUrlAuthenticationSuccessHandler();
+            }
     //https://www.baeldung.com/spring-redirect-after-login
 }
