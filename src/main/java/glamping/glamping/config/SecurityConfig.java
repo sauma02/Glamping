@@ -42,8 +42,6 @@ public class SecurityConfig {
                 .requestMatchers("/usuario/**").hasAnyAuthority("admin", "usuario")
                 .anyRequest().authenticated())
                 .formLogin()
-                    .loginPage("/login.html")
-                    .loginProcessingUrl("/login")
                     .successHandler(myAuthenticationSuccessHanlfer())
                 .and()
                 .userDetailsService(usuarioServicio).build();    
