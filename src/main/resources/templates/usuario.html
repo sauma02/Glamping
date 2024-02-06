@@ -5,11 +5,184 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Glamping</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
+    <style>
+        body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos para el encabezado */
+header {
+    background-color: #333;
+    color: #fff;
+}
+
+.nav-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-layer {
+    margin-left: auto; /* Mueve .user-layer al extremo derecho */
+}
+
+.nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.nav li {
+    margin-right: 20px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Resto de tu CSS ... */
+
+/* Media queries para diseño responsivo */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 5px;
+    }
+
+    .nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-layer {
+        margin-left: 0;
+        margin-top: 10px; /* Añade un margen superior para separar del resto de los elementos */
+    }
+
+    .nav li {
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .hero {
+        padding: 20px;
+    }
+
+    .hero-title {
+        font-size: 1.5em;
+    }
+}
+
+/* Estilos para la sección principal */
+section {
+    text-align: center;
+}
+
+.hero {
+    background: #f0f0f0;
+    padding: 50px;
+}
+
+.hero-title {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Estilos para la imagen de fondo */
+.hero img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Estilos para el pie de página */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Estilos para la sección del pie de página */
+.footer-section {
+    height: 100px; /* Ajusta según sea necesario */
+}
+
+/* Media queries para diseño responsivo */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 5px;
+    }
+
+    .nav li {
+        display: block;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .hero {
+        padding: 20px;
+    }
+
+    .hero-title {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav a {
+        font-size: 0.9em;
+    }
+}
+    </style>
+
     <body>
-        <div>user</div>
+        <header>
+            <div class="nav-container">
+                <div class="nav">
+                    <div class="user-layer">
+                        <h2>Usuario</h2>
+                    </div>
+                    <ul>
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="/cabanias">Cabañas</a></li>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="/login">Iniciar Sesion</a></li>
+                        <li><a href="/register">Registrar</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <section>
+            <div class="hero">
+                <div class="hero-title">Glamping Santa Helena</div>
+                    <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
+            </div> 
+        </section>
+        <main>
+            <div class="main-container">
+                
+            </div>
+        </main>
+        <section>
+            <div class="footer-section"></div>
+        </section>
+        <footer>
+            
+        </footer>
     </body>
 </html>

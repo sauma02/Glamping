@@ -10,22 +10,106 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <style>
-        body{
-            margin: auto;
-            padding: auto;
-            width: auto;
-        }
-        section{
-            height: 270px;
-            width: auto;
-            margin: 0;
-            padding: 0;
-            border: #33ff33;
-        }
-        section .hero{
-            width: auto;
-            border: red;
-        }
+        body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos para el encabezado */
+header {
+    background-color: #333;
+    color: #fff;
+}
+
+.nav-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav ul {
+    list-style: none;
+}
+
+.nav li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Estilos para la sección principal */
+section {
+    text-align: center;
+}
+
+.hero {
+    background: #f0f0f0;
+    padding: 50px;
+}
+
+.hero-title {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Estilos para la imagen de fondo */
+.hero img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Estilos para el pie de página */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Estilos para la sección del pie de página */
+.footer-section {
+    height: 100px; /* Ajusta según sea necesario */
+}
+
+/* Media queries para diseño responsivo */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 5px;
+    }
+
+    .nav li {
+        display: block;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .hero {
+        padding: 20px;
+    }
+
+    .hero-title {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav a {
+        font-size: 0.9em;
+    }
+}
     </style>
 
     <body>
@@ -34,11 +118,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="nav">
                     <ul>
                         <li><a href="/">Inicio</a></li>
-                        <li><a>Servicios</a></li>
-                        <li><a>Cabañas</a></li>
-                        <li><a>Nosotros</a></li>
-                        <li><a>Iniciar Sesion</a></li>
-                        <li><a>Registrar</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="/cabanias">Cabañas</a></li>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="/login">Iniciar Sesion</a></li>
+                        <li><a href="/register">Registrar</a></li>
                     </ul>
                 </div>
             </div>
