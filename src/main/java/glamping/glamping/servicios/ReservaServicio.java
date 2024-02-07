@@ -11,6 +11,7 @@ import glamping.glamping.repositorios.CabaniaRepositorio;
 import glamping.glamping.repositorios.ReservaRepositorio;
 import glamping.glamping.repositorios.UsuarioRepositorio;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,12 +32,17 @@ public class ReservaServicio {
     @Autowired
     private CabaniaRepositorio cabaniaRepositorio;
     @Transactional
-    public void crearReserva(Integer cabaniaId, Integer usuarioId,String nombre,Date fecha){
+    public void crearReserva(Integer cabaniaId, Integer usuarioId,String nombre,LocalDate startDate, LocalDate endDate ){
            Optional<Usuario> respuesta = usuarioRepositorio.findById(usuarioId);
            Optional<Cabania> respuesta2 = cabaniaRepositorio.findById(cabaniaId);
+           
            if(respuesta.isPresent() && respuesta2.isPresent()){
               Usuario usuario = respuesta.get();
               Cabania cabania = respuesta2.get();
+              boolean disponible = isCabinAvailable(cabania, startDate, endDate);
+              if(!disponible){
+                  throw new RuntimeException("La cabaña no esta disponible en esas fechas");
+              }else{
               List<Cabania> cabaniaLista = new ArrayList();
               List<Usuario> usuarioLista = new ArrayList();
               usuarioLista.add(usuario);
@@ -45,24 +51,36 @@ public class ReservaServicio {
                reserva.setNombre(nombre);
                reserva.setUsuario(usuarioLista);
                reserva.setCabania(cabaniaLista);
-               reserva.setFecha(fecha);
+               reserva.setFechaInicio(startDate);
+               reserva.setFechaFinal(endDate);
                reservaRepositorio.save(reserva);
+              }
            }
     }
-    public void editarReserva(Integer id, Integer cabaniaId, String nombre,Date fecha){
+    public void editarReserva(Integer id, Integer cabaniaId, String nombre,LocalDate startDate, LocalDate endDate){
         Optional<Reserva> respuesta = reservaRepositorio.findById(id);
         Optional<Cabania> respuesta2 = cabaniaRepositorio.findById(cabaniaId);
         if(respuesta.isPresent()){
             Cabania cabania = respuesta2.get();
+             boolean disponible = isCabinAvailable(cabania, startDate, endDate);
+              if(!disponible){
+                  throw new RuntimeException("La cabaña no esta disponible");
+              }else{
             List<Cabania> cabaniaLista = new ArrayList();
               cabaniaLista.add(cabania);
             Reserva reserva = respuesta.get();
             reserva.setNombre(nombre);
             reserva.setCabania(cabaniaLista);
-            reserva.setFecha(fecha);
-            
+            reserva.setFechaInicio(startDate);
+            reserva.setFechaFinal(endDate);
+            reservaRepositorio.save(reserva);
+              }
             
         }
+    }
+     public boolean isCabinAvailable(Cabania cabin, LocalDate startDate, LocalDate endDate) {
+        List<Reserva> overlappingReservations = reservaRepositorio.findByCabinAndStartDateLessThanEqualAndEndDateGreaterThanEqual(cabin, endDate, startDate);
+        return overlappingReservations.isEmpty();
     }
     public Reserva listarReservaPorId(Integer id){
         Optional<Reserva> respuesta = reservaRepositorio.findById(id);

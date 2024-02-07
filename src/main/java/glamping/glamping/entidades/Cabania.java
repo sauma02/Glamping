@@ -35,7 +35,7 @@ public class Cabania {
     private Integer capacidad;
     private String imagen;
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(
+  @JoinTable(
     name="ReservaCabaniaUsuario",
     joinColumns = @JoinColumn(name="Cabania_id"),
     inverseJoinColumns = @JoinColumn(name="Reserva_id")

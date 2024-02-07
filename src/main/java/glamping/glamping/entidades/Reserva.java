@@ -14,6 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import lombok.Getter;
@@ -32,31 +34,39 @@ public class Reserva {
     @Column(name="Reserva_id")
     private Integer id;
     private String nombre;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
    @JoinTable(
     name="ReservaCabaniaUsuario",
     joinColumns = @JoinColumn(name="Reserva_id"),
     inverseJoinColumns = @JoinColumn(name="Usuario_id")
     )
     private List<Usuario> usuario;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
     name="ReservaCabaniaUsuario",
     joinColumns = @JoinColumn(name="Reserva_id"),
     inverseJoinColumns = @JoinColumn(name="Cabania_id")
     )
     private List<Cabania> cabania;
-    private Date fecha;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFinal;
 
     public Reserva() {
     }
 
-    public Reserva(Integer id, String nombre, List<Usuario> usuario, List<Cabania> cabania, Date fecha) {
+
+    public Reserva(Integer id, String nombre, List<Usuario> usuario, List<Cabania> cabania, LocalDate fechaInicio, LocalDate fechaFinal) {
         this.id = id;
         this.nombre = nombre;
         this.usuario = usuario;
         this.cabania = cabania;
-        this.fecha = fecha;
+        this.fechaInicio = fechaInicio;
+        this.fechaFinal = fechaFinal;
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva{" + "id=" + id + ", nombre=" + nombre + ", usuario=" + usuario + ", cabania=" + cabania + ", fechaInicio=" + fechaInicio + ", fechaFinal=" + fechaFinal + '}';
     }
 
     
@@ -66,9 +76,7 @@ public class Reserva {
     
     
 
-    @Override
-    public String toString() {
-        return "Reserva{" + "id=" + id + ", nombre=" + nombre + ", usuario=" + usuario + ", cabania=" + cabania + ", fecha=" + fecha + '}';
-    }
+    
+    
     
 }

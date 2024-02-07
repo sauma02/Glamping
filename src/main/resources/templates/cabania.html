@@ -149,6 +149,48 @@ footer {
         font-size: 0.9em;
     }
 }
+.form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="date"],
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-container button[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
     </style>
 
     <body>
@@ -177,8 +219,31 @@ footer {
         </section>
         <main>
             <div class="main-container">
-                
+            <div class="form-container">
+                <h2>Crear Reserva</h2>
+                <form th:action="@{/reservations}" method="post">
+                    <label for="user">Usuario:</label>
+                    <input type="text" id="user" name="user" th:value="${currentUser.username}" readonly>
+
+                    <label for="cabin">Cabaña:</label>
+                    <select id="cabin" name="cabin">
+                        <!-- Iterar sobre la lista de cabañas disponibles -->
+                        <option th:each="cabin : ${availableCabins}" th:value="${cabin.id}" th:text="${cabin.name}"></option>
+                    </select>
+
+                    <label for="startDate">Fecha de inicio:</label>
+                    <input type="date" id="startDate" name="startDate" required>
+
+                    <label for="endDate">Fecha de fin:</label>
+                    <input type="date" id="endDate" name="endDate" required>
+
+                    <button type="submit">Crear Reserva</button>
+
+                    <!-- Mostrar mensaje de error si existe -->
+                    <p class="error-message" th:if="${param.error}" th:text="${param.error}"></p>
+                </form>
             </div>
+        </div>
         </main>
         <section>
             <div class="footer-section"></div>

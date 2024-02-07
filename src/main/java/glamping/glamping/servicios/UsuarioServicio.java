@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,6 +34,24 @@ public class UsuarioServicio implements UserDetailsService {
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
     @Transactional
+    public Usuario getCurrentUser(){
+    // Obtener la autenticación actual desde el contexto de seguridad de Spring
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        // Verificar si la autenticación es nula o el usuario no está autenticado
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null; // Retornar nulo si no hay usuario autenticado
+        }
+        // Obtener el nombre de usuario del usuario autenticado
+        String username = authentication.getName();
+            // Aquí puedes implementar la lógica para cargar el usuario desde tu sistema de persistencia
+        // Por ejemplo, desde una base de datos
+        
+        // Supongamos que tienes un método en tu repositorio de usuario para buscar por nombre de usuario
+        Usuario user = usuarioRepositorio.findByUsername(username);
+        
+        return user;
+    }
     public void crearUsuarioAdmin(String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, Date fechaNacimiento, Roles rol){
         List<Roles> rolLista = new ArrayList();
