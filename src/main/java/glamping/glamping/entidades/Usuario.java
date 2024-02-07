@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,12 +47,8 @@ public class Usuario implements UserDetails {
     private String email;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Roles> roles;
-    @OneToMany(fetch= FetchType.EAGER)
-    @JoinTable(
-    name="ReservaCabaniaUsuario",
-            joinColumns=@JoinColumn(name="Usuario_id"),
-            inverseJoinColumns=@JoinColumn(name="Reserva_id")
-    )
+    
+   @ManyToMany(mappedBy = "usuario")
     
     private List<Reserva> reserva;
 

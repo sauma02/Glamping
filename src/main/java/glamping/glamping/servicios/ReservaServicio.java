@@ -6,6 +6,7 @@ package glamping.glamping.servicios;
 
 import glamping.glamping.entidades.Cabania;
 import glamping.glamping.entidades.Reserva;
+
 import glamping.glamping.entidades.Usuario;
 import glamping.glamping.repositorios.CabaniaRepositorio;
 import glamping.glamping.repositorios.ReservaRepositorio;
@@ -43,14 +44,11 @@ public class ReservaServicio {
               if(!disponible){
                   throw new RuntimeException("La cabaña no esta disponible en esas fechas");
               }else{
-              List<Cabania> cabaniaLista = new ArrayList();
-              List<Usuario> usuarioLista = new ArrayList();
-              usuarioLista.add(usuario);
-              cabaniaLista.add(cabania);
+              
                Reserva reserva = new Reserva();
                reserva.setNombre(nombre);
-               reserva.setUsuario(usuarioLista);
-               reserva.setCabania(cabaniaLista);
+               reserva.setUsuario(usuario);
+               reserva.setCabania(cabania);
                reserva.setFechaInicio(startDate);
                reserva.setFechaFinal(endDate);
                reservaRepositorio.save(reserva);
@@ -66,11 +64,10 @@ public class ReservaServicio {
               if(!disponible){
                   throw new RuntimeException("La cabaña no esta disponible");
               }else{
-            List<Cabania> cabaniaLista = new ArrayList();
-              cabaniaLista.add(cabania);
+      
             Reserva reserva = respuesta.get();
             reserva.setNombre(nombre);
-            reserva.setCabania(cabaniaLista);
+            reserva.setCabania(cabania);
             reserva.setFechaInicio(startDate);
             reserva.setFechaFinal(endDate);
             reservaRepositorio.save(reserva);
@@ -79,7 +76,7 @@ public class ReservaServicio {
         }
     }
      public boolean isCabinAvailable(Cabania cabin, LocalDate startDate, LocalDate endDate) {
-        List<Reserva> overlappingReservations = reservaRepositorio.findByCabinAndStartDateLessThanEqualAndEndDateGreaterThanEqual(cabin, endDate, startDate);
+        List<Reserva> overlappingReservations = reservaRepositorio.findByCabaniaAndFechaInicioLessThanEqualAndFechaFinalGreaterThanEqual(cabin, endDate, endDate);
         return overlappingReservations.isEmpty();
     }
     public Reserva listarReservaPorId(Integer id){

@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated())
                 .formLogin()
                     .successHandler(myAuthenticationSuccessHanlfer())
-                .and()
+                .and().logout().logoutSuccessUrl("/").and()
                 .userDetailsService(usuarioServicio).build();    
         } catch (MiExcepcion e) {
             throw new MiExcepcion("Error");

@@ -34,28 +34,19 @@ public class Reserva {
     @Column(name="Reserva_id")
     private Integer id;
     private String nombre;
-    @ManyToOne(fetch = FetchType.EAGER)
-   @JoinTable(
-    name="ReservaCabaniaUsuario",
-    joinColumns = @JoinColumn(name="Reserva_id"),
-    inverseJoinColumns = @JoinColumn(name="Usuario_id")
-    )
-    private List<Usuario> usuario;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(
-    name="ReservaCabaniaUsuario",
-    joinColumns = @JoinColumn(name="Reserva_id"),
-    inverseJoinColumns = @JoinColumn(name="Cabania_id")
-    )
-    private List<Cabania> cabania;
+   @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Usuario_id")
+    private Usuario usuario;
+     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Cabania_id")
+    private Cabania cabania;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
 
     public Reserva() {
     }
 
-
-    public Reserva(Integer id, String nombre, List<Usuario> usuario, List<Cabania> cabania, LocalDate fechaInicio, LocalDate fechaFinal) {
+    public Reserva(Integer id, String nombre, Usuario usuario, Cabania cabania, LocalDate fechaInicio, LocalDate fechaFinal) {
         this.id = id;
         this.nombre = nombre;
         this.usuario = usuario;
@@ -68,6 +59,9 @@ public class Reserva {
     public String toString() {
         return "Reserva{" + "id=" + id + ", nombre=" + nombre + ", usuario=" + usuario + ", cabania=" + cabania + ", fechaInicio=" + fechaInicio + ", fechaFinal=" + fechaFinal + '}';
     }
+
+
+    
 
     
 

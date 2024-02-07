@@ -4,10 +4,13 @@
  */
 package glamping.glamping.controladores;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -23,12 +26,20 @@ public class PortalController {
         return "inicio.html";
     }
     @GetMapping("/usuario")
-    public String usuario(){
+    public String usuario(@AuthenticationPrincipal UserDetails userDetails){
+        String username = userDetails.getUsername();
+        ModelAndView model = new ModelAndView();
+        model.addObject("nombreUsuario", username);
         return "usuario.html";
     }
+   
     @GetMapping("/admin")
     public String admin(){
         return "admin.html";
+    }
+    @GetMapping("/usuario/reservaForm")
+    public String reservaForm(){
+        return "reservaForm.html";
     }
     
 }

@@ -17,5 +17,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ReservaRepositorio extends JpaRepository<Reserva, Integer> {
-    List<Reserva> findByCabinAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Cabania cab, LocalDate fechaInicial, LocalDate fechaFinal);
+    List<Reserva> findByCabaniaAndFechaInicioLessThanEqualAndFechaFinalGreaterThanEqual(Cabania cabania, LocalDate fechaInicio, LocalDate fechaFinal);
 }
