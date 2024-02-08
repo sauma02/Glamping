@@ -100,7 +100,7 @@
                 <li><a href="#nosotros">Nosotros</a></li>
             </ul>
             <div class="user-layer">
-                <h2 th:text="${nombreUsuario}"></h2>
+                <h2 th:value="${nombreUsuario}"></h2>
                 <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
             </div>
         </div>
@@ -115,8 +115,8 @@
 <main>
     <div class="main-container">
         <form th:action="@{/reservar}" method="post">
-            <label for="usuario" th:text="${nombreUsuario}></label>
-            <input type="text" id="usuario" name="usuario" readOnly="true"><br><br>
+            <label for="usuario" >Usuario:</label>
+            <input type="text" th:value="${nombreUsuario}" id="usuario" name="usuario" readOnly="true"><br><br>
             
             <label for="cabanias">Cabañas:</label>
             <select id="cabanias" name="cabanias" required>

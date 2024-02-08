@@ -4,10 +4,14 @@
  */
 package glamping.glamping.controladores;
 
+import glamping.glamping.entidades.Usuario;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,10 +30,10 @@ public class PortalController {
         return "inicio.html";
     }
     @GetMapping("/usuario")
-    public String usuario(@AuthenticationPrincipal UserDetails userDetails){
+    public String usuario(@AuthenticationPrincipal UserDetails userDetails, Model model){
         String username = userDetails.getUsername();
-        ModelAndView model = new ModelAndView();
-        model.addObject("nombreUsuario", username);
+        
+        model.addAttribute("nombreUsuario", username);
         return "usuario.html";
     }
    
@@ -38,8 +42,22 @@ public class PortalController {
         return "admin.html";
     }
     @GetMapping("/usuario/reservaForm")
-    public String reservaForm(){
+    public String reservaForm(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        String username = userDetails.getUsername();
+        
+        model.addAttribute("nombreUsuario", username);
         return "reservaForm.html";
+    }
+    @GetMapping("/register")
+    public String registroForm(Model model){
+        Usuario user = new Usuario();
+        model.addAttribute("user", user);
+        return "registroform.html";
+       
+    }
+    @PostMapping("/register")
+    public String submitForm(@ModelAttribute("user") Usuario user){
+        return "registerSuccess";
     }
     
 }
