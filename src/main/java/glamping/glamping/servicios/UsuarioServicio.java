@@ -52,6 +52,15 @@ public class UsuarioServicio implements UserDetailsService {
         
         return user;
     }
+    public Usuario getCurrentUserByEmail(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()){
+            return null;
+        }
+        String email = authentication.getName();
+        Usuario user = usuarioRepositorio.findByEmail(email);
+        return user;
+    }
     public void crearUsuarioAdmin(String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, Date fechaNacimiento, Roles rol){
         List<Roles> rolLista = new ArrayList();
@@ -67,8 +76,9 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioRepositorio.save(admin);
     }
     public void crearUsuario(String nombre, String username, String password,String contacto, String contactoEmergencia,
-            String nombreContactoEmergencia, String parentesco, String email, Date fechaNacimiento, Roles rol) throws MiExcepcion{
+            String nombreContactoEmergencia, String parentesco, String email, Date fechaNacimiento) throws MiExcepcion{
         validar(nombre, username, password, email, fechaNacimiento);
+        Roles rol = new Roles();
         List<Roles> roles = new ArrayList();
         
         rol.setName("usuario");

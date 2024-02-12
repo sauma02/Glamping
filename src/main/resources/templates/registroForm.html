@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <main>
+            <div class="main-container">
+        <form th:action="@{/register/regis}" method="post">
+            <label for="usuario" >Usuario:</label>
+            <input type="text" id="usuario" name="usuario" th:value="@{username}"><br><br>
+            
+            <label for="cabanias">Nombre completo:</label>
+            <input type="text" id="nombre" name="nombre" th:value="@{nombre}">
+            
+            <label for="contrasenia">Contraseña:</label>
+            <input type="password" id="password" name="password" th:value="@{password}"required><br><br>
+            
+            <label for="contacto">Numero de telefono:</label>
+            <input type="text" id="contacto" name="contacto" th:value="@{contacto}" required><br><br>
+                        
+            <label for="contactoDeEmergencia">Contacto de emergencia:</label>
+            <input type="text" id="contactoDeEmergencia" name="contactoDeEmergencia" placeholder = "Contacto de emergencia "th:value="@{contactoEmergencia}"required><br><br>
+                        
+            <label for="nombreContactoDeEmergencia">Nombre del contacto de emergencia:</label>
+            <input type="text" id="nombreContactoDeEmergencia" name="nombreContactoDeEmergencia" th:value="@{nombreContactoEmergencia}" required><br><br>
+            <label for="parentesco">Parentesco:</label>
+            <input type="text" id="parentesco" name="parentesco" th:value="@{parentesco}" required><br><br>
+            <label for="fechaNacimiento">Fecha de nacimiento:</label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="@{fechaNacimiento}" required><br><br>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" th:value="@{email}" required><br><br>            
+            <button type="submit">Registrar</button>
+            <button><a th:href="@{/inicio}">Regresar</a></button>
+            
+            
+        </form>
+                <div th:if="@{Exito}!=null">
+                    <div class="card-body">
+                        <h5 class="card-title">Exito!</h5>
+                        <p class="card-text" th:text="@{Exito}"></p>
+                    </div>
+                    
+                </div>
+                 <div th:if="@{Error}!=null">
+                    <div class="card-body">
+                        <h5 class="card-title">Error</h5>
+                        <p class="card-text" th:text="@{Error}"></p>
+                    </div>
+                    
+                </div>
+                 <div th:if="@{Error_user}!=null">
+                    <div class="card-body">
+                        <h5 class="card-title">Error</h5>
+                        <p class="card-text" th:text="@{Error_user}"></p>
+                    </div>
+                    
+                </div>
+                <div th:if="@{Error_email}!=null">
+                    <div class="card-body">
+                        <h5 class="card-title">Error</h5>
+                        <p class="card-text" th:text="@{Error_email}"></p>
+                    </div>
+                    
+                </div>
+    </div>
+        </main>
+    </body>
+</html>
