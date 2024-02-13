@@ -134,6 +134,10 @@ public class UsuarioServicio implements UserDetailsService {
     public List<Usuario> listarUsuarios(){
        return usuarioRepositorio.findAll();
     }
+    public Usuario listarUsuarioPorEmail(String email){
+        Usuario usuario = usuarioRepositorio.findByEmail(email);
+        return usuario;
+    }
     
     public void validar(String nombre, String username, String password, 
             String email, Date fechaNacimiento) throws MiExcepcion{

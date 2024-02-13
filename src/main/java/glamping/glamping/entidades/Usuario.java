@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,6 +44,7 @@ public class Usuario implements UserDetails {
     private String contacto;
     private String NombreContactoEmergencia;
     private String parentesco;
+    @DateTimeFormat(pattern = "dd/mm/yyyy") 
     private Date fechaNacimiento;
     private String email;
     @OneToMany(fetch = FetchType.EAGER)

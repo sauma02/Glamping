@@ -10,6 +10,7 @@ import glamping.glamping.repositorios.UsuarioRepositorio;
 import glamping.glamping.servicios.UsuarioServicio;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -61,37 +62,31 @@ public class PortalController {
     }
     @GetMapping("/register")
     public String registroForm(Model model){
-        Usuario user = new Usuario();
-        model.addAttribute("user", user);
+       
         return "registroForm.html";
        
     }
     @PostMapping("/register/regis")
-    public String submitForm(@ModelAttribute("user") Usuario user, @RequestParam String nombre,
-            @RequestParam String username,@RequestParam String email, 
-        @RequestParam String password, @RequestParam String contacto, 
-        @RequestParam String contactoEmergencia,@RequestParam String nombreContactoEmergencia,
-        @RequestParam String parentesco,@RequestParam Date fechaNacimiento,ModelMap map){
+    public String submitForm(@ModelAttribute("user") Usuario user, @RequestParam("nombre") String nombre,
+            @RequestParam("username") String username,@RequestParam("email") String email, 
+        @RequestParam("password") String password, @RequestParam("contacto") String contacto, 
+        @RequestParam("contactoEmergencia") String contactoEmergencia,@RequestParam("nombreContactoEmergencia") String nombreContactoEmergencia,
+        @RequestParam("parentesco") String parentesco,@RequestParam("fechaNacimiento") @DateTimeFormat(pattern = "dd/mm/yyyy") Date fechaNacimiento,ModelMap map){
         try {
             //Este metodo recibe los parametros del formulario registrar usuario
             //con la ayuda del usuario servicio podemos registrar al usuario
-            if(usuarioServicio.getCurrentUserByEmail() == null || usuarioServicio.getCurrentUser() == null){
-                usuarioServicio.crearUsuario(nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
-                map.put("Exito", "Usuario registrado con exito");
-                return "inicio.html";
-            }else if(usuarioServicio.getCurrentUser() == user){
-               map.put("Error_user", "El nombre de usuario ya esta en uso");
-               return "registroForm.html";
-            }else if(usuarioServicio.getCurrentUserByEmail() == user){
-               map.put("Error_email", "El nombre de usuario ya esta en uso"); 
-               return "registroForm.html";
+            Usuario verificarEmail = usuarioRepositorio.findByEmail(email);
+            if(verificarEmail != null){
+                System.out.println("Existe");
+            }else{
+                System.out.println("No existe");
             }
             
             
         } catch (Exception e) {
-                
+            
         }
-        return "registerSuccess";
+        return "inicio.html";
     }
     
 }
