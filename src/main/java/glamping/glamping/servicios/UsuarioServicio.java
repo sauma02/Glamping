@@ -11,10 +11,12 @@ package glamping.glamping.servicios;
 import glamping.glamping.entidades.Roles;
 import glamping.glamping.entidades.Usuario;
 import glamping.glamping.excepciones.MiExcepcion;
+import glamping.glamping.repositorios.RolesRepositorio;
 import glamping.glamping.repositorios.UsuarioRepositorio;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,8 @@ import org.springframework.stereotype.Service;
 public class UsuarioServicio implements UserDetailsService {
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
+    @Autowired
+    private RolesRepositorio rolesRepositorio;
     @Transactional
     public Usuario getCurrentUser(){
     // Obtener la autenticación actual desde el contexto de seguridad de Spring
@@ -79,11 +83,12 @@ public class UsuarioServicio implements UserDetailsService {
     public void crearUsuario(String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{
         validar(nombre, username, password, email, fechaNacimiento);
-        Roles rol = new Roles();
-        List<Roles> roles = new ArrayList();
-        
-        rol.setName("usuario");
-        roles.add(rol);
+        Roles rol = rolesRepositorio.findByName(nombre);
+        if(rol == null){
+            rol = new Roles(null, "usuario");
+            rolesRepositorio.save(rol);
+        }
+            
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setUsername(username);
@@ -94,8 +99,10 @@ public class UsuarioServicio implements UserDetailsService {
         usuario.setParentesco(parentesco);
         usuario.setEmail(email);
         usuario.setFechaNacimiento(fechaNacimiento);
-        usuario.setRoles(roles);
-        usuarioRepositorio.save(usuario);
+        usuario.setRoles(Arrays.asList(rol));
+        usuarioRepositorio.save(usuario); 
+        
+     
     }
     public void editar(Integer id, String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{

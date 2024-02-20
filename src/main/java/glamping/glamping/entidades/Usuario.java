@@ -48,7 +48,7 @@ public class Usuario implements UserDetails {
     @DateTimeFormat(pattern = "dd/mm/yyyy") 
     private LocalDate fechaNacimiento;
     private String email;
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Roles> roles;
     
    @ManyToMany(mappedBy = "usuario")
