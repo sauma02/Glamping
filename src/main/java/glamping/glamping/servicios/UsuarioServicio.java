@@ -13,6 +13,7 @@ import glamping.glamping.entidades.Usuario;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.repositorios.UsuarioRepositorio;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +63,7 @@ public class UsuarioServicio implements UserDetailsService {
         return user;
     }
     public void crearUsuarioAdmin(String nombre, String username, String password,String contacto, String contactoEmergencia,
-            String nombreContactoEmergencia, String parentesco, String email, Date fechaNacimiento, Roles rol){
+            String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Roles rol){
         List<Roles> rolLista = new ArrayList();
         rol.setName("admin");
         
@@ -76,7 +77,7 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioRepositorio.save(admin);
     }
     public void crearUsuario(String nombre, String username, String password,String contacto, String contactoEmergencia,
-            String nombreContactoEmergencia, String parentesco, String email, Date fechaNacimiento) throws MiExcepcion{
+            String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{
         validar(nombre, username, password, email, fechaNacimiento);
         Roles rol = new Roles();
         List<Roles> roles = new ArrayList();
@@ -97,7 +98,7 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioRepositorio.save(usuario);
     }
     public void editar(Integer id, String nombre, String username, String password,String contacto, String contactoEmergencia,
-            String nombreContactoEmergencia, String parentesco, String email, Date fechaNacimiento) throws MiExcepcion{
+            String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{
         validar(nombre, username, password, email, fechaNacimiento);
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
         if(respuesta.isPresent()){
@@ -140,7 +141,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
     
     public void validar(String nombre, String username, String password, 
-            String email, Date fechaNacimiento) throws MiExcepcion{
+            String email, LocalDate fechaNacimiento) throws MiExcepcion{
         if(nombre.isEmpty() || nombre == null){
             throw new MiExcepcion("El nombre no puede ser nulo");
         }

@@ -16,28 +16,32 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <div class="main-container">
         <form th:action="@{/register/regis}" method="post">
             <label for="usuario" >Usuario:</label>
-            <input type="text" id="usuario" name="usuario" th:value="@{username}"><br><br>
+            <input type="text" id="usuario" name="username"  placeholder="Usuario">
+                <span th:text="${errorUsuario}" style="color: red"></span>    
+                <br><br>
             
             <label for="cabanias">Nombre completo:</label>
-            <input type="text" id="nombre" name="nombre" th:value="@{nombre}">
+            <input type="text" id="nombre" name="nombre"  placeholder="Nombre completo">
             
             <label for="contrasenia">Contraseña:</label>
-            <input type="password" id="password" name="password" th:value="@{password}"required><br><br>
+            <input type="password" id="password" name="password"  placeholder="Contraseña"required><br><br>
             
             <label for="contacto">Numero de telefono:</label>
-            <input type="text" id="contacto" name="contacto" th:value="@{contacto}" required><br><br>
+            <input type="text" id="contacto" name="contacto"  placeholder="Numero de telefono" required><br><br>
                         
             <label for="contactoDeEmergencia">Contacto de emergencia:</label>
-            <input type="text" id="contactoDeEmergencia" name="contactoDeEmergencia" placeholder = "Contacto de emergencia "th:value="@{contactoEmergencia}"required><br><br>
+            <input type="text" id="contactoDeEmergencia" name="contactoEmergencia" placeholder = "Contacto de emergencia " required><br><br>
                         
             <label for="nombreContactoDeEmergencia">Nombre del contacto de emergencia:</label>
-            <input type="text" id="nombreContactoDeEmergencia" name="nombreContactoDeEmergencia" th:value="@{nombreContactoEmergencia}" required><br><br>
+            <input type="text" id="nombreContactoDeEmergencia" name="nombreContactoEmergencia"  placeholder = "Nombre del contacto de emergencia " required><br><br>
             <label for="parentesco">Parentesco:</label>
-            <input type="text" id="parentesco" name="parentesco" th:value="@{parentesco}" required><br><br>
+            <input type="text" id="parentesco" name="parentesco"  placeholder="Parentesco" required><br><br>
             <label for="fechaNacimiento">Fecha de nacimiento:</label>
-            <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="@{fechaNacimiento}" required><br><br>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento"  required><br><br>
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" th:value="@{email}" required><br><br>            
+            <input type="text" id="email" name="email"  placeholder="email" required>
+                <span th:text="${errorEmail}" style="color: red"></span>    
+                <br><br>            
             <button type="submit">Registrar</button>
             <button><a th:href="@{/inicio}">Regresar</a></button>
             

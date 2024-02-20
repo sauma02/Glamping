@@ -8,6 +8,7 @@ package glamping.glamping.controladores;
 import glamping.glamping.entidades.Usuario;
 import glamping.glamping.repositorios.UsuarioRepositorio;
 import glamping.glamping.servicios.UsuarioServicio;
+import java.time.LocalDate;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -71,22 +72,34 @@ public class PortalController {
             @RequestParam("username") String username,@RequestParam("email") String email, 
         @RequestParam("password") String password, @RequestParam("contacto") String contacto, 
         @RequestParam("contactoEmergencia") String contactoEmergencia,@RequestParam("nombreContactoEmergencia") String nombreContactoEmergencia,
-        @RequestParam("parentesco") String parentesco,@RequestParam("fechaNacimiento") @DateTimeFormat(pattern = "dd/mm/yyyy") Date fechaNacimiento,ModelMap map){
+        @RequestParam("parentesco") String parentesco,@RequestParam("fechaNacimiento") @DateTimeFormat(pattern = "dd/mm/yyyy") LocalDate fechaNacimiento,ModelMap map) throws Exception{
         try {
             //Este metodo recibe los parametros del formulario registrar usuario
             //con la ayuda del usuario servicio podemos registrar al usuario
-            Usuario verificarEmail = usuarioRepositorio.findByEmail(email);
+            Usuario verificarEmail = usuarioRepositorio.findFirstByEmail(email);
+            Usuario verificarUsuario = usuarioRepositorio.findByUsername(username);
             if(verificarEmail != null){
+                
+                map.addAttribute("errorEmail", "El email ya esta en uso");
                 System.out.println("Existe");
-            }else{
-                System.out.println("No existe");
             }
+            if(verificarUsuario != null){
+                map.addAttribute("errorUsuario", "El nombre de usuario ya esta en uso");
+                System.out.println("Existe el usuario");
+            }
+            
+            if(verificarUsuario == null && verificarEmail == null){
+                usuarioServicio.crearUsuario(nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
+                map.addAttribute("Exito", "Usuario creado con exito");
+                return "inicio.html";
+            }
+            return "registroForm.html";
             
             
         } catch (Exception e) {
-            
+            throw new Exception(e);
         }
-        return "inicio.html";
+        
     }
     
 }
