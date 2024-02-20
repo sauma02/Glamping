@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class Usuario implements UserDetails {
     private String NombreContactoEmergencia;
     private String parentesco;
     @DateTimeFormat(pattern = "dd/mm/yyyy") 
-    private Date fechaNacimiento;
+    private LocalDate fechaNacimiento;
     private String email;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Roles> roles;
@@ -57,7 +58,7 @@ public class Usuario implements UserDetails {
     public Usuario() {
     }
 
-    public Usuario(Integer id, String nombre, String username, String password, String contactoEmergencia, String contacto, String NombreContactoEmergencia, String parentesco, Date fechaNacimiento, String email, List<Roles> roles, List<Reserva> reserva) {
+    public Usuario(Integer id, String nombre, String username, String password, String contactoEmergencia, String contacto, String NombreContactoEmergencia, String parentesco, LocalDate fechaNacimiento, String email, List<Roles> roles, List<Reserva> reserva) {
         this.id = id;
         this.nombre = nombre;
         this.username = username;
