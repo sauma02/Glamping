@@ -67,23 +67,27 @@ public class UsuarioServicio implements UserDetailsService {
         return user;
     }
     public void crearUsuarioAdmin(String nombre, String username, String password,String contacto, String contactoEmergencia,
-            String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Roles rol){
-        List<Roles> rolLista = new ArrayList();
-        rol.setName("admin");
+            String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento){
+         Roles rol = rolesRepositorio.findByName("admin");
+        if(rol == null){
+            rol = new Roles(null, "admin");
+            rolesRepositorio.save(rol);
+        }
+            
         
-        rolLista.add(rol);
+      
         Usuario admin = new Usuario();
         admin.setNombre(nombre);
         admin.setUsername(username);
         admin.setEmail(email);
         admin.setPassword(password);
-        admin.setRoles(rolLista);
+        admin.setRoles(Arrays.asList(rol));
         usuarioRepositorio.save(admin);
     }
     public void crearUsuario(String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{
         validar(nombre, username, password, email, fechaNacimiento);
-        Roles rol = rolesRepositorio.findByName(nombre);
+        Roles rol = rolesRepositorio.findByName("usuario");
         if(rol == null){
             rol = new Roles(null, "usuario");
             rolesRepositorio.save(rol);

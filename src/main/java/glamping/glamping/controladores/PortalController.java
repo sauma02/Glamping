@@ -5,6 +5,8 @@
 package glamping.glamping.controladores;
 
 
+import glamping.glamping.entidades.Cabania;
+import glamping.glamping.entidades.Reserva;
 import glamping.glamping.entidades.Usuario;
 import glamping.glamping.repositorios.UsuarioRepositorio;
 import glamping.glamping.servicios.UsuarioServicio;
@@ -66,6 +68,11 @@ public class PortalController {
        
         return "registroForm.html";
        
+    }
+    @PostMapping("/usuario/reserva")
+    public String submitReserva(@ModelAttribute("reserva") Reserva reserva, @RequestParam("usuario") Usuario usuario, @RequestParam("cabania") Cabania cabania,
+    @RequestParam("fechaInicio") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaInicio, @RequestParam("fechaFinal") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaFinal){
+        
     }
     @PostMapping("/register/regis")
     public String submitForm(@ModelAttribute("user") Usuario user, @RequestParam("nombre") String nombre,
