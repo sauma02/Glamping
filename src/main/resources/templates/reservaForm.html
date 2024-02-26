@@ -6,6 +6,8 @@
     <title>Glamping</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+
     <style>
         body {
             margin: 0;
@@ -114,27 +116,47 @@
 </section>
 <main>
     <div class="main-container">
-        <form th:action="@{/reservar}" method="post">
+        <form th:action="@{/usuario/reservaForm/reserva}" method="post">
             <label for="usuario" >Usuario:</label>
-            <input type="text" th:value="${nombreUsuario}" id="usuario" name="usuario" readOnly="true"><br><br>
+            <input type="text" th:value="${nombreUsuario}" id="usuario" name="nombreUsuario" readOnly="true"><br><br>
             
             <label for="cabanias">Cabañas:</label>
-            <select id="cabanias" name="cabanias" required>
-                <option value="cabania1">Cabaña 1</option>
-                <option value="cabania2">Cabaña 2</option>
-                <option value="cabania3">Cabaña 3</option>
+            <select id="cabanias" name="cabaniaId" required>
+                <option value="">Seleccionar Cabaña</option>
+                <option name="cabaniaId" th:each ="cabania : ${cabaniasDisponibles}" th:value="${cabania.id}" th:text="${cabania.nombre}"></option>
+                
             </select><br><br>
             
-            <label for="fechaInicio">Fecha de inicio:</label>
-            <input type="date" id="fechaInicio" name="fechaInicio" required><br><br>
-            
+          <label for="fechaInicio">Fecha de inicio:</label>
+            <input type="date" id="fechaInicio" name="fechaInicio" required>
+           <span th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}" style="color: red"></span>
+            <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+            <br><br>
+
             <label for="fechaFinal">Fecha final:</label>
-            <input type="date" id="fechaFinal" name="fechaFinal" required><br><br>
-            
+            <input type="date" id="fechaFinal" name="fechaFinal" required>
+            <span th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}" style="color: red"></span>
+            <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+            <br><br>
+
             <button type="submit">Reservar</button>
         </form>
     </div>
 </main>
+    <script>
+    function validarFechas() {
+        var fechaInicio = document.getElementById("fechaInicio").value;
+        var fechaFinal = document.getElementById("fechaFinal").value;
+
+        // Validar que la fecha de inicio no sea posterior a la fecha final
+        if (fechaInicio > fechaFinal) {
+            alert("La fecha de inicio no puede ser posterior a la fecha final.");
+            return false; // Impedir el envío del formulario
+        }
+
+        return true; // Permitir el envío del formulario si las fechas son válidas
+    }
+</script>
 <section>
     <div class="footer-section"></div>
 </section>

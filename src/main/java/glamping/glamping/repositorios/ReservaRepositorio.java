@@ -6,6 +6,7 @@ package glamping.glamping.repositorios;
 
 import glamping.glamping.entidades.Cabania;
 import glamping.glamping.entidades.Reserva;
+import glamping.glamping.entidades.Usuario;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReservaRepositorio extends JpaRepository<Reserva, Integer> {
     List<Reserva> findByCabaniaAndFechaInicioLessThanEqualAndFechaFinalGreaterThanEqual(Cabania cabania, LocalDate fechaInicio, LocalDate fechaFinal);
+    public Reserva findByUsuario(Usuario usuario);
 }

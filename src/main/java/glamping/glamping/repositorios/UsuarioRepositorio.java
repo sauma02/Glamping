@@ -7,6 +7,7 @@ package glamping.glamping.repositorios;
 
 
 import glamping.glamping.entidades.Usuario;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +22,7 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
     public Usuario findByUsername(String username);
     public Usuario findByEmail(String email);
     public Usuario findFirstByEmail(String email);
+    
 
  
 }
