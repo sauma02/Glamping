@@ -60,6 +60,16 @@ public class CabaniaServicio {
             cabaniaRepositorio.delete(cabania);
         }
    }
+    public Cabania listarCabaniaPorNombre(String nombre){
+        Cabania respuesta = cabaniaRepositorio.findFirstByNombre(nombre);
+        if(respuesta!=null){
+          return respuesta;   
+        }else{
+            return null;
+        }
+       
+        
+    }
     public List<Cabania> listarCabanias(){
         return cabaniaRepositorio.findAll();
     }

@@ -129,34 +129,25 @@
             
           <label for="fechaInicio">Fecha de inicio:</label>
             <input type="date" id="fechaInicio" name="fechaInicio" required>
-           <span th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}" style="color: red"></span>
+                <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
             <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+                       
+
             <br><br>
 
             <label for="fechaFinal">Fecha final:</label>
             <input type="date" id="fechaFinal" name="fechaFinal" required>
-            <span th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}" style="color: red"></span>
+           <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
             <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+                  
+
             <br><br>
 
             <button type="submit">Reservar</button>
         </form>
     </div>
 </main>
-    <script>
-    function validarFechas() {
-        var fechaInicio = document.getElementById("fechaInicio").value;
-        var fechaFinal = document.getElementById("fechaFinal").value;
-
-        // Validar que la fecha de inicio no sea posterior a la fecha final
-        if (fechaInicio > fechaFinal) {
-            alert("La fecha de inicio no puede ser posterior a la fecha final.");
-            return false; // Impedir el envío del formulario
-        }
-
-        return true; // Permitir el envío del formulario si las fechas son válidas
-    }
-</script>
+    
 <section>
     <div class="footer-section"></div>
 </section>

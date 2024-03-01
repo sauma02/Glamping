@@ -15,5 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CabaniaRepositorio extends JpaRepository<Cabania, Integer> {
-    
+    public Cabania findFirstById(Integer id);
+    public Cabania findFirstByNombre(String nombre);
 }
