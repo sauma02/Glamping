@@ -69,15 +69,7 @@ public class PortalController {
         return "usuario.html";
     }
    
-    @GetMapping("/admin")
-    public String admin(UserDetails userDetails, Model model){
-        String username = userDetails.getUsername();
-        
-        
-        model.addAttribute("nombreUsuario", username);
-        
-        return "admin.html";
-    }
+ 
     @GetMapping("/usuario/reservaForm")
     public String reservaForm(@AuthenticationPrincipal UserDetails userDetails, Model model){
         String username = userDetails.getUsername();

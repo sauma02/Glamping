@@ -16,9 +16,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -34,6 +36,7 @@ public class Cabania {
     private Integer id;
     private String nombre;
     private Integer capacidad;
+   
     private String imagen;
     @ManyToMany(mappedBy = "cabania")
     private List<Reserva> reserva;
@@ -51,12 +54,14 @@ public class Cabania {
         this.estado = estado;
     }
 
-    
-
     @Override
     public String toString() {
-        return "Cabania{" + "id=" + id + ", nombre=" + nombre + ", capacidad=" + capacidad + ", reserva=" + reserva + ", estado=" + estado + '}';
+        return "Cabania{" + "id=" + id + ", nombre=" + nombre + ", capacidad=" + capacidad + ", imagen=" + imagen + ", reserva=" + reserva + ", estado=" + estado + '}';
     }
+
+    
+
+   
 
     
     

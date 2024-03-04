@@ -205,7 +205,7 @@ footer {
                         <li><a href="#nosotros">Nosotros</a></li>
                     </ul>
                     <div class="user-layer">
-                        <h2>User</h2>
+                          <h2 th:text="${nombreUsuario}"></h2>
                         <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                     </div>
                 </div>
@@ -221,26 +221,26 @@ footer {
             <div class="main-container">
             <div class="form-container">
                 <h2>Crear Reserva</h2>
-                <form th:action="@{/reservations}" method="post">
-                    <label for="user">Usuario:</label>
-                    <input type="text" id="user" name="user" th:value="${currentUser.username}" readonly>
+                <form th:action="@{/admin/registrarCabañas/registrarCabaña}" method="post" enctype="multipart/form-data" >
+                    <label for="nombre">Nombre de la cabaña:</label>
+                    <input type="text" id="nombre" name="nombre"  >
 
-                    <label for="cabin">Cabaña:</label>
-                    <select id="cabin" name="cabin">
-                        <!-- Iterar sobre la lista de cabañas disponibles -->
-                        <option th:each="cabin : ${availableCabins}" th:value="${cabin.id}" th:text="${cabin.name}"></option>
-                    </select>
+                    <label for="capacidad">Capacidad:</label>
+                    <input type="number" id="capacidad" name="capacidad">
 
-                    <label for="startDate">Fecha de inicio:</label>
-                    <input type="date" id="startDate" name="startDate" required>
-
-                    <label for="endDate">Fecha de fin:</label>
-                    <input type="date" id="endDate" name="endDate" required>
-
-                    <button type="submit">Crear Reserva</button>
+                    <label for="estado">Estado:</label>
+                    <select type="estado" id="estado" name="estado" required>
+                     <option value="">Seleccionar estado</option>
+                        <option>Activa</option>
+                         <option>Inactiva</option>
+                
+                    </select><br><br>
+                     <label for="imagen">Imagen:</label>
+                    <input type="file" id="imagen" name="imagen" accept="image/png, image/jpeg"> 
+                    <button type="submit">Registrar cabaña</button>
 
                     <!-- Mostrar mensaje de error si existe -->
-                    <p class="error-message" th:if="${param.error}" th:text="${param.error}"></p>
+                    
                 </form>
             </div>
         </div>

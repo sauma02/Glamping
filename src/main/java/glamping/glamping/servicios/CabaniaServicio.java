@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -23,7 +24,7 @@ public class CabaniaServicio {
     private CabaniaRepositorio cabaniaRepositorio;
     @Transactional
     public void crearCabania(String nombre, String imagen, Integer capacidad, boolean estado) throws MiExcepcion{
-        validar(nombre, capacidad, nombre, estado);
+        validar(nombre, capacidad, imagen, estado);
         Cabania cabania = new Cabania();
         cabania.setNombre(nombre);
         cabania.setImagen(imagen);
