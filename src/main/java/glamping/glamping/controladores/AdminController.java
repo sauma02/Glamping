@@ -9,7 +9,12 @@ import glamping.glamping.entidades.Cabania;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.servicios.CabaniaServicio;
 import glamping.glamping.servicios.FileStorageService;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,36 +70,45 @@ public class AdminController {
             @RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") String estado, Model map) throws MiExcepcion, IOException{
         String mensaje = "";
         try {
-            String nombreImagen = StringUtils.cleanPath(imagen.getOriginalFilename());
-            boolean status = Boolean.parseBoolean(estado);
+            
             Cabania cab = cabaniaServicio.listarCabaniaPorNombre(nombre);
-            if(cab!=null){
-                map.addAttribute("errorCabaniaNombre", "Esta cabaña ya se encuentra registrada");
-                return "registrarCabania.html";
+            if(cab != null){
+                mensaje = "la cabaña con este nombre ya se encuentra registrada";
+                map.addAttribute("errorCabaniaExiste", mensaje);
             }else{
+            if(!imagen.isEmpty()){
+                Path directorioImagenes = Paths.get("src//main//resources//img");
+                String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
                 try {
-                      fileStorageService.save(imagen);
-                        mensaje = "Exito al cargar imagen " + imagen.getOriginalFilename();
-                        map.addAttribute("exitoImagen", mensaje);
-                } catch (Exception e) {
-                        mensaje = "Error al cargar la imagen " + imagen.getOriginalFilename() + " Error: " + e.getMessage();
-                        map.addAttribute("errorImagen", mensaje);
+                     byte[] byteImg = imagen.getBytes();
+                     Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+                     Files.write(rutaCompleta, byteImg);
+                     String img = cabaniaServicio.registrarImagenCabania(imagen.getOriginalFilename());
+                     cabaniaServicio.crearCabania(nombre, img, capacidad, true);
+                     mensaje="Cabaña registrada con exito";
+                     map.addAttribute("exitoRegistro", mensaje);
+                     
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            cabaniaServicio.crearCabania(nombre, nombreImagen, capacidad, status);
-            String uploadDir = "cabaña-imagenes/" + cabania.getNombre();
-            FileUploadUtil.saveFile(uploadDir, nombreImagen, imagen);
-            
-            map.addAttribute("exitoCabaniaRegsitro", "Exito al registrar la cabaña");
-          
-            
-                    return "registrarCabania.html";
+                //Subir archivos
+               //https://www.youtube.com/watch?v=BjHEuNdpC-U&ab_channel=code503
             }
+            }
+            return "admin.html";
+            } catch (Exception e) {
+                e.printStackTrace();
+                
+        }
+        return "redirect:/admin";    
+            
+         
             
             
-        } catch (MiExcepcion e) {
-            throw new MiExcepcion("Error al registrar");
-        } 
+            
+        
     }
+  
     
     @GetMapping("/admin/listarCabañas")
     public String listarCabania(){

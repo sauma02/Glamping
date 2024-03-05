@@ -31,6 +31,12 @@ public class CabaniaServicio {
         cabania.setCapacidad(capacidad);
         cabania.setEstado(estado);
         cabaniaRepositorio.save(cabania);
+        
+    }
+    public String registrarImagenCabania(String imagen){
+        return imagen;
+        
+        
     }
     public void editarCabania(Integer id, String nombre, String imagen, Integer capacidad, boolean estado) throws MiExcepcion{
         validar(nombre, capacidad, imagen, estado);
