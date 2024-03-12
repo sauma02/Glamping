@@ -18,11 +18,11 @@ public class GlampingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GlampingApplication.class, args);
 	}
-        @Bean
+      @Bean
         public CommandLineRunner commandLineRunner(UsuarioRepositorio usuarioRepositorio, RolesRepositorio rolesRepositorio,  PasswordEncoder passwordEncoder){
             return args ->{
-                Roles adminRol = rolesRepositorio.findByName("admin");
-                Roles usuario = rolesRepositorio.findByName("usuario");
+                Roles adminRol = rolesRepositorio.findFirstByName("admin");
+                Roles usuario = rolesRepositorio.findFirstByName("usuario");
                 if(usuario == null){
                     Roles user = new Roles();
                     user.setName("usuario");

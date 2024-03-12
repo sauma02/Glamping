@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -36,16 +37,16 @@ public class Cabania {
     private Integer id;
     private String nombre;
     private Integer capacidad;
-   
-    private String imagen;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Imagen imagen;
     @ManyToMany(mappedBy = "cabania")
     private List<Reserva> reserva;
     private boolean estado;
-
+ 
     public Cabania() {
     }
 
-    public Cabania(Integer id, String nombre, Integer capacidad, String imagen, List<Reserva> reserva, boolean estado) {
+    public Cabania(Integer id, String nombre, Integer capacidad, Imagen imagen, List<Reserva> reserva, boolean estado) {
         this.id = id;
         this.nombre = nombre;
         this.capacidad = capacidad;

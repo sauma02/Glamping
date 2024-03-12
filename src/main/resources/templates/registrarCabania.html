@@ -229,14 +229,14 @@ footer {
                     <input type="number" id="capacidad" name="capacidad">
 
                     <label for="estado">Estado:</label>
-                    <select type="estado" id="estado" name="estado" required>
+                    <select type="text" id="estado" name="estado" required>
                      <option value="">Seleccionar estado</option>
-                        <option>Activa</option>
-                         <option>Inactiva</option>
+                        <option value="true">Activa</option>
+                         <option value="false">Inactiva</option>
                 
                     </select><br><br>
                      <label for="imagen">Imagen:</label>
-                    <input type="file" id="imagen" name="imagen" accept="image/png, image/jpeg"> 
+                    <input type="file" id="imagen" name="imagen"> 
                     <button type="submit">Registrar cabaña</button>
 
                     <!-- Mostrar mensaje de error si existe -->

@@ -4,8 +4,8 @@
  */
 package glamping.glamping.repositorios;
 
-import glamping.glamping.entidades.Roles;
 import org.springframework.data.jpa.repository.JpaRepository;
+import glamping.glamping.entidades.Imagen;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,10 +13,7 @@ import org.springframework.stereotype.Repository;
  * @author Admin
  */
 @Repository
-public interface RolesRepositorio extends JpaRepository<Roles, Integer> {
-
-    public Roles findByName(String name);
-
-    public Roles findFirstByName(String admin);
+public interface ImagenRepositorio extends JpaRepository<Imagen, Integer> {
+    
     
 }

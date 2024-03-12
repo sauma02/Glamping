@@ -5,6 +5,7 @@
 package glamping.glamping.servicios;
 
 import glamping.glamping.entidades.Cabania;
+import glamping.glamping.entidades.Imagen;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.repositorios.CabaniaRepositorio;
 import jakarta.transaction.Transactional;
@@ -23,22 +24,15 @@ public class CabaniaServicio {
     @Autowired
     private CabaniaRepositorio cabaniaRepositorio;
     @Transactional
-    public void crearCabania(String nombre, String imagen, Integer capacidad, boolean estado) throws MiExcepcion{
-        validar(nombre, capacidad, imagen, estado);
-        Cabania cabania = new Cabania();
-        cabania.setNombre(nombre);
-        cabania.setImagen(imagen);
-        cabania.setCapacidad(capacidad);
-        cabania.setEstado(estado);
+    public void crearCabania(Cabania cabania){
         cabaniaRepositorio.save(cabania);
-        
     }
     public String registrarImagenCabania(String imagen){
         return imagen;
         
         
     }
-    public void editarCabania(Integer id, String nombre, String imagen, Integer capacidad, boolean estado) throws MiExcepcion{
+    public void editarCabania(Integer id, String nombre, Imagen imagen, Integer capacidad, boolean estado) throws MiExcepcion{
         validar(nombre, capacidad, imagen, estado);
         Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);
         if(respuesta.isPresent()){
@@ -80,14 +74,14 @@ public class CabaniaServicio {
     public List<Cabania> listarCabanias(){
         return cabaniaRepositorio.findAll();
     }
-    public void validar(String nombre, Integer capacidad, String imagen, Boolean estado) throws MiExcepcion{
+    public void validar(String nombre, Integer capacidad, Imagen imagen, Boolean estado) throws MiExcepcion{
         if(nombre.isEmpty() || nombre==null){
             throw new MiExcepcion("El nombre no puede ser nulo");
         }
         if(capacidad==null){
             throw new MiExcepcion("El capacidad no puede ser nulo");
         }
-        if(imagen.isEmpty() || imagen==null){
+        if(imagen==null){
             throw new MiExcepcion("El imagen no puede ser nulo");
         }
         if(estado==null){
