@@ -37,8 +37,8 @@ public class Cabania {
     private Integer id;
     private String nombre;
     private Integer capacidad;
-    @OneToMany(fetch = FetchType.EAGER)
-    private Imagen imagen;
+    @ManyToMany(mappedBy = "cabania")
+    private List<Imagen> imagen;
     @ManyToMany(mappedBy = "cabania")
     private List<Reserva> reserva;
     private boolean estado;
@@ -46,7 +46,7 @@ public class Cabania {
     public Cabania() {
     }
 
-    public Cabania(Integer id, String nombre, Integer capacidad, Imagen imagen, List<Reserva> reserva, boolean estado) {
+    public Cabania(Integer id, String nombre, Integer capacidad, List<Imagen> imagen, List<Reserva> reserva, boolean estado) {
         this.id = id;
         this.nombre = nombre;
         this.capacidad = capacidad;

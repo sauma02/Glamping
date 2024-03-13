@@ -32,19 +32,7 @@ public class CabaniaServicio {
         
         
     }
-    public void editarCabania(Integer id, String nombre, Imagen imagen, Integer capacidad, boolean estado) throws MiExcepcion{
-        validar(nombre, capacidad, imagen, estado);
-        Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);
-        if(respuesta.isPresent()){
-            Cabania cabania = respuesta.get();
-            cabania.setNombre(nombre);
-            cabania.setImagen(imagen);
-            cabania.setCapacidad(capacidad);
-            cabania.setEstado(estado);
-            cabaniaRepositorio.save(cabania);
-            
-        }
-    }
+
     public Cabania listarCabaniaPorId(Integer id){
         Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);
         if(respuesta.isPresent()){

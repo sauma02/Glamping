@@ -12,35 +12,49 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
  * @author Admin
  */
 @Entity
+
 @Builder
-@Data
+@Getter
+@Setter
 @AllArgsConstructor     
 @NoArgsConstructor   
 @Table(name = "imagenesCabaña")        
 public class Imagen {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator( name ="uuid", strategy="uuid2")
+    
     @Column(name="imagen_id")
-    private Integer id;
+    private String id;
     private String fileName;
     private String fileType;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="cabania_id")
+   @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="Cabania_id")
     private Cabania cabania;
     @Lob
     private byte[] data;
+
+    @Override
+    public String toString() {
+        return "Imagen{" + "id=" + id + ", fileName=" + fileName + ", fileType=" + fileType + ", cabania=" + cabania + ", data=" + data + '}';
+    }
 
    
     
