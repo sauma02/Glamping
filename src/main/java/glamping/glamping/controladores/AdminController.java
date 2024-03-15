@@ -7,11 +7,11 @@ package glamping.glamping.controladores;
 import glamping.glamping.config.FileUploadUtil;
 import glamping.glamping.entidades.Cabania;
 import glamping.glamping.entidades.Imagen;
-import glamping.glamping.entidades.ImagenResponse;
+
+import glamping.glamping.entidades.ResponseMessage;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.servicios.CabaniaServicio;
 import glamping.glamping.servicios.FileStorageService;
-import glamping.glamping.servicios.ImagenServicio;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -47,10 +47,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class AdminController {
     @Autowired
     private CabaniaServicio cabaniaServicio;
-    @Autowired
-    private FileStorageService fileStorageService;
-    @Autowired
-    private ImagenServicio imagenServicio;
+    @Autowired 
+    private FileStorageService storageService;
+
     
     
      @GetMapping("/admin")
@@ -82,31 +81,31 @@ public class AdminController {
     @PostMapping("/admin/registrarCabañas/registrarCabaña")
     public String registerForm(@RequestParam("nombre") String nombre, 
             @RequestParam("capacidad") Integer capacidad,@RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") boolean estado, Model map) throws MiExcepcion, IOException, Exception{
+            String mensaje = "";
         try {
             Cabania cab = cabaniaServicio.listarCabaniaPorNombre(nombre);
             if(cab != null){
                 map.addAttribute("errorCabaniaExistente","La cabaña con el nombre "+nombre+" ya existe");
                 map.addAttribute("estado", estado);
                 map.addAttribute("capacidad", capacidad);
-                return "registrarCabania.html";
+                mensaje="la cabaña indicada ya existe";
+               return "registrarCabania.html";
             }
+            
 
         // Manejar la carga de la imagen y guardarla
         Cabania cabania = new Cabania();
-        Imagen nuevaImagen = new Imagen();
-        nuevaImagen.setFileName(imagen.getOriginalFilename());
-        nuevaImagen.setFileType(imagen.getContentType());
-        nuevaImagen.setData(imagen.getBytes());
-        nuevaImagen.setCabania(cabania);
+        Imagen img = new Imagen();
 
         // Establecer los demás atributos de la cabaña
         cabania.setNombre(nombre);
         cabania.setCapacidad(capacidad);
         cabania.setEstado(estado);
-        
+        storageService.save(imagen);
+        img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
         // Asignar la imagen a la lista de imágenes de la cabaña
         List<Imagen> listaImagenes = new ArrayList<>();
-        listaImagenes.add(nuevaImagen);
+        listaImagenes.add(img);
         cabania.setImagen(listaImagenes);
 
         // Guardar la cabaña en la base de datos
@@ -114,31 +113,19 @@ public class AdminController {
 
         // Informar sobre el éxito del registro
         map.addAttribute("exitoCabania", "Éxito al crear cabaña");
-        return "registrarCabania.html";
-            
+       mensaje="admin.html";
+       return mensaje;
+        
         } catch (Exception e) {
-            throw new MiExcepcion("Error al crear cabaña"+e.toString());
+            throw new Exception("Error en la creacion de la cabaña", e.getCause());
+            
+            
         
         }
         
     }
    
-    @RequestMapping(value="/save", method=RequestMethod.POST)
-    public ResponseEntity<ImagenResponse> handleFileUpload(@RequestParam("imagen") MultipartFile imagen) throws Exception{
-        String fileName = imagen.getOriginalFilename();
-        try {
-            imagen.transferTo(new File("\\src\\main\\resources\\img\\"+fileName));
-            String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/download/")
-                    .path(fileName)
-                    .toUriString();
-            ImagenResponse respuesta = new ImagenResponse(fileName, downloadUrl, imagen.getContentType(), imagen.getSize());
-            return ResponseEntity.ok(respuesta);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-        
-    }
+
   
 
 

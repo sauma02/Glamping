@@ -11,13 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
- * @author USUARIO
+ * @author Admin
  */
 public interface FileStorageService {
     public void init();
-    
-    public void save(MultipartFile file);
-    public Resource load(String fileName);
+    public MultipartFile save(MultipartFile file);
+    public MultipartFile listOneFile(MultipartFile file);
+    public Resource load(String filename);
     public void deleteAll();
     public Stream<Path> loadAll();
 }

@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .requestMatchers("/usuario/**").hasAnyAuthority("admin", "usuario")
                 .anyRequest().authenticated())
                 .formLogin()
-                    .successHandler(myAuthenticationSuccessHanlfer())
+                    .successHandler(myAuthenticationSuccessHanlfer()).permitAll()
                 .and().logout().logoutSuccessUrl("/").and()
                 .userDetailsService(usuarioServicio).build();    
         } catch (MiExcepcion e) {

@@ -4,6 +4,8 @@ import glamping.glamping.entidades.Roles;
 import glamping.glamping.entidades.Usuario;
 import glamping.glamping.repositorios.RolesRepositorio;
 import glamping.glamping.repositorios.UsuarioRepositorio;
+import glamping.glamping.servicios.FileStorageService;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;
@@ -14,10 +16,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class GlampingApplication {
+    @Resource
+    private FileStorageService storageService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(GlampingApplication.class, args);
 	}
+
+    /**
+     *
+     * @param arg
+     */
+       public void run(String... arg){
+           storageService.init();
+       };
       @Bean
         public CommandLineRunner commandLineRunner(UsuarioRepositorio usuarioRepositorio, RolesRepositorio rolesRepositorio,  PasswordEncoder passwordEncoder){
             return args ->{
