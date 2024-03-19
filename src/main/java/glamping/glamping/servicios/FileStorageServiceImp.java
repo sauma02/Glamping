@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileStorageServiceImp implements FileStorageService {
 
-    private final Path root = Paths.get("uploads");
+    private final Path root = Paths.get("src/main/resources/img");
     //Se inicia el servicio para la creacion del directorio
     @Override
     public void init() {
@@ -36,17 +36,18 @@ public class FileStorageServiceImp implements FileStorageService {
     }
 
     @Override
-    public MultipartFile save(MultipartFile file) {
-        try {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
-            return file;
-        } catch (Exception e) {
-            if(e instanceof FileAlreadyExistsException){
-                throw new RuntimeException("Ya existe este archivo");
-            }
-            throw new RuntimeException(e.getMessage());
+   public void save(MultipartFile file) {
+    try {
+        
+        Path filePath = this.root.resolve(file.getOriginalFilename());
+        if (Files.exists(filePath)) {
+            throw new FileAlreadyExistsException("Ya existe este archivo: " + filePath);
         }
+        Files.copy(file.getInputStream(), filePath);
+    } catch (IOException e) {
+        throw new RuntimeException("Error al guardar el archivo: " + e.getMessage(), e);
     }
+}
 
     @Override
     public Resource load(String filename) {

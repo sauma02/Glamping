@@ -45,16 +45,16 @@ public class Imagen {
     private String id;
     private String fileName;
     private String fileType;
+    private String ruta;
    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="Cabania_id")
     private Cabania cabania;
-    @Lob
-    private byte[] data;
+    private Long tamano;
+  
+   
+    
 
-    @Override
-    public String toString() {
-        return "Imagen{" + "id=" + id + ", fileName=" + fileName + ", fileType=" + fileType + ", cabania=" + cabania + ", data=" + data + '}';
-    }
+  
 
    
     

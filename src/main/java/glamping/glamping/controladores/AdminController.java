@@ -12,14 +12,20 @@ import glamping.glamping.entidades.ResponseMessage;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.servicios.CabaniaServicio;
 import glamping.glamping.servicios.FileStorageService;
+import glamping.glamping.servicios.ImagenServicio;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -49,6 +55,8 @@ public class AdminController {
     private CabaniaServicio cabaniaServicio;
     @Autowired 
     private FileStorageService storageService;
+    @Autowired
+    private ImagenServicio imagenServicio;
 
     
     
@@ -91,39 +99,50 @@ public class AdminController {
                 mensaje="la cabaña indicada ya existe";
                return "registrarCabania.html";
             }
-            
+            if(imagen == null || imagen.isEmpty()){
+                map.addAttribute("imagenVacia", "Imagen nula");
+                throw new Exception("Error, la imagen es nula, no puede ser nula");
+                
+            }else{
+                // Manejar la carga de la imagen y guardarla
+                Cabania cabania = new Cabania();
+                Imagen img = new Imagen();
+                storageService.init();
 
-        // Manejar la carga de la imagen y guardarla
-        Cabania cabania = new Cabania();
-        Imagen img = new Imagen();
+                // Establecer los demás atributos de la cabaña
+                cabania.setNombre(nombre);
+                cabania.setCapacidad(capacidad);
+                cabania.setEstado(estado);
+                
+                storageService.save(imagen);
+                img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
+                // Asignar la imagen a la lista de imágenes de la cabaña
+                List<Imagen> listaImagenes = new ArrayList<>();
+                listaImagenes.add(img);
+                cabania.setImagen(listaImagenes);
+                
+                // Guardar la cabaña en la base de datos
+                cabaniaServicio.crearCabania(cabania);
+                imagenServicio.guardarImagen(cabania, img, imagen);
+                
 
-        // Establecer los demás atributos de la cabaña
-        cabania.setNombre(nombre);
-        cabania.setCapacidad(capacidad);
-        cabania.setEstado(estado);
-        storageService.save(imagen);
-        img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
-        // Asignar la imagen a la lista de imágenes de la cabaña
-        List<Imagen> listaImagenes = new ArrayList<>();
-        listaImagenes.add(img);
-        cabania.setImagen(listaImagenes);
 
-        // Guardar la cabaña en la base de datos
-        cabaniaServicio.crearCabania(cabania);
 
-        // Informar sobre el éxito del registro
-        map.addAttribute("exitoCabania", "Éxito al crear cabaña");
-       mensaje="admin.html";
-       return mensaje;
+                // Informar sobre el éxito del registro
+                map.addAttribute("exitoCabania", "Éxito al crear cabaña");
+               mensaje="admin.html";
+               return mensaje;
+            }
+
         
-        } catch (Exception e) {
+        
+        } catch (SQLException e) {
             throw new Exception("Error en la creacion de la cabaña", e.getCause());
             
             
-        
-        }
-        
+        }        
     }
+
    
 
   
