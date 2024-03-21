@@ -6,13 +6,16 @@ package glamping.glamping.entidades;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import java.util.Collection;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +33,8 @@ public class Roles {
     private Integer id;
     @Column(name="nombre")
     private String name;
+
+    
  
     public Roles() {
     }
@@ -37,6 +42,7 @@ public class Roles {
     public Roles(Integer id, String name) {
         this.id = id;
         this.name = name;
+     
     }
 
     @Override
@@ -44,6 +50,9 @@ public class Roles {
         return "Roles{" + "id=" + id + ", name=" + name + '}';
     }
 
+    
+
+   
   
 
     

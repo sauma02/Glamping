@@ -37,5 +37,9 @@ public class RolesServicio {
             usuario.setRoles(rolLista);
         }
     }
+    public List<Object[]> listarRol(){
+       
+       return rolesRepositorio.idUsuarioConNombreRol();
+    }
     
 }

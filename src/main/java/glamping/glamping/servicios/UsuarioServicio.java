@@ -126,6 +126,7 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioRepositorio.save(usuario);
         }
     }
+    
     public Usuario listarUsuarioPorId(Integer id){
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
         if(respuesta.isPresent()){

@@ -7,12 +7,18 @@ package glamping.glamping.controladores;
 import glamping.glamping.config.FileUploadUtil;
 import glamping.glamping.entidades.Cabania;
 import glamping.glamping.entidades.Imagen;
+import glamping.glamping.entidades.Reserva;
 
 import glamping.glamping.entidades.ResponseMessage;
+import glamping.glamping.entidades.Roles;
+import glamping.glamping.entidades.Usuario;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.servicios.CabaniaServicio;
 import glamping.glamping.servicios.FileStorageService;
 import glamping.glamping.servicios.ImagenServicio;
+import glamping.glamping.servicios.ReservaServicio;
+import glamping.glamping.servicios.RolesServicio;
+import glamping.glamping.servicios.UsuarioServicio;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -21,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +44,9 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,6 +66,12 @@ public class AdminController {
     private FileStorageService storageService;
     @Autowired
     private ImagenServicio imagenServicio;
+    @Autowired
+    private UsuarioServicio usuarioServicio;
+    @Autowired
+    private ReservaServicio reservaServicio;
+    @Autowired
+    private RolesServicio rolServicio;
 
     
     
@@ -69,13 +84,18 @@ public class AdminController {
         
         return "admin.html";
     }
-    @GetMapping("/admin/Usuarios")
+    @GetMapping("/admin/usuarios")
     public String usuarios(@AuthenticationPrincipal UserDetails userDetails, Model model){
            String username = userDetails.getUsername();
         
-        
+        List<Usuario> usuarios = usuarioServicio.listarUsuarios();
+        model.addAttribute("usuarios", usuarios);
+        List<Reserva> reservas = reservaServicio.listarReservas();
+        model.addAttribute("reserva", reservas);
+        List<Object[]> roles = rolServicio.listarRol();
+        model.addAttribute("roles",roles);
         model.addAttribute("nombreUsuario", username);
-        return "adminUsuarios.html";
+        return "listarUsuarios.html";
     }
     
     @GetMapping("/admin/registrarCabañas")
@@ -86,62 +106,32 @@ public class AdminController {
         model.addAttribute("nombreUsuario", username);
         return "registrarCabania.html";
     }
-    @PostMapping("/admin/registrarCabañas/registrarCabaña")
-    public String registerForm(@RequestParam("nombre") String nombre, 
-            @RequestParam("capacidad") Integer capacidad,@RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") boolean estado, Model map) throws MiExcepcion, IOException, Exception{
-            String mensaje = "";
-        try {
-            Cabania cab = cabaniaServicio.listarCabaniaPorNombre(nombre);
-            if(cab != null){
-                map.addAttribute("errorCabaniaExistente","La cabaña con el nombre "+nombre+" ya existe");
-                map.addAttribute("estado", estado);
-                map.addAttribute("capacidad", capacidad);
-                mensaje="la cabaña indicada ya existe";
-               return "registrarCabania.html";
-            }
-            if(imagen == null || imagen.isEmpty()){
-                map.addAttribute("imagenVacia", "Imagen nula");
-                throw new Exception("Error, la imagen es nula, no puede ser nula");
-                
-            }else{
-                // Manejar la carga de la imagen y guardarla
-                Cabania cabania = new Cabania();
-                Imagen img = new Imagen();
-                storageService.init();
-
-                // Establecer los demás atributos de la cabaña
-                cabania.setNombre(nombre);
-                cabania.setCapacidad(capacidad);
-                cabania.setEstado(estado);
-                
-                storageService.save(imagen);
-                img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
-                // Asignar la imagen a la lista de imágenes de la cabaña
-                List<Imagen> listaImagenes = new ArrayList<>();
-                listaImagenes.add(img);
-                cabania.setImagen(listaImagenes);
-                
-                // Guardar la cabaña en la base de datos
-                cabaniaServicio.crearCabania(cabania);
-                imagenServicio.guardarImagen(cabania, img, imagen);
-                
-
-
-
-                // Informar sobre el éxito del registro
-                map.addAttribute("exitoCabania", "Éxito al crear cabaña");
-               mensaje="admin.html";
-               return mensaje;
-            }
-
-        
-        
-        } catch (SQLException e) {
-            throw new Exception("Error en la creacion de la cabaña", e.getCause());
-            
-            
-        }        
+    @GetMapping("/admin/verCabañas")
+    public String listarCabanias(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        String username = userDetails.getUsername();
+        List<Cabania> listaCabanias = cabaniaServicio.listarCabanias();
+        for (Cabania cab : listaCabanias) {
+            model.addAttribute("cabania", cab);
+        }
+        model.addAttribute("listaCabanias", listaCabanias);
+        model.addAttribute("nombreUsuario", username);
+        return "listarCabania.html";
     }
+    @PostMapping("admin/usuarios/editarUsuario/{id}")
+    public String editarUsuario(@PathVariable("id") Integer id, @ModelAttribute Usuario usuario, String username, String nombre, boolean estado, String rol, String password, 
+            String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Model model ) throws MiExcepcion, Exception{
+        try {
+              usuarioServicio.editar(id, nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
+              return "listarUsuario.html";
+        } catch (Exception e) {
+            throw new Exception("Error inesperado" + e.getCause());
+        }
+     
+        
+        
+}
+    
+   
 
    
 
