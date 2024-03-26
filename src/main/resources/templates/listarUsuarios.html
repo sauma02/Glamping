@@ -3,7 +3,8 @@
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
 -->
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
@@ -41,11 +42,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <th>Contacto:</th>
                         <th>Contaco de emergencia:</th>
                         <th>Nombre contacto de emergencia:</th>
-                         <th>Reserva:</th>
-                         <th>Rol:</th>
+                        <th>Reserva:</th>
+                        <th>Rol:</th>
                         
                     </tr>
-                    <tr th:each="usuario: ${usuarios}"
+                    <tr th:each="usuario : ${usuarios}">
                         <td th:text="${usuario.id}"></td>
                         <td th:text="${usuario.nombre}"></td>
                         <td th:text="${usuario.email}"></td>
@@ -53,8 +54,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <td th:text="${usuario.contacto}"></td>
                         <td th:text="${usuario.contactoEmergencia}"></td>
                         <td th:text="${usuario.nombreContactoEmergencia}"></td>
-                        <td th:each="reserva: ${reservas}" th:if="${reserva.Usuario_id} == ${usuario.id}"><span th:text="${reserva.fechaInicio} + ' - ' + ${reserva.fechaFinal}"></span></td>
-                        <td th:each="rol : ${roles}" th:if="${rol."></td>
+                        <tr th:unless="${not #lists.isEmpty(usuario.reserva)}">
+                            <td> No tiene reservas registradas</td>
+                        </tr>
+                        <tr th:each="reserva : ${usuario.reserva}">
+                            <td  th:text="${reserva.fechaInicio} + ' - ' + ${reserva.fechaFinal}"></td>
+                        </tr>
+                        <tr th:each="role : ${usuario.roles}">
+                        <td th:text="${role.name}" ></td>
+                        </tr>
                     </tr>
 
                    

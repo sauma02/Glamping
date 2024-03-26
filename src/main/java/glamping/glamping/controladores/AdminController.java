@@ -93,6 +93,7 @@ public class AdminController {
         List<Reserva> reservas = reservaServicio.listarReservas();
         model.addAttribute("reserva", reservas);
         List<Object[]> roles = rolServicio.listarRol();
+        
         model.addAttribute("roles",roles);
         model.addAttribute("nombreUsuario", username);
         return "listarUsuarios.html";
@@ -122,7 +123,7 @@ public class AdminController {
             String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Model model ) throws MiExcepcion, Exception{
         try {
               usuarioServicio.editar(id, nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
-              return "listarUsuario.html";
+              return "listarUsuarios.html";
         } catch (Exception e) {
             throw new Exception("Error inesperado" + e.getCause());
         }

@@ -34,10 +34,10 @@ public class Reserva {
     @Column(name="Reserva_id")
     private Integer id;
     private String nombre;
-   @ManyToOne(fetch = FetchType.EAGER)
+   @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Usuario_id")
     private Usuario usuario;
-     @ManyToOne(fetch = FetchType.EAGER)
+     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Cabania_id")
     private Cabania cabania;
     private LocalDate fechaInicio;
@@ -55,12 +55,7 @@ public class Reserva {
         this.fechaFinal = fechaFinal;
     }
 
-    @Override
-    public String toString() {
-        return "Reserva{" + "id=" + id + ", nombre=" + nombre + ", usuario=" + usuario + ", cabania=" + cabania + ", fechaInicio=" + fechaInicio + ", fechaFinal=" + fechaFinal + '}';
-    }
-
-
+  
     
 
     

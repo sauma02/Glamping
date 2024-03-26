@@ -55,11 +55,7 @@ public class Cabania {
         this.estado = estado;
     }
 
-    @Override
-    public String toString() {
-        return "Cabania{" + "id=" + id + ", nombre=" + nombre + ", capacidad=" + capacidad + ", imagen=" + imagen + ", reserva=" + reserva + ", estado=" + estado + '}';
-    }
-
+    
     
 
    

@@ -51,7 +51,7 @@ public class Usuario implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Roles> roles;
     
-   @ManyToMany(mappedBy = "usuario")
+   @ManyToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     
     private List<Reserva> reserva;
 
@@ -106,14 +106,7 @@ public class Usuario implements UserDetails {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", username=" + username + 
-                ", password=" + password + ", contactoEmergencia=" + contactoEmergencia + 
-                ", contacto=" + contacto + ", NombreContactoEmergencia=" + NombreContactoEmergencia + 
-                ", parentesco=" + parentesco + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + 
-                ", roles=" + roles + ", reserva=" + reserva + '}';
-    }
+    
     
     
 }
