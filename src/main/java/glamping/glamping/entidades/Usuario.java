@@ -13,7 +13,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,8 +51,9 @@ public class Usuario implements UserDetails {
     @DateTimeFormat(pattern = "dd/mm/yyyy") 
     private LocalDate fechaNacimiento;
     private String email;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Roles> roles;
+    @PrimaryKeyJoinColumn(name="Rol_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Roles roles;
     
    @ManyToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     
@@ -58,7 +62,7 @@ public class Usuario implements UserDetails {
     public Usuario() {
     }
 
-    public Usuario(Integer id, String nombre, String username, String password, String contactoEmergencia, String contacto, String NombreContactoEmergencia, String parentesco, LocalDate fechaNacimiento, String email, List<Roles> roles, List<Reserva> reserva) {
+    public Usuario(Integer id, String nombre, String username, String password, String contactoEmergencia, String contacto, String NombreContactoEmergencia, String parentesco, LocalDate fechaNacimiento, String email, Roles roles, List<Reserva> reserva) {
         this.id = id;
         this.nombre = nombre;
         this.username = username;
@@ -78,7 +82,9 @@ public class Usuario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorityList = new ArrayList();
-        for (Roles rol : roles) {
+        List<Roles> role = new ArrayList();
+        role.add(roles);
+        for (Roles rol : role) {
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rol.getName());
            authorityList.add(authority);
             
@@ -104,6 +110,11 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", username=" + username + ", password=" + password + ", contactoEmergencia=" + contactoEmergencia + ", contacto=" + contacto + ", NombreContactoEmergencia=" + NombreContactoEmergencia + ", parentesco=" + parentesco + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", roles=" + roles + ", reserva=" + reserva + '}';
     }
 
     

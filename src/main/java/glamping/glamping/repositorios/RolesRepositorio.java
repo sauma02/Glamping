@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -18,14 +19,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface RolesRepositorio extends JpaRepository<Roles, Integer> {
-
+    public Roles findFirstById(Integer id);
     public Roles findByName(String name);
-
+    
     public Roles findFirstByName(String name);
-    @Query(value = "SELECT r.nombre, u.usuario_id  from roles r, usuario u\n" +
-            "inner join usuario_roles ur\n" +
-            "where  ur.usuario_usuario_id = u.usuario_id and ur.roles_rol_id = r.rol_id", nativeQuery = true)
-    public List<Object[]> idUsuarioConNombreRol();
+    @Query(value = "SELECT r.rol_id as idRol, r.nombre as nombreRol FROM roles r\n" +
+"INNER JOIN usuario u\n" +
+"WHERE u.roles_rol_id = 1 and r.rol_id = 1", nativeQuery = true )
+    public Roles findByRoleId(@Param("id") Integer id);
 
     
    

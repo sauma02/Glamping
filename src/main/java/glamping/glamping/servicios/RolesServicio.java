@@ -30,16 +30,12 @@ public class RolesServicio {
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
         Roles role = new Roles();
         role.setName(rol);
-        List<Roles> rolLista = new ArrayList();
+
         if(respuesta.isPresent()){
             Usuario usuario = respuesta.get();
-            rolLista.add(role);
-            usuario.setRoles(rolLista);
+            usuario.setRoles(role);
         }
     }
-    public List<Object[]> listarRol(){
-       
-       return rolesRepositorio.idUsuarioConNombreRol();
-    }
+
     
 }

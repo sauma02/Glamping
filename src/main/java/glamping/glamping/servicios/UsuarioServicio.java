@@ -68,7 +68,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
     public void crearUsuarioAdmin(String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento){
-         Roles rol = rolesRepositorio.findByName("admin");
+         Roles rol = rolesRepositorio.findFirstById(2);
         if(rol == null){
             rol = new Roles(null, "admin");
             rolesRepositorio.save(rol);
@@ -81,13 +81,13 @@ public class UsuarioServicio implements UserDetailsService {
         admin.setUsername(username);
         admin.setEmail(email);
         admin.setPassword(password);
-        admin.setRoles(Arrays.asList(rol));
+        admin.setRoles(rol);
         usuarioRepositorio.save(admin);
     }
     public void crearUsuario(String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{
         validar(nombre, username, password, email, fechaNacimiento);
-        Roles rol = rolesRepositorio.findByName("usuario");
+        Roles rol = rolesRepositorio.findFirstById(1);
         if(rol == null){
             rol = new Roles(null, "usuario");
             rolesRepositorio.save(rol);
@@ -103,7 +103,7 @@ public class UsuarioServicio implements UserDetailsService {
         usuario.setParentesco(parentesco);
         usuario.setEmail(email);
         usuario.setFechaNacimiento(fechaNacimiento);
-        usuario.setRoles(Arrays.asList(rol));
+//        usuario.setRoles(rol);
         usuarioRepositorio.save(usuario); 
         
      
@@ -173,7 +173,14 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usuarioRepositorio.findByUsername(username);
+        Usuario usuario = usuarioRepositorio.findByUsername(username);
+        if(usuario == null){
+            throw new UsernameNotFoundException("El usuario ingresado no existe");
+        }else{
+            return usuario;
+        }
+        
+        
     }
     
 }

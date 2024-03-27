@@ -92,9 +92,7 @@ public class AdminController {
         model.addAttribute("usuarios", usuarios);
         List<Reserva> reservas = reservaServicio.listarReservas();
         model.addAttribute("reserva", reservas);
-        List<Object[]> roles = rolServicio.listarRol();
-        
-        model.addAttribute("roles",roles);
+  
         model.addAttribute("nombreUsuario", username);
         return "listarUsuarios.html";
     }
