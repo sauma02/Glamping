@@ -21,8 +21,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <li><a href="#servicios">Servicios</a></li>
                                     <li><a href="/verCabañas">Ver Cabañas</a></li>
                                     <li><a href="#nosotros">Nosotros</a></li>
-                                    <li><a href="/login">Iniciar Sesion</a></li>
-                                    <li><a href="/register">Registrar</a></li>
+                                    <div class="user-layer">
+                                         <h2 th:text="${nombreUsuario}"></h2>
+                                         <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                                    </div>
                                 </ul>
                             </div>
                         </div>
@@ -58,12 +60,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <td th:text="${usuario.contactoEmergencia}"></td>
                                     <td th:text="${usuario.nombreContactoEmergencia}"></td>
                                     <td>
-                                        <span th:if="${usuario.reserva != null}">
-                                            <span th:each="reserva : ${usuario.reserva}">
+
+                                        <span th:if="${#lists.isEmpty(usuario.reserva)}">No hay reservas realizadas</span>
+                                        <span th:if="${not #lists.isEmpty(usuario.reserva)}">
+                                            <span th:each="reserva, iterStat : ${usuario.reserva}">
                                                 <span th:text="${reserva.fechaInicio} + ' - ' + ${reserva.fechaFinal}"></span>
-                                                <span th:if="${!#strings.isEmpty(reserva)} and ${!#lists.isEmpty(usuario.reserva) and #lists.size(usuario.reserva) > 1}">, </span>
+                                                <span th:if="${not iterStat.last}">, </span>
                                             </span>
-                                            <span th:unless="${usuario.reserva == null)}">No hay reservas realizadas</span>
                                         </span>
                                     </td>
                                     <td>
