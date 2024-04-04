@@ -17,10 +17,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="nav-container">
                             <div class="nav">
                                 <ul>
-                                    <li><a href="/">Inicio</a></li>
-                                    <li><a href="#servicios">Servicios</a></li>
-                                    <li><a href="/verCabañas">Ver Cabañas</a></li>
-                                    <li><a href="#nosotros">Nosotros</a></li>
+                                    <li><a href="/admin">Inicio</a></li>
+                                    <li><a href="/admin#servicios">Servicios</a></li>
+                                    <li><a href="/admin/verCabañas">Ver Cabañas</a></li>
+                                    <li><a href="/admin#nosotros">Nosotros</a></li>
                                     <div class="user-layer">
                                          <h2 th:text="${nombreUsuario}"></h2>
                                          <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
@@ -64,7 +64,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <span th:if="${#lists.isEmpty(usuario.reserva)}">No hay reservas realizadas</span>
                                         <span th:if="${not #lists.isEmpty(usuario.reserva)}">
                                             <span th:each="reserva, iterStat : ${usuario.reserva}">
-                                                <span th:text="${reserva.fechaInicio} + ' - ' + ${reserva.fechaFinal}"></span>
+                                                <span th:text="${reserva.fechaInicio} + ' - ' + ${reserva.fechaFinal} + ' - Cabaña: ' + ${reserva.cabania.nombre}"></span>
                                                 <span th:if="${not iterStat.last}">, </span>
                                             </span>
                                         </span>
@@ -79,11 +79,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <form>
                                             <button id='editar' name="editar">Editar</button>
                                         </form>
-                                        <form id="desactivar" method="post" action="">
-                                            <button></button>
+                                        <form  method="post" action="">
+                                            <button id="desactivar" name="desactivar">Estado</button>
                                         </form>
                                         <form>
-                                            <button id='eliminar' name="eliminar"></button>
+                                            <button id='eliminar' name="eliminar">Eliminar</button>
                                         </form>
                                     </td>
 

@@ -61,6 +61,7 @@ public class PortalController {
     public String inicio(){
         return "inicio.html";
     }
+ 
     @GetMapping("/usuario")
     public String usuario(@AuthenticationPrincipal UserDetails userDetails, Model model){
         String username = userDetails.getUsername();

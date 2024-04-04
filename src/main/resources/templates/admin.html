@@ -119,16 +119,17 @@ footer {
             <div class="nav-container">
                 <div class="nav">
                     <ul>
-                        <li><a href="/">Inicio</a></li>
-                        <li><a href="#servicios">Servicios</a></li>
-                        <li><a href="/admin/verCabañas">Ver Cabañas</a></li>
-                        <li><a href="#nosotros">Nosotros</a></li>
-                         <li><a href="/admin/usuarios">Ver Usuarios</a></li>
-                    </ul>
-                    <div class="user-layer">
+                        <li><a href="/admin">Inicio</a></li>
+                        <li><a href="/admin#servicios">Servicios</a></li>
+                        <li><a href="/admin/verCabañas">Ver cabañas</a></li>
+                        <li><a href="/admin#nosotros">Nosotros</a></li>
+                         <li><a href="/admin/usuarios">Ver usuarios</a></li>
+                          <div class="user-layer">
                         <h2 th:text="${nombreUsuario}"></h2>
                         <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                     </div>
+                    </ul>
+                   
                 </div>
             </div>
         </header>

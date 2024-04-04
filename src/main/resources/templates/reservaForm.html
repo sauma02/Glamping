@@ -2,158 +2,159 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <title>Glamping</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <head>
+        <title>Glamping</title>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-        }
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        font-family: Arial, sans-serif;
+                        background-color: #f8f8f8;
+                    }
 
-        /* Estilos para el encabezado */
-        header {
-            background-color: #333;
-            color: #fff;
-        }
+                    /* Estilos para el encabezado */
+                    header {
+                        background-color: #333;
+                        color: #fff;
+                    }
 
-        .nav-container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 10px;
-        }
+                    .nav-container {
+                        max-width: 960px;
+                        margin: 0 auto;
+                        padding: 10px;
+                    }
 
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+                    .nav {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
 
-        .user-layer {
-            margin-left: auto; /* Mueve .user-layer al extremo derecho */
-        }
+                    .user-layer {
+                        margin-left: auto; /* Mueve .user-layer al extremo derecho */
+                    }
 
-        .nav ul {
-            list-style: none;
-            display: flex;
-            align-items: center;
-        }
+                    .nav ul {
+                        list-style: none;
+                        display: flex;
+                        align-items: center;
+                    }
 
-        .nav li {
-            margin-right: 20px;
-        }
+                    .nav li {
+                        margin-right: 20px;
+                    }
 
-        .nav a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-        }
+                    .nav a {
+                        text-decoration: none;
+                        color: #fff;
+                        font-weight: bold;
+                    }
 
-        /* Estilos para la sección principal */
-        section {
-            text-align: center;
-        }
+                    /* Estilos para la sección principal */
+                    section {
+                        text-align: center;
+                    }
 
-        .hero {
-            background: #f0f0f0;
-            padding: 50px;
-        }
+                    .hero {
+                        background: #f0f0f0;
+                        padding: 50px;
+                    }
 
-        .hero-title {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
+                    .hero-title {
+                        font-size: 2em;
+                        margin-bottom: 20px;
+                    }
 
-        /* Estilos para la imagen de fondo */
-        .hero img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
+                    /* Estilos para la imagen de fondo */
+                    .hero img {
+                        width: 100%;
+                        height: auto;
+                        border-radius: 10px;
+                    }
 
-        /* Estilos para el pie de página */
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-        }
+                    /* Estilos para el pie de página */
+                    footer {
+                        background-color: #333;
+                        color: #fff;
+                        text-align: center;
+                        padding: 10px;
+                    }
 
-        /* Estilos para la sección del pie de página */
-        .footer-section {
-            height: 100px; /* Ajusta según sea necesario */
-        }
-    </style>
-</head>
+                    /* Estilos para la sección del pie de página */
+                    .footer-section {
+                        height: 100px; /* Ajusta según sea necesario */
+                    }
+                </style>
+                </head>
 
-<body>
-<header>
-    <div class="nav-container">
-        <div class="nav">
-            <ul>
-                <li><a href="/">Inicio</a></li>
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="/cabanias">Cabañas</a></li>
-                <li><a href="#nosotros">Nosotros</a></li>
-            </ul>
-            <div class="user-layer">
-                <h2 th:text="${nombreUsuario}"></h2>
-                <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-            </div>
-        </div>
-    </div>
-</header>
-<section>
-    <div class="hero">
-        <div class="hero-title">Glamping Santa Helena</div>
-        <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
-    </div>
-</section>
-<main>
-    <div class="main-container">
-        <form th:action="@{/usuario/reservaForm/reserva}" method="post">
-            <label for="usuario" >Usuario:</label>
-            <input type="text" th:value="${nombreUsuario}" id="usuario" name="nombreUsuario" readOnly="true"><br><br>
-            
-            <label for="cabanias">Cabañas:</label>
-            <select id="cabanias" name="cabaniaId" required>
-                <option value="">Seleccionar Cabaña</option>
-                <option name="cabaniaId" th:each ="cabania : ${cabaniasDisponibles}" th:value="${cabania.id}" th:text="${cabania.nombre}"></option>
-                
-            </select><br><br>
-            
-          <label for="fechaInicio">Fecha de inicio:</label>
-            <input type="date" id="fechaInicio" name="fechaInicio" required>
-                <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
-            <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
-                       
+                <body>
+                    <header>
+                        <div class="nav-container">
+                            <div class="nav">
+                                <ul>
+                                    <li><a href="/usuario">Inicio</a></li>
+                                    <li><a href="/usuario#servicios">Servicios</a></li>
+                                    <li><a href="/usuario/cabanias">Cabañas</a></li>
+                                    <li><a href="/usuario#nosotros">Nosotros</a></li>
+                                    <div class="user-layer">
+                                        <h2 th:text="${nombreUsuario}"></h2>
+                                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                                    </div>
+                                </ul>
 
-            <br><br>
+                            </div>
+                        </div>
+                    </header>
+                    <section>
+                        <div class="hero">
+                            <div class="hero-title">Glamping Santa Helena</div>
+                            <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
+                        </div>
+                    </section>
+                    <main>
+                        <div class="main-container">
+                            <form th:action="@{/usuario/reservaForm/reserva}" method="post">
+                                <label for="usuario" >Usuario:</label>
+                                <input type="text" th:value="${nombreUsuario}" id="usuario" name="nombreUsuario" readOnly="true"><br><br>
 
-            <label for="fechaFinal">Fecha final:</label>
-            <input type="date" id="fechaFinal" name="fechaFinal" required>
-           <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
-            <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
-                  
+                                            <label for="cabanias">Cabañas:</label>
+                                            <select id="cabanias" name="cabaniaId" required>
+                                                <option value="">Seleccionar Cabaña</option>
+                                                <option name="cabaniaId" th:each ="cabania : ${cabaniasDisponibles}" th:value="${cabania.id}" th:text="${cabania.nombre}"></option>
 
-            <br><br>
+                                            </select><br><br>
 
-            <button type="submit">Reservar</button>
-        </form>
-    </div>
-</main>
-    
-<section>
-    <div class="footer-section"></div>
-</section>
-<footer>
+                                                    <label for="fechaInicio">Fecha de inicio:</label>
+                                                    <input type="date" id="fechaInicio" name="fechaInicio" required>
+                                                        <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
+                                                        <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
 
-</footer>
-</body>
 
-</html>
+                                                        <br><br>
+
+                                                                <label for="fechaFinal">Fecha final:</label>
+                                                                <input type="date" id="fechaFinal" name="fechaFinal" required>
+                                                                    <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
+                                                                    <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+
+
+                                                                    <br><br>
+
+                                                                            <button type="submit">Reservar</button>
+                                                                            </form>
+                                                                            </div>
+                                                                            </main>
+
+                                                                            <section>
+                                                                                <div class="footer-section"></div>
+                                                                            </section>
+                                                                            <footer>
+
+                                                                            </footer>
+                                                                            </body>
+
+                                                                            </html>

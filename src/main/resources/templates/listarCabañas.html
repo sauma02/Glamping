@@ -14,13 +14,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <div class="nav-container">
                 <div class="nav">
                     <ul>
-                        <li><a href="/">Inicio</a></li>
-                        <li><a href="#servicios">Servicios</a></li>
-                        <li><a href="#nosotros">Nosotros</a></li>
-                         <li><a href="/listarUsuarios">Ver Usuarios</a></li>
-                        <li><a href="/login">Iniciar Sesion</a></li>
-                        <li><a href="/register">Registrar</a></li>
+                        <li><a href="/admin">Inicio</a></li>
+                        <li><a href="/admin#servicios">Servicios</a></li>
+                        <li><a href="/admin#nosotros">Nosotros</a></li>
+                        <li><a href="/admin/usuarios">Ver Usuarios</a></li>
+                         <div class="user-layer">
+                          <h2 th:text="${nombreUsuario}"></h2>
+                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                    </div>
+                        
                     </ul>
+                    
                 </div>
             </div>
         </header>
@@ -31,9 +35,58 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div> 
         </section>
         <main>
-            <div class="main-container">
-                
-            </div>
+               <div class="main-container">
+                   <button><a href="/admin/registrarCabañas">Registrar cabaña</a></button>
+                            <table>
+                                <tr>
+                                    <th>Id:</th>
+                                    <th>Nombre:</th>
+                                    <th>Capacidad:</th>
+                                    <th>Imagen:</th>
+                                    <th>Reserva:</th> 
+                                    <th>Estado:</th>
+                                    <th>Accion:</th>
+                                    
+
+                                </tr>
+                                <tr th:each="cabania : ${listaCabanias}">
+                                    <td th:text="${cabania.id}"></td>
+                                    <td th:text="${cabania.nombre}"></td>
+                                    <td th:text="${cabania.capacidad}"></td>
+                                    <td>
+                                        <div th:each="imagen : ${cabania.imagen}">
+                                            <img th:src="${imagen.fileName}">
+                                        </div>
+                                    </td>
+                                    
+                                     <td>
+
+                                        <span th:if="${#lists.isEmpty(cabania.reserva)}">No hay reservas realizadas</span>
+                                        <span th:if="${not #lists.isEmpty(cabania.reserva)}">
+                                            <span th:each="reserva, iterStat : ${cabania.reserva}">
+                                                <span th:text="${reserva.fechaInicio} + ' - ' + ${reserva.fechaFinal} + ' - Usuario:  ' + ${reserva.usuario.username}"></span>
+                                                <span th:if="${not iterStat.last}">, </span>
+                                            </span>
+                                        </span>
+                                    </td>
+                                    <td th:text="${cabania.estado}"></td>
+                                    <td>
+                                        <form>
+                                            <button id='editar' name="editar">Editar</button>
+                                        </form>
+                                        <form  method="post" action="">
+                                            <button id="desactivar" name="desactivar">Estado</button>
+                                        </form>
+                                        <form>
+                                            <button id='eliminar' name="eliminar">Eliminar</button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+
+
+                            </table>
+                        </div>
         </main>
         <section>
             <div class="footer-section"></div>

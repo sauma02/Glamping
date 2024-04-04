@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,65 +39,20 @@ public class CabaniaController {
     @Autowired
     private ImagenServicio imagenServicio;
 
-    @GetMapping("/Cabania")
+       @GetMapping("/cabania")
     public String cabania(){
         return "cabania.html";
     }
-     @PostMapping("/admin/registrarCabañas/registrarCabaña")
-    public String registerForm(@RequestParam("nombre") String nombre, 
-            @RequestParam("capacidad") Integer capacidad,@RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") boolean estado, Model map) throws MiExcepcion, IOException, Exception{
-            String mensaje = "";
-        try {
-            Cabania cab = cabaniaServicio.listarCabaniaPorNombre(nombre);
-            if(cab != null){
-                map.addAttribute("errorCabaniaExistente","La cabaña con el nombre "+nombre+" ya existe");
-                map.addAttribute("estado", estado);
-                map.addAttribute("capacidad", capacidad);
-                mensaje="la cabaña indicada ya existe";
-               return "registrarCabania.html";
-            }
-            if(imagen == null || imagen.isEmpty()){
-                map.addAttribute("imagenVacia", "Imagen nula");
-                throw new Exception("Error, la imagen es nula, no puede ser nula");
-                
-            }else{
-                // Manejar la carga de la imagen y guardarla
-                Cabania cabania = new Cabania();
-                Imagen img = new Imagen();
-                storageService.init();
-
-                // Establecer los demás atributos de la cabaña
-                cabania.setNombre(nombre);
-                cabania.setCapacidad(capacidad);
-                cabania.setEstado(estado);
-                
-                storageService.save(imagen);
-                img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
-                // Asignar la imagen a la lista de imágenes de la cabaña
-                List<Imagen> listaImagenes = new ArrayList<>();
-                listaImagenes.add(img);
-                cabania.setImagen(listaImagenes);
-                
-                // Guardar la cabaña en la base de datos
-                cabaniaServicio.crearCabania(cabania);
-                imagenServicio.guardarImagen(cabania, img, imagen);
-                
-
-
-
-                // Informar sobre el éxito del registro
-                map.addAttribute("exitoCabania", "Éxito al crear cabaña");
-               mensaje="admin.html";
-               return mensaje;
-            }
-
-        
-        
-        } catch (SQLException e) {
-            throw new Exception("Error en la creacion de la cabaña", e.getCause());
-            
-            
-        }        
+     @GetMapping("/admin/verCabañas")
+    public String listarCabanias(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        String username = userDetails.getUsername();
+        List<Cabania> listaCabanias = cabaniaServicio.listarCabanias();
+        for (Cabania cab : listaCabanias) {
+            model.addAttribute("cabania", cab);
+        }
+        model.addAttribute("listaCabanias", listaCabanias);
+        model.addAttribute("nombreUsuario", username);
+        return "listarCabañas.html";
     }
-    
+
 }
