@@ -25,6 +25,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -45,6 +46,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 
 public class PortalController {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
     @Autowired
@@ -108,7 +111,7 @@ public class PortalController {
             }
             
             if(verificarUsuario == null && verificarEmail == null){
-                usuarioServicio.crearUsuario(nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
+                usuarioServicio.crearUsuario(nombre, username, passwordEncoder.encode(password), contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
                 map.addAttribute("Exito", "Usuario creado con exito");
                 return "inicio.html";
             }

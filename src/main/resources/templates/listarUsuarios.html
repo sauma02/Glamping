@@ -22,8 +22,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <li><a href="/admin/verCabañas">Ver Cabañas</a></li>
                                     <li><a href="/admin#nosotros">Nosotros</a></li>
                                     <div class="user-layer">
-                                         <h2 th:text="${nombreUsuario}"></h2>
-                                         <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                                        <h2 th:text="${nombreUsuario}"></h2>
+                                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                                     </div>
                                 </ul>
                             </div>
@@ -44,8 +44,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <th>Email:</th>
                                     <th>Nombre de usuario:</th>
                                     <th>Contacto:</th>
+                                    <th>Fecha de nacimiento:</th>
                                     <th>Contaco de emergencia:</th>
                                     <th>Nombre contacto de emergencia:</th>
+                                    <th>Parentesco:</th>
                                     <th>Reserva:</th>
                                     <th>Rol:</th>
                                     <th>Acción:</th>
@@ -57,8 +59,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <td th:text="${usuario.email}"></td>
                                     <td th:text="${usuario.username}"> </td>
                                     <td th:text="${usuario.contacto}"></td>
+                                    <td th:text="${usuario.fechaNacimiento}"></td>
                                     <td th:text="${usuario.contactoEmergencia}"></td>
                                     <td th:text="${usuario.nombreContactoEmergencia}"></td>
+                                    <td th:text="${usuario.parentesco}"></td>
                                     <td>
 
                                         <span th:if="${#lists.isEmpty(usuario.reserva)}">No hay reservas realizadas</span>
@@ -77,7 +81,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     </td>
                                     <td>
                                         <form>
-                                            <button id='editar' name="editar">Editar</button>
+                                            <button id='editar' name="editar" ><a th:href="@{|/admin/usuarios/editarUsuario/${usuario.id}|}">Editar</a></button>
                                         </form>
                                         <form  method="post" action="">
                                             <button id="desactivar" name="desactivar">Estado</button>

@@ -173,14 +173,33 @@ public class AdminController {
         model.addAttribute("nombreUsuario", username);
         return "listarCabañas.html";
     }
-    @PostMapping("admin/usuarios/editarUsuario/{id}")
-    public String editarUsuario(@PathVariable("id") Integer id, @ModelAttribute Usuario usuario, String username, String nombre, boolean estado, String rol, String password, 
+    @GetMapping("/admin/usuarios/editarUsuario/{id}")
+    public String editarUsuario(@AuthenticationPrincipal UserDetails userDetails, Model model, @PathVariable Integer id){
+            Usuario us = usuarioServicio.listarUsuarioPorId(id);
+            model.addAttribute("usuario", us);
+            String username = userDetails.getUsername();
+            model.addAttribute("nombreUsuario", username);
+            return "editarUsuario.html";
+        
+    }
+    @PostMapping("/admin/usuarios/editarUsuario/editar")
+    public String editarUsuarioForm(@ModelAttribute Usuario usuario, String username, String nombre, boolean estado, String rol, String password, 
             String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Model model ) throws MiExcepcion, Exception{
+     
         try {
-              usuarioServicio.editar(id, nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
+              usuarioServicio.editar(usuario.getId(), nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
               return "listarUsuarios.html";
         } catch (Exception e) {
-            throw new Exception("Error inesperado" + e.getCause());
+              // Log the complete stack trace
+        e.printStackTrace();
+        
+        // You can also log the cause of the exception if available
+        if (e.getCause() != null) {
+            System.err.println("Cause: " + e.getCause().getMessage());
+        }
+        
+        // You can return an error page or redirect the user to an error page
+        return "error.html";
         }
      
         
