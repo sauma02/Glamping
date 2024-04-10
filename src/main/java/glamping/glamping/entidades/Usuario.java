@@ -37,9 +37,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @Setter
 public class Usuario implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name="Usuario_id")
+    @Column(name = "Usuario_id")
     private Integer id;
     private String nombre;
     private String username;
@@ -48,15 +49,16 @@ public class Usuario implements UserDetails {
     private String contacto;
     private String NombreContactoEmergencia;
     private String parentesco;
-    @DateTimeFormat(pattern = "dd/mm/yyyy") 
+    @DateTimeFormat(pattern = "dd/mm/yyyy")
     private LocalDate fechaNacimiento;
     private String email;
-    @PrimaryKeyJoinColumn(name="Rol_id")
+
     @ManyToOne(fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn(name = "Rol_id")
     private Roles roles;
-    
-   @ManyToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    
+
+    @ManyToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+
     private List<Reserva> reserva;
 
     public Usuario() {
@@ -77,19 +79,27 @@ public class Usuario implements UserDetails {
         this.reserva = reserva;
     }
 
-  
-    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorityList = new ArrayList();
-        List<Roles> role = new ArrayList();
-        role.add(roles);
-        for (Roles rol : role) {
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rol.getName());
-           authorityList.add(authority);
-            
+        try {
+            List<GrantedAuthority> authorityList = new ArrayList();
+            List<Roles> role = new ArrayList();
+            role.add(roles);
+            for (Roles rol : role) {
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rol.getName());
+                authorityList.add(authority);
+
+            }
+            return authorityList;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            if (e.getCause() != null) {
+                System.err.println("Cause: " + e.getCause().getMessage());
+            }
+            return null;
         }
-        return authorityList;
+
     }
 
     @Override
@@ -99,7 +109,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-         return true;
+        return true;
     }
 
     @Override
@@ -117,7 +127,4 @@ public class Usuario implements UserDetails {
         return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", username=" + username + ", password=" + password + ", contactoEmergencia=" + contactoEmergencia + ", contacto=" + contacto + ", NombreContactoEmergencia=" + NombreContactoEmergencia + ", parentesco=" + parentesco + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", roles=" + roles + ", reserva=" + reserva + '}';
     }
 
-    
-    
-    
 }

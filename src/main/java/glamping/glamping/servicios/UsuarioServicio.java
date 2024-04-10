@@ -103,14 +103,14 @@ public class UsuarioServicio implements UserDetailsService {
         usuario.setParentesco(parentesco);
         usuario.setEmail(email);
         usuario.setFechaNacimiento(fechaNacimiento);
-//        usuario.setRoles(rol);
+        usuario.setRoles(rol);
         usuarioRepositorio.save(usuario); 
         
      
     }
     public void editar(Integer id, String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{
-        validar(nombre, username, password, email, fechaNacimiento);
+        
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
         if(respuesta.isPresent()){
             Usuario usuario = respuesta.get();

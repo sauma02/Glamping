@@ -188,7 +188,7 @@ public class AdminController {
      
         try {
               usuarioServicio.editar(usuario.getId(), nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
-              return "listarUsuarios.html";
+              return "redirect:/admin/usuarios";
         } catch (Exception e) {
               // Log the complete stack trace
         e.printStackTrace();

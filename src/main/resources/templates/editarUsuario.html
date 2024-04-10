@@ -59,16 +59,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <label for="parentesco">Parentesco:</label>
                 <input type="text" id="parentesco" name="parentesco" th:value="${usuario.parentesco}" placeholder="Parentesco" ><br><br>
                 <label for="fechaNacimiento">Fecha de nacimiento:</label>
-                <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="${usuario.fechaNacimiento}" ><br><br>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="${usuario.fechaNacimiento != null ? usuario.fechaNacimiento : 'Sin fecha'}" ><br><br>
                 <label for="email">Email:</label>
                 <input type="text" id="email" name="email" th:value="${usuario.email}" placeholder="email" >
                 <span th:text="${errorEmail}" style="color: red"></span>    
                 <br><br>
-                 <input type="text" id="email" name="email" th:value="${usuario.email}" placeholder="email" >
-                <span th:text="${errorEmail}" style="color: red"></span>    
-                <br><br>  
                   <label for="rol">Rol:</label>
-                <input type="text" id="rol" name="rol" th:value="${usuario.roles.name}" ><br><br>
+                  <span th:if="${usuario.roles != null}">
+                <input type="text" id="rol" name="rol" th:value="${usuario.roles.name != null ? usuario.roles.name : 'Sin rol'}" readonly = "true" ><br><br>
+               </span>
+                  <span th:if="${usuario.roles == null}">
+                      <p>Sin rol</p>
+                </span>
                  
               
                 <button type="submit">Editar</button>
