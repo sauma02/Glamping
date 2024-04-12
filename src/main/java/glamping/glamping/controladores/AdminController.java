@@ -60,9 +60,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  */
 @Controller
 public class AdminController {
+
     @Autowired
     private CabaniaServicio cabaniaServicio;
-    @Autowired 
+    @Autowired
     private FileStorageService storageService;
     @Autowired
     private ImagenServicio imagenServicio;
@@ -73,56 +74,43 @@ public class AdminController {
     @Autowired
     private RolesServicio rolServicio;
 
-    
-    
-     @GetMapping("/admin")
-    public String admin(@AuthenticationPrincipal UserDetails userDetails, Model model){
+    @GetMapping("/admin")
+    public String admin(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
-        
-        
+
         model.addAttribute("nombreUsuario", username);
-        
+
         return "admin.html";
     }
-    @GetMapping("/admin/usuarios")
-    public String usuarios(@AuthenticationPrincipal UserDetails userDetails, Model model){
-           String username = userDetails.getUsername();
-        
-        List<Usuario> usuarios = usuarioServicio.listarUsuarios();
-        model.addAttribute("usuarios", usuarios);
-        List<Reserva> reservas = reservaServicio.listarReservas();
-        model.addAttribute("reserva", reservas);
-  
-        model.addAttribute("nombreUsuario", username);
-        return "listarUsuarios.html";
-    }
-    
+
+
+
     @GetMapping("/admin/registrarCabañas")
-    public String registrarCabania(@AuthenticationPrincipal UserDetails userDetails, Model model){
-           String username = userDetails.getUsername();
-        
-        
+    public String registrarCabania(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        String username = userDetails.getUsername();
+
         model.addAttribute("nombreUsuario", username);
         return "registrarCabania.html";
     }
-         @PostMapping("/admin/registrarCabañas/registrarCabaña")
-    public String registerForm(@RequestParam("nombre") String nombre, 
-            @RequestParam("capacidad") Integer capacidad,@RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") boolean estado, Model map) throws MiExcepcion, IOException, Exception{
-            String mensaje = "";
+
+    @PostMapping("/admin/registrarCabañas/registrarCabaña")
+    public String registerForm(@RequestParam("nombre") String nombre,
+            @RequestParam("capacidad") Integer capacidad, @RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") boolean estado, Model map) throws MiExcepcion, IOException, Exception {
+        String mensaje = "";
         try {
             Cabania cab = cabaniaServicio.listarCabaniaPorNombre(nombre);
-            if(cab != null){
-                map.addAttribute("errorCabaniaExistente","La cabaña con el nombre "+nombre+" ya existe");
+            if (cab != null) {
+                map.addAttribute("errorCabaniaExistente", "La cabaña con el nombre " + nombre + " ya existe");
                 map.addAttribute("estado", estado);
                 map.addAttribute("capacidad", capacidad);
-                mensaje="la cabaña indicada ya existe";
-               return "registrarCabania.html";
+                mensaje = "la cabaña indicada ya existe";
+                return "registrarCabania.html";
             }
-            if(imagen == null || imagen.isEmpty()){
+            if (imagen == null || imagen.isEmpty()) {
                 map.addAttribute("imagenVacia", "Imagen nula");
                 throw new Exception("Error, la imagen es nula, no puede ser nula");
-                
-            }else{
+
+            } else {
                 // Manejar la carga de la imagen y guardarla
                 Cabania cabania = new Cabania();
                 Imagen img = new Imagen();
@@ -132,38 +120,32 @@ public class AdminController {
                 cabania.setNombre(nombre);
                 cabania.setCapacidad(capacidad);
                 cabania.setEstado(estado);
-                
+
                 storageService.save(imagen);
                 img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
                 // Asignar la imagen a la lista de imágenes de la cabaña
                 List<Imagen> listaImagenes = new ArrayList<>();
                 listaImagenes.add(img);
                 cabania.setImagen(listaImagenes);
-                
+
                 // Guardar la cabaña en la base de datos
                 cabaniaServicio.crearCabania(cabania);
                 imagenServicio.guardarImagen(cabania, img, imagen);
-                
-
-
 
                 // Informar sobre el éxito del registro
                 map.addAttribute("exitoCabania", "Éxito al crear cabaña");
-               mensaje="admin.html";
-               return mensaje;
+                mensaje = "admin.html";
+                return mensaje;
             }
 
-        
-        
         } catch (SQLException e) {
             throw new Exception("Error en la creacion de la cabaña", e.getCause());
-            
-            
-        }        
+
+        }
     }
-    
+
     @GetMapping("/admin/verCabañas")
-    public String listarCabanias(@AuthenticationPrincipal UserDetails userDetails, Model model){
+    public String listarCabanias(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         List<Cabania> listaCabanias = cabaniaServicio.listarCabanias();
         for (Cabania cab : listaCabanias) {
@@ -173,49 +155,110 @@ public class AdminController {
         model.addAttribute("nombreUsuario", username);
         return "listarCabañas.html";
     }
-    @GetMapping("/admin/usuarios/editarUsuario/{id}")
-    public String editarUsuario(@AuthenticationPrincipal UserDetails userDetails, Model model, @PathVariable Integer id){
-            Usuario us = usuarioServicio.listarUsuarioPorId(id);
-            model.addAttribute("usuario", us);
-            String username = userDetails.getUsername();
-            model.addAttribute("nombreUsuario", username);
-            return "editarUsuario.html";
-        
+
+    @GetMapping("/admin/cabania/editarCabaña/{id}")
+    public String editarCabana(@AuthenticationPrincipal UserDetails userDetails, Model model, @PathVariable Integer id) {
+        Cabania cabania = cabaniaServicio.listarCabaniaPorId(id);
+        model.addAttribute("cabana", cabania);
+        return "editarCabana.html";
     }
-    @PostMapping("/admin/usuarios/editarUsuario/editar")
-    public String editarUsuarioForm(@ModelAttribute Usuario usuario, String username, String nombre, boolean estado, String rol, String password, 
-            String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Model model ) throws MiExcepcion, Exception{
-     
+    @GetMapping("/admin/cabania/añadirImagenes/{id}")
+    public String editarImagenes(@AuthenticationPrincipal UserDetails userDetails, Model model, @PathVariable Integer id){
+        Cabania cabania = cabaniaServicio.listarCabaniaPorId(id);
+        List<Imagen> img = cabania.getImagen();
+         model.addAttribute("cabana", cabania);
+        model.addAttribute("imagenes", img);
+        return "añadirImagenes.html";
+    }
+    @PostMapping("/admin/cabania/añadirImagenes/añadir")
+    public String añadirImagenesForm(@ModelAttribute Cabania cabania, @ModelAttribute Imagen img, MultipartFile imagen){
         try {
-              usuarioServicio.editar(usuario.getId(), nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
-              return "redirect:/admin/usuarios";
+            cabaniaServicio.añadirImagenes(cabania, img, imagen);
+            return "redirect:/admin/cabania/añadirImagenes/{id}";
+            
         } catch (Exception e) {
-              // Log the complete stack trace
-        e.printStackTrace();
-        
-        // You can also log the cause of the exception if available
-        if (e.getCause() != null) {
-            System.err.println("Cause: " + e.getCause().getMessage());
+            e.printStackTrace();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            return "error.html";
         }
-        
-        // You can return an error page or redirect the user to an error page
-        return "error.html";
-        }
-     
-        
-        
-}
-    
-   
-
-   
-
-  
-
-
-        
-    @GetMapping("/admin/listarCabañas")
-    public String listarCabania(){
-        return null;
     }
+    @PostMapping("/admin/cabania/añadirImagenes/eliminar")
+    public String eliminarImagenesForm(@ModelAttribute Cabania cabania, Integer id){
+        try {
+            cabaniaServicio.eliminarImagen(cabania, id);
+              return "redirect:/admin/cabania/añadirImagenes/{id}";
+        } catch (Exception e) {
+             e.printStackTrace();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            return "error.html";
+            
+        }
+    }
+
+    @PostMapping("/admin/cabania/editarCabaña/editar")
+    public String editarCabanaForm(@ModelAttribute Cabania cabania, String nombre, Integer capacidad) {
+        try {
+          
+            cabaniaServicio.editarCabana(cabania.getId(), nombre, capacidad);
+            return "redirect:/admin/verCabañas";
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (e.getCause() != null) {
+                System.err.println("Cause: " + e.getCause().getMessage());
+            }
+            return "error.html";
+        }
+    }
+        @GetMapping("/admin/usuarios")
+    public String usuarios(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        String username = userDetails.getUsername();
+
+        List<Usuario> usuarios = usuarioServicio.listarUsuarios();
+        model.addAttribute("usuarios", usuarios);
+        List<Reserva> reservas = reservaServicio.listarReservas();
+        model.addAttribute("reserva", reservas);
+
+        model.addAttribute("nombreUsuario", username);
+        return "listarUsuarios.html";
+    }
+
+    @GetMapping("/admin/usuarios/editarUsuario/{id}")
+    public String editarUsuario(@AuthenticationPrincipal UserDetails userDetails, Model model, @PathVariable Integer id) {
+        Usuario us = usuarioServicio.listarUsuarioPorId(id);
+        model.addAttribute("usuario", us);
+        String username = userDetails.getUsername();
+        model.addAttribute("nombreUsuario", username);
+        return "editarUsuario.html";
+
+    }
+
+    @PostMapping("/admin/usuarios/editarUsuario/editar")
+    public String editarUsuarioForm(@ModelAttribute Usuario usuario, String username, String nombre, boolean estado, String rol, String password,
+            String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Model model) throws MiExcepcion, Exception {
+
+        try {
+            
+            usuarioServicio.editar(usuario.getId(), nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
+            return "redirect:/admin/usuarios";
+        } catch (Exception e) {
+            // Log the complete stack trace
+            e.printStackTrace();
+
+            // You can also log the cause of the exception if available
+            if (e.getCause() != null) {
+                System.err.println("Cause: " + e.getCause().getMessage());
+            }
+
+            // You can return an error page or redirect the user to an error page
+            return "error.html";
+        }
+
+    }
+
 }

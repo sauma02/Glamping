@@ -4,6 +4,7 @@
  */
 package glamping.glamping.servicios;
 
+import glamping.glamping.entidades.Imagen;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 import org.springframework.core.io.Resource;
@@ -20,4 +21,5 @@ public interface FileStorageService {
     public Resource load(String filename);
     public void deleteAll();
     public Stream<Path> loadAll();
+    public void deleteFileByName(Imagen file);
 }

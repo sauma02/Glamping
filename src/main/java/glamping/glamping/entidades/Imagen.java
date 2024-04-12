@@ -38,11 +38,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "imagenesCabaña")        
 public class Imagen {
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator( name ="uuid", strategy="uuid2")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     
     @Column(name="imagen_id")
-    private String id;
+    private Integer id;
     private String fileName;
     private String fileType;
     private String ruta;

@@ -72,7 +72,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <td th:text="${cabania.estado}"></td>
                                     <td>
                                         <form>
-                                            <button id='editar' name="editar" value="${cabania.id}">Editar</button>
+                                            <button id='editar' name="editar"><a th:href =" @{|/admin/cabania/editarCabaña/${cabania.id}|}">Editar</a></button>
+                                        </form>
+                                        <form>
+                                            <button id='editar' name="editar"><a th:href="@{|/admin/cabania/añadirImagenes/${cabania.id}|}">Añadir/Quitar Imagenes</a></button>
                                         </form>
                                         <form  method="post" action="">
                                             <button id="desactivar" name="desactivar">Estado</button>

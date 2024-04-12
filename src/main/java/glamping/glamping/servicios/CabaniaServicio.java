@@ -9,6 +9,7 @@ import glamping.glamping.entidades.Imagen;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.repositorios.CabaniaRepositorio;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class CabaniaServicio {
     @Autowired
     private CabaniaRepositorio cabaniaRepositorio;
+    @Autowired
+    private FileStorageService storageService;
+    @Autowired
+    private ImagenServicio imagenServicio;
     @Transactional
     public void crearCabania(Cabania cabania){
         cabaniaRepositorio.save(cabania);
@@ -32,6 +37,67 @@ public class CabaniaServicio {
         
         
     }
+    public void editarCabana(Integer id, String nombre, Integer capacidad){
+        try {
+            Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);
+        if(respuesta.isPresent()){
+           
+            Cabania cabania = respuesta.get();
+         
+            
+            cabania.setNombre(nombre);
+            cabania.setCapacidad(capacidad);
+          
+       
+            cabaniaRepositorio.save(cabania);
+            
+            
+        } 
+        }catch (Exception e) {
+                e.printStackTrace();
+                
+                if(e.getCause() != null){
+                    System.err.print("Error con causa: "+e.getMessage());
+                }
+                
+                }
+        
+        }    
+    public void añadirImagenes(Cabania cabania, Imagen img, MultipartFile imagen){
+            try {
+            List<Imagen> imagenes = cabania.getImagen();
+            storageService.init();
+            storageService.save(imagen);
+            img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
+            imagenes.add(img);
+            imagenServicio.guardarImagen(cabania, img, imagen);
+            cabania.setImagen(imagenes);
+            cabaniaRepositorio.save(cabania);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+        }
+            
+            
+        
+    }        
+    public void eliminarImagen(Cabania cabania, Integer id){
+        List<Imagen> imagenes = cabania.getImagen();
+        for (Imagen img : imagenes) {
+            if(img.getId() == id){
+                imagenServicio.eliminarImagen(img);
+            }
+            cabania.setImagen(imagenes);
+            
+        }
+        cabaniaRepositorio.save(cabania);
+        
+        
+    }        
+        
+    
 
     public Cabania listarCabaniaPorId(Integer id){
         Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);

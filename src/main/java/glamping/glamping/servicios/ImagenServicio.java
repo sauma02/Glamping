@@ -24,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImagenServicio {
     @Autowired
     private ImagenRepositorio imagenRepositorio;
+    @Autowired
+    private FileStorageService storageService;
     @Transactional
     public void guardarImagen(Cabania cabania, Imagen imagen, MultipartFile file) throws MiExcepcion{
         try {
@@ -42,6 +44,10 @@ public class ImagenServicio {
         }
               
     }
-    
+    public void eliminarImagen(Imagen img){
+        storageService.deleteFileByName(img);
+        imagenRepositorio.delete(img);
+    }
+   
     
 }

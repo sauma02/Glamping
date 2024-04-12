@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <header>
+            <div class="nav-container">
+                <div class="nav">
+                    <ul>
+                        <li><a href="/admin">Inicio</a></li>
+                        <li><a href="/admin#servicios">Servicios</a></li>
+                        <li><a href="/admin/verCabañas">Ver Cabañas</a></li>
+                        <li><a href="/admin#nosotros">Nosotros</a></li>
+                        <li><a href="/admin/usuarios">Ver usuarios</a></li>
+                        <div class="user-layer">
+                            <h2 th:text="${nombreUsuario}"></h2>
+                            <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <div> 
+            <form th:action="@{/admin/cabania/editarCabaña/editar}" method="post">
+
+
+                <label for="id" >Id:</label>
+                <input type="text" id="id" name="id"  placeholder="id" th:value="${cabana.id}" readonly="true">
+               
+                <br><br>
+                <label for="nombre" >Nombre:</label>
+                <input type="text" id="nombre" name="nombre" th:value="${cabana.nombre}" placeholder="Nombre">
+                
+                <br><br>
+
+                <label for="capacidad">Capacidad:</label>
+                    <input type="text" id="capacidad" name="capacidad" th:value="${cabana.capacidad}" placeholder="Capacidad">
+
+                 
+              
+                <button type="submit">Editar</button>
+                <button><a th:href="@{/admin/verCabañas}">Regresar</a></button>
+
+
+            </form>
+        </div>
+    </body>
+</html>

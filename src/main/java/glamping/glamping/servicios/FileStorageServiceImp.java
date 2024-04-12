@@ -4,12 +4,15 @@
  */
 package glamping.glamping.servicios;
 
+import glamping.glamping.entidades.Imagen;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -67,7 +70,9 @@ public class FileStorageServiceImp implements FileStorageService {
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(root.toFile());
+        
     }
+    
 
     @Override
     public Stream<Path> loadAll() {
@@ -81,6 +86,18 @@ public class FileStorageServiceImp implements FileStorageService {
     @Override
     public MultipartFile listOneFile(MultipartFile file) {
           return file;
+    }
+
+    @Override
+    public void deleteFileByName(Imagen img) {
+        try {
+            FileSystemUtils.deleteRecursively(root.resolveSibling(img.getFileName()));
+        } catch (IOException ex) {
+           ex.printStackTrace();
+           if(ex.getCause() != null){
+               System.err.println("Error: "+ex.getCause().getMessage());
+           }
+        }
     }
     
 }

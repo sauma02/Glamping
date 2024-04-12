@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Admin
  */
 @Controller
-@RequestMapping("/cabania")
+
 public class CabaniaController {
         @Autowired
     private CabaniaServicio cabaniaServicio;
@@ -43,16 +43,5 @@ public class CabaniaController {
     public String cabania(){
         return "cabania.html";
     }
-     @GetMapping("/admin/verCabañas")
-    public String listarCabanias(@AuthenticationPrincipal UserDetails userDetails, Model model){
-        String username = userDetails.getUsername();
-        List<Cabania> listaCabanias = cabaniaServicio.listarCabanias();
-        for (Cabania cab : listaCabanias) {
-            model.addAttribute("cabania", cab);
-        }
-        model.addAttribute("listaCabanias", listaCabanias);
-        model.addAttribute("nombreUsuario", username);
-        return "listarCabañas.html";
-    }
-
+   
 }
