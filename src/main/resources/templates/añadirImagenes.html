@@ -16,7 +16,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <ul>
                         <li><a href="/admin">Inicio</a></li>
                         <li><a href="/admin#servicios">Servicios</a></li>
-                        <li><a href="/admin/verCabañas">Ver Cabañas</a></li>
+                        <li><a href="/admin/verCabanias">Ver Cabañas</a></li>
                         <li><a href="/admin#nosotros">Nosotros</a></li>
                         <li><a href="/admin/usuarios">Ver usuarios</a></li>
                         <div class="user-layer">
@@ -48,15 +48,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <tr>
                     <td>Id:</td>
                     <td>Nombre:</td>
-                    <td>Cabania:</td>
+                    <td>Cabaña:</td>
                     <td>Añadir Imagen</td>
-                    <td>Eliminar imagen</td>
+                    <td>Acciones:</td>
                 </tr>
-                <span th:if="${cabania.imagen != null}">
-                <tr th:each="imagen : ${cabania.imagen}">
-                    <td th:text="${imagenes.id} != null ? ${imagenes.id} : 'No hay imagen registrada'"></td>
-                    <td th:text="${imagenes.fileName} != null ? ${imagenes.fileName} : 'No hay nombre de imagen registrada'"></td>
-                    <td th:text="${imagenes.cabania.nombre}"></td>
+                <span th:if="${cabana.imagen != null}">
+                <tr th:each="imagen : ${cabana.imagen}">
+                    <td th:text="${imagen.id} != null ? ${imagen.id} : 'No hay imagen registrada'"></td>
+                    <td th:text="${imagen.fileName} != null ? ${imagen.fileName} : 'No hay nombre de imagen registrada'"></td>
+                    <td th:text="${imagen.cabania.nombre}"></td>
                     <td>
 
                         <form th:action="@{/admin/cabania/editarCabaña/añadir}" method="post">
@@ -66,13 +66,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                     </td>
                     <td>
-                        <form th:action="@{/admin/cabania/añadirImagenes/eliminar}" method="post">
+                        <form th:action="@{|/admin/cabania/añadirImagenes/eliminar/${imagen.id}|}" method="post">
+                             <input type="number" style="display: none;" id="id" name="id"  placeholder="id" th:value="${imagen.id}" readonly="true">
                             <button type="submit">Eliminar</button>
+                        </form>
+                        <form th:action="@{/admin/cabania/añadirImagenes/editar/${imagen.id}}" method="post">
+                                <input type="number" style="display: none;" id="id" name="id"  placeholder="id" th:value="${imagen.id}" readonly="true">
+                            <input type="file" id="imagen" name="imagen" multiple> 
+                            <button type="submit">Editar</button>
+                            
                         </form>
                     </td>
                 </tr>
                </span>
-                <span th:unless="${cabania.imagen == null}">
+                <span th:unless="${cabana.imagen == null}">
                     Vacio
                 </span>
             </table>
@@ -81,7 +88,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
 
 
-            <button><a th:href="@{/admin/verCabañas}">Regresar</a></button>
+            <button><a th:href="@{/admin/verCabanias}">Regresar</a></button>
 
         </div>
     </body>

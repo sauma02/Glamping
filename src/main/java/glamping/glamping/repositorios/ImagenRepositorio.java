@@ -6,6 +6,7 @@ package glamping.glamping.repositorios;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import glamping.glamping.entidades.Imagen;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,6 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ImagenRepositorio extends JpaRepository<Imagen, Integer> {
-    
+    Optional<Imagen> getImagenById(Integer id);
     
 }

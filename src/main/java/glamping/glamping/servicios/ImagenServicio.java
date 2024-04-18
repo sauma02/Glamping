@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,6 +48,15 @@ public class ImagenServicio {
     public void eliminarImagen(Imagen img){
         storageService.deleteFileByName(img);
         imagenRepositorio.delete(img);
+    }
+    public Imagen imagenPorId(Integer id){
+        Optional<Imagen> img = imagenRepositorio.getImagenById(id);
+        if(img.isPresent()){
+            Imagen img1 = img.get();
+            return img1;
+        }else{
+            return null;
+        }
     }
    
     

@@ -83,8 +83,6 @@ public class AdminController {
         return "admin.html";
     }
 
-
-
     @GetMapping("/admin/registrarCabañas")
     public String registrarCabania(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
@@ -144,7 +142,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/admin/verCabañas")
+    @GetMapping("/admin/verCabanias")
     public String listarCabanias(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         List<Cabania> listaCabanias = cabaniaServicio.listarCabanias();
@@ -162,51 +160,85 @@ public class AdminController {
         model.addAttribute("cabana", cabania);
         return "editarCabana.html";
     }
+
     @GetMapping("/admin/cabania/añadirImagenes/{id}")
-    public String editarImagenes(@AuthenticationPrincipal UserDetails userDetails, Model model, @PathVariable Integer id){
+    public String editarImagenes(@AuthenticationPrincipal UserDetails userDetails, Model model, @PathVariable Integer id) {
         Cabania cabania = cabaniaServicio.listarCabaniaPorId(id);
         List<Imagen> img = cabania.getImagen();
-         model.addAttribute("cabana", cabania);
+        model.addAttribute("cabana", cabania);
         model.addAttribute("imagenes", img);
         return "añadirImagenes.html";
     }
-    @PostMapping("/admin/cabania/añadirImagenes/añadir")
-    public String añadirImagenesForm(@ModelAttribute Cabania cabania, @ModelAttribute Imagen img, MultipartFile imagen){
+
+    @PostMapping("/admin/cabania/añadirImagenes/editar/{id}")
+    public String editarImagenCabana(@ModelAttribute Cabania cabania, @ModelAttribute List<Imagen> img, MultipartFile imagen, @PathVariable Integer id) {
         try {
-            cabaniaServicio.añadirImagenes(cabania, img, imagen);
-            return "redirect:/admin/cabania/añadirImagenes/{id}";
-            
+            cabaniaServicio.editarImagenes(id, cabania, img, imagen);
+            return "redirect:/admin/cabania/añadirImagenes/" + id;
         } catch (Exception e) {
             e.printStackTrace();
-            
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
+            }
+            return "error.html";
+        }
+
+    }
+
+    @PostMapping("/admin/cabania/añadirImagenes/añadir")
+    public String añadirImagenesForm(@ModelAttribute Cabania cabania, @ModelAttribute Imagen img, MultipartFile imagen) {
+        try {
+            cabaniaServicio.añadirImagenes(cabania, img, imagen);
+            return "redirect:/admin/cabania/añadirImagenes/" + cabania.getId();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
             return "error.html";
         }
     }
-    @PostMapping("/admin/cabania/añadirImagenes/eliminar")
-    public String eliminarImagenesForm(@ModelAttribute Cabania cabania, Integer id){
+
+    @PostMapping("/admin/cabania/añadirImagenes/eliminar/{id}")
+    public String eliminarImagenesForm(@ModelAttribute Cabania cabania, @PathVariable Integer id) {
         try {
-            cabaniaServicio.eliminarImagen(cabania, id);
-              return "redirect:/admin/cabania/añadirImagenes/{id}";
+            List<Imagen> imagenes = cabania.getImagen();
+            if (imagenes == null) {
+                imagenes = new ArrayList<>();
+            }
+            if (imagenes.isEmpty()) {
+                Imagen img = imagenServicio.imagenPorId(id);
+
+                if (img == null) {
+                    return "error.html";
+                } else {
+                    cabaniaServicio.eliminarImagen(imagenes, cabania, id);
+                    return "redirect:/admin/verCabanias";
+                }
+            }else{
+                return "error.html";
+            }
+
         } catch (Exception e) {
-             e.printStackTrace();
-            
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+            e.printStackTrace();
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
             return "error.html";
-            
+
         }
     }
 
     @PostMapping("/admin/cabania/editarCabaña/editar")
     public String editarCabanaForm(@ModelAttribute Cabania cabania, String nombre, Integer capacidad) {
         try {
-          
+
             cabaniaServicio.editarCabana(cabania.getId(), nombre, capacidad);
-            return "redirect:/admin/verCabañas";
+            return "redirect:/admin/verCabanias";
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getCause() != null) {
@@ -215,7 +247,8 @@ public class AdminController {
             return "error.html";
         }
     }
-        @GetMapping("/admin/usuarios")
+
+    @GetMapping("/admin/usuarios")
     public String usuarios(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
 
@@ -243,7 +276,7 @@ public class AdminController {
             String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Model model) throws MiExcepcion, Exception {
 
         try {
-            
+
             usuarioServicio.editar(usuario.getId(), nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
             return "redirect:/admin/usuarios";
         } catch (Exception e) {

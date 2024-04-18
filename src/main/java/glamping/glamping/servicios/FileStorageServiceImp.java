@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileStorageServiceImp implements FileStorageService {
 
-    private final Path root = Paths.get("src/main/resources/img");
+    private final Path root = Paths.get("src/main/resources/img/");
     //Se inicia el servicio para la creacion del directorio
     @Override
     public void init() {

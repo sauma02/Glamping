@@ -8,6 +8,7 @@ import glamping.glamping.entidades.Cabania;
 import glamping.glamping.entidades.Imagen;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.repositorios.CabaniaRepositorio;
+import glamping.glamping.repositorios.ImagenRepositorio;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,8 @@ public class CabaniaServicio {
     private FileStorageService storageService;
     @Autowired
     private ImagenServicio imagenServicio;
+    @Autowired
+    private ImagenRepositorio imagenRepositorio;
     @Transactional
     public void crearCabania(Cabania cabania){
         cabaniaRepositorio.save(cabania);
@@ -63,6 +66,31 @@ public class CabaniaServicio {
                 }
         
         }    
+    public void editarImagenes(Integer id, Cabania cabania, List<Imagen> img, MultipartFile imagen){
+        try {
+            for (Imagen imagen1 : img) {
+                if(imagen1.getId() == id){
+                    storageService.init();
+                    storageService.save(imagen);
+                    imagenServicio.eliminarImagen(imagen1);
+                    Imagen img2 = new Imagen();
+                    img2.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
+                    imagenServicio.guardarImagen(cabania, img2, imagen);
+                    img.add(img2);
+                    cabania.setImagen(img);
+                    cabaniaRepositorio.save(cabania);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            
+        }
+        
+    }
     public void añadirImagenes(Cabania cabania, Imagen img, MultipartFile imagen){
             try {
             List<Imagen> imagenes = cabania.getImagen();
@@ -83,8 +111,8 @@ public class CabaniaServicio {
             
         
     }        
-    public void eliminarImagen(Cabania cabania, Integer id){
-        List<Imagen> imagenes = cabania.getImagen();
+    public void eliminarImagen(List<Imagen> imagenes, Cabania cabania, Integer id){
+        
         for (Imagen img : imagenes) {
             if(img.getId() == id){
                 imagenServicio.eliminarImagen(img);
