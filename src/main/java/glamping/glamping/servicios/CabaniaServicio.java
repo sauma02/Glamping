@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 public class CabaniaServicio {
+
     @Autowired
     private CabaniaRepositorio cabaniaRepositorio;
     @Autowired
@@ -31,45 +32,45 @@ public class CabaniaServicio {
     private ImagenServicio imagenServicio;
     @Autowired
     private ImagenRepositorio imagenRepositorio;
+
     @Transactional
-    public void crearCabania(Cabania cabania){
+    public void crearCabania(Cabania cabania) {
         cabaniaRepositorio.save(cabania);
     }
-    public String registrarImagenCabania(String imagen){
+
+    public String registrarImagenCabania(String imagen) {
         return imagen;
-        
-        
+
     }
-    public void editarCabana(Integer id, String nombre, Integer capacidad){
+
+    public void editarCabana(Integer id, String nombre, Integer capacidad) {
         try {
             Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);
-        if(respuesta.isPresent()){
-           
-            Cabania cabania = respuesta.get();
-         
-            
-            cabania.setNombre(nombre);
-            cabania.setCapacidad(capacidad);
-          
-       
-            cabaniaRepositorio.save(cabania);
-            
-            
-        } 
-        }catch (Exception e) {
-                e.printStackTrace();
-                
-                if(e.getCause() != null){
-                    System.err.print("Error con causa: "+e.getMessage());
-                }
-                
-                }
-        
-        }    
-    public void editarImagenes(Integer id, Cabania cabania, List<Imagen> img, MultipartFile imagen){
+            if (respuesta.isPresent()) {
+
+                Cabania cabania = respuesta.get();
+
+                cabania.setNombre(nombre);
+                cabania.setCapacidad(capacidad);
+
+                cabaniaRepositorio.save(cabania);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            if (e.getCause() != null) {
+                System.err.print("Error con causa: " + e.getMessage());
+            }
+
+        }
+
+    }
+
+    public void editarImagenes(Integer id, Cabania cabania, List<Imagen> img, MultipartFile imagen) {
         try {
             for (Imagen imagen1 : img) {
-                if(imagen1.getId() == id){
+                if (imagen1.getId() == id) {
                     storageService.init();
                     storageService.save(imagen);
                     imagenServicio.eliminarImagen(imagen1);
@@ -83,16 +84,17 @@ public class CabaniaServicio {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
-            
+
         }
-        
+
     }
-    public void añadirImagenes(Cabania cabania, Imagen img, MultipartFile imagen){
-            try {
+
+    public void añadirImagenes(Cabania cabania, Imagen img, MultipartFile imagen) {
+        try {
             List<Imagen> imagenes = cabania.getImagen();
             storageService.init();
             storageService.save(imagen);
@@ -103,72 +105,88 @@ public class CabaniaServicio {
             cabaniaRepositorio.save(cabania);
         } catch (Exception e) {
             e.printStackTrace();
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
         }
-            
-            
-        
-    }        
-    public void eliminarImagen(List<Imagen> imagenes, Cabania cabania, Integer id){
-        
-        for (Imagen img : imagenes) {
-            if(img.getId() == id){
-                imagenServicio.eliminarImagen(img);
-            }
-            cabania.setImagen(imagenes);
-            
-        }
-        cabaniaRepositorio.save(cabania);
-        
-        
-    }        
-        
-    
 
-    public Cabania listarCabaniaPorId(Integer id){
+    }
+
+    public void eliminarImagen(Integer id) {
+        try {
+            Imagen img = imagenServicio.imagenPorId(id);
+            if(img != null){
+                    Cabania cabania = img.getCabania();
+                    List<Imagen> imagenes = cabania.getImagen();
+                    if(imagenes != null){
+                        imagenes.removeIf(imagen -> imagen.getId().equals(id) );
+                        cabania.setImagen(imagenes);
+                        cabaniaRepositorio.save(cabania);
+                    }
+                    imagenRepositorio.delete(img);
+                    storageService.delete(img);
+                    
+            }
+
+                
+
+            
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
+            }
+        }
+
+    }
+
+    public Cabania listarCabaniaPorId(Integer id) {
         Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);
-        if(respuesta.isPresent()){
+        if (respuesta.isPresent()) {
             Cabania cabania = respuesta.get();
             return cabania;
-        }else{
+        } else {
             return null;
         }
     }
-    public void eliminarCabaniaPorId(Integer id){
+
+    public void eliminarCabaniaPorId(Integer id) {
         Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);
-        if(respuesta.isPresent()){
+        if (respuesta.isPresent()) {
             Cabania cabania = respuesta.get();
             cabaniaRepositorio.delete(cabania);
         }
-   }
-    public Cabania listarCabaniaPorNombre(String nombre){
+    }
+
+    public Cabania listarCabaniaPorNombre(String nombre) {
         Cabania respuesta = cabaniaRepositorio.findFirstByNombre(nombre);
-        if(respuesta!=null){
-          return respuesta;   
-        }else{
+        if (respuesta != null) {
+            return respuesta;
+        } else {
             return null;
         }
-       
-        
+
     }
-    public List<Cabania> listarCabanias(){
+
+    public List<Cabania> listarCabanias() {
         return cabaniaRepositorio.findAll();
     }
-    public void validar(String nombre, Integer capacidad, Imagen imagen, Boolean estado) throws MiExcepcion{
-        if(nombre.isEmpty() || nombre==null){
+
+    public void validar(String nombre, Integer capacidad, Imagen imagen, Boolean estado) throws MiExcepcion {
+        if (nombre.isEmpty() || nombre == null) {
             throw new MiExcepcion("El nombre no puede ser nulo");
         }
-        if(capacidad==null){
+        if (capacidad == null) {
             throw new MiExcepcion("El capacidad no puede ser nulo");
         }
-        if(imagen==null){
+        if (imagen == null) {
             throw new MiExcepcion("El imagen no puede ser nulo");
         }
-        if(estado==null){
+        if (estado == null) {
             throw new MiExcepcion("El estado no puede ser nulo");
         }
     }
-    
+
 }

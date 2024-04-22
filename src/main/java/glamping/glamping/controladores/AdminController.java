@@ -203,24 +203,10 @@ public class AdminController {
     }
 
     @PostMapping("/admin/cabania/añadirImagenes/eliminar/{id}")
-    public String eliminarImagenesForm(@ModelAttribute Cabania cabania, @PathVariable Integer id) {
+    public String eliminarImagenesForm(@PathVariable Integer id) {
         try {
-            List<Imagen> imagenes = cabania.getImagen();
-            if (imagenes == null) {
-                imagenes = new ArrayList<>();
-            }
-            if (imagenes.isEmpty()) {
-                Imagen img = imagenServicio.imagenPorId(id);
-
-                if (img == null) {
-                    return "error.html";
-                } else {
-                    cabaniaServicio.eliminarImagen(imagenes, cabania, id);
-                    return "redirect:/admin/verCabanias";
-                }
-            }else{
-                return "error.html";
-            }
+            cabaniaServicio.eliminarImagen(id);
+            return "redirect:/admin/verCabanias";
 
         } catch (Exception e) {
             e.printStackTrace();

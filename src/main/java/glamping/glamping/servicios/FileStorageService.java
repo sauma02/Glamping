@@ -22,4 +22,5 @@ public interface FileStorageService {
     public void deleteAll();
     public Stream<Path> loadAll();
     public void deleteFileByName(Imagen file);
+    public void delete(Imagen img);
 }

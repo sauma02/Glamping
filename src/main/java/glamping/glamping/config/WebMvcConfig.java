@@ -25,7 +25,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new StringToDateConverter("dd-mm-yyyy");
     }
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry){
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/img/**")
                 .addResourceLocations("classpath:/static/img/");
     }

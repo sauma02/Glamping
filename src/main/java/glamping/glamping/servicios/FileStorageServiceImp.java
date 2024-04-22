@@ -50,7 +50,19 @@ public class FileStorageServiceImp implements FileStorageService {
     } catch (IOException e) {
         throw new RuntimeException("Error al guardar el archivo: " + e.getMessage(), e);
     }
+
 }
+    @Override
+    public void delete(Imagen img){
+        try {
+            Path filePath = this.root.resolve(img.getFileName());
+            if(Files.exists(filePath)){
+                Files.delete(filePath);
+            }
+         } catch (IOException e) {
+        throw new RuntimeException("Error al eliminar el archivo: " + e.getMessage(), e);
+    }
+   }
 
     @Override
     public Resource load(String filename) {

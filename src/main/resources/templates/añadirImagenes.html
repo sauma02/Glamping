@@ -66,11 +66,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                     </td>
                     <td>
-                        <form th:action="@{|/admin/cabania/añadirImagenes/eliminar/${imagen.id}|}" method="post">
+                        <form th:action="@{|/admin/cabania/añadirImagenes/eliminar/${imagen.id})|}" method="post">
                              <input type="number" style="display: none;" id="id" name="id"  placeholder="id" th:value="${imagen.id}" readonly="true">
                             <button type="submit">Eliminar</button>
                         </form>
-                        <form th:action="@{/admin/cabania/añadirImagenes/editar/${imagen.id}}" method="post">
+                        <form th:action="@{|/admin/cabania/añadirImagenes/editar/${imagen.id}|}" method="post" enctype="multipart/form-data">
                                 <input type="number" style="display: none;" id="id" name="id"  placeholder="id" th:value="${imagen.id}" readonly="true">
                             <input type="file" id="imagen" name="imagen" multiple> 
                             <button type="submit">Editar</button>
@@ -80,7 +80,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </tr>
                </span>
                 <span th:unless="${cabana.imagen == null}">
-                    Vacio
+                    <form th:action="@{|/admin/cabania/editarCabaña/añadir|}" method="post" enctype="multipart/form-data">
+                            <input type="file" id="imagen" name="imagen" multiple> 
+                            <button type="submit">Añadir</button>
+                        </form>
                 </span>
             </table>
 
