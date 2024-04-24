@@ -161,7 +161,7 @@ public class AdminController {
         return "editarCabana.html";
     }
 
-    @GetMapping("/admin/cabania/añadirImagenes/{id}")
+    @GetMapping("/admin/cabania/aniadirImagenes/{id}")
     public String editarImagenes(@AuthenticationPrincipal UserDetails userDetails, Model model, @PathVariable Integer id) {
         Cabania cabania = cabaniaServicio.listarCabaniaPorId(id);
         List<Imagen> img = cabania.getImagen();
@@ -170,11 +170,40 @@ public class AdminController {
         return "añadirImagenes.html";
     }
 
-    @PostMapping("/admin/cabania/añadirImagenes/editar/{id}")
-    public String editarImagenCabana(@ModelAttribute Cabania cabania, @ModelAttribute List<Imagen> img, MultipartFile imagen, @PathVariable Integer id) {
+    @PostMapping("/admin/cabania/aniadirImagenes/editar/{id}")
+    public String editarImagenCabana(@RequestParam("imagen") MultipartFile imagen, @PathVariable Integer id) {
         try {
-            cabaniaServicio.editarImagenes(id, cabania, img, imagen);
-            return "redirect:/admin/cabania/añadirImagenes/" + id;
+            Imagen img = imagenServicio.imagenPorId(id);
+            Cabania cabania = img.getCabania();
+            storageService.init();
+            if(imagen.isEmpty()){
+                System.err.println("Imagen vacia");
+                return "redirect:/admin/verCabanias";
+            }
+            if(storageService.listOneFile(imagen) == imagen){
+                storageService.delete2(imagen);
+                
+            }else if(storageService.listOneFile(imagen).isEmpty()){
+                return "redirect:/admin/verCabanias";
+            }
+           
+            List<Imagen> imagenes = cabania.getImagen();
+              for (Imagen imag : imagenes) {
+                if(img == imag){
+                    storageService.delete(imag);
+                    storageService.save(imagen);
+                    imag.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
+                    imagenServicio.guardarImagen(cabania, imag, imagen);
+                    imagenes.remove(imag);
+                    imagenes.add(img);
+                }
+            }
+              cabaniaServicio.editarImagenes(cabania);
+             
+                
+            
+            
+            return "redirect:/admin/verCabanias";
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -186,11 +215,66 @@ public class AdminController {
 
     }
 
-    @PostMapping("/admin/cabania/añadirImagenes/añadir")
-    public String añadirImagenesForm(@ModelAttribute Cabania cabania, @ModelAttribute Imagen img, MultipartFile imagen) {
+    @PostMapping("/admin/cabania/aniadirImagenes/aniadir")
+    public String añadirImagenesForm(@RequestParam("id") Integer id, @RequestParam("imagen[]") MultipartFile[] imagen) {
         try {
-            cabaniaServicio.añadirImagenes(cabania, img, imagen);
-            return "redirect:/admin/cabania/añadirImagenes/" + cabania.getId();
+            storageService.init();
+            Cabania cabania = cabaniaServicio.listarCabaniaPorId(id);
+            Imagen img = new Imagen();
+            List<Imagen> listaImagenes = cabania.getImagen();
+            if (listaImagenes == null || listaImagenes.isEmpty()) {
+                List<Imagen> imgList = new ArrayList<>();
+                cabania.setImagen(imgList);
+
+                for (MultipartFile file : imagen) {
+                    if (storageService.listOneFile(file).isEmpty() || storageService.listOneFile(file) == null) {
+                        img.setFileName(storageService.listOneFile(file).getOriginalFilename());
+                        // Asignar la imagen a la lista de imágenes de la cabaña
+
+                        listaImagenes.add(img);
+
+                        storageService.save(file);
+                    }
+                    if (file == storageService.listOneFile(file)) {
+                        MultipartFile file2 = storageService.listOneFile(file);
+                        storageService.delete2(file2);
+                        img.setFileName(storageService.listOneFile(file).getOriginalFilename());
+                        // Asignar la imagen a la lista de imágenes de la cabaña
+
+                        listaImagenes.add(img);
+                        storageService.save(file);
+
+                    }
+                }
+            }else{
+                for (MultipartFile file : imagen) {
+                if (storageService.listOneFile(file).isEmpty() || storageService.listOneFile(file) == null) {
+                    img.setFileName(storageService.listOneFile(file).getOriginalFilename());
+                    // Asignar la imagen a la lista de imágenes de la cabaña
+
+                    listaImagenes.add(img);
+
+                    storageService.save(file);
+                }
+                if (file == storageService.listOneFile(file)) {
+                    MultipartFile file2 = storageService.listOneFile(file);
+                    storageService.delete2(file2);
+                    img.setFileName(storageService.listOneFile(file).getOriginalFilename());
+                    // Asignar la imagen a la lista de imágenes de la cabaña
+
+                    listaImagenes.add(img);
+                    storageService.save(file);
+
+                }
+
+            }
+            }
+            
+            cabania.setImagen(listaImagenes);
+            cabaniaServicio.añadirImagenes(cabania, imagen);
+            // Informar sobre el éxito del registro
+
+            return "redirect:/admin/verCabanias";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -279,5 +363,21 @@ public class AdminController {
         }
 
     }
+    @PostMapping("/admin/verCabanias/{id}")
+    public String cambiarEstado(@PathVariable Integer id, @RequestParam("estado") boolean estado){
+        try {
+            cabaniaServicio.cambiarEstado(id, estado);
+            return "redirect:/admin/verCabanias";
+        } catch (Exception e) {
+             e.printStackTrace();
 
+            // You can also log the cause of the exception if available
+            if (e.getCause() != null) {
+                System.err.println("Cause: " + e.getCause().getMessage());
+            }
+
+            // You can return an error page or redirect the user to an error page
+            return "error.html";
+        }
+    }
 }

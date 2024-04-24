@@ -37,6 +37,23 @@ public class CabaniaServicio {
     public void crearCabania(Cabania cabania) {
         cabaniaRepositorio.save(cabania);
     }
+    
+    public void cambiarEstado(Integer id, boolean estado){
+        
+        try {
+            Optional<Cabania> cabania = cabaniaRepositorio.findById(id);
+            if(cabania.isPresent()){
+                Cabania cab = cabania.get();
+                cab.setEstado(estado);
+                cabaniaRepositorio.save(cab);
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+        }
+               
+    }
 
     public String registrarImagenCabania(String imagen) {
         return imagen;
@@ -67,41 +84,22 @@ public class CabaniaServicio {
 
     }
 
-    public void editarImagenes(Integer id, Cabania cabania, List<Imagen> img, MultipartFile imagen) {
-        try {
-            for (Imagen imagen1 : img) {
-                if (imagen1.getId() == id) {
-                    storageService.init();
-                    storageService.save(imagen);
-                    imagenServicio.eliminarImagen(imagen1);
-                    Imagen img2 = new Imagen();
-                    img2.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
-                    imagenServicio.guardarImagen(cabania, img2, imagen);
-                    img.add(img2);
-                    cabania.setImagen(img);
-                    cabaniaRepositorio.save(cabania);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            if (e.getCause() != null) {
-                System.err.println("Error: " + e.getCause().getMessage());
-            }
-
-        }
-
+    public void editarImagenes(Cabania cabania){
+        cabaniaRepositorio.save(cabania);
     }
 
-    public void añadirImagenes(Cabania cabania, Imagen img, MultipartFile imagen) {
+    public void añadirImagenes(Cabania cabania, MultipartFile[] imagen) {
         try {
-            List<Imagen> imagenes = cabania.getImagen();
-            storageService.init();
-            storageService.save(imagen);
-            img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
-            imagenes.add(img);
-            imagenServicio.guardarImagen(cabania, img, imagen);
-            cabania.setImagen(imagenes);
+            
+
+            for (MultipartFile file : imagen) {
+                Imagen img = new Imagen();
+                
+                img.setFileName(storageService.listOneFile(file).getOriginalFilename());
+                
+                imagenServicio.guardarImagen(cabania, img, file);
+            }
+            
             cabaniaRepositorio.save(cabania);
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,22 +113,18 @@ public class CabaniaServicio {
     public void eliminarImagen(Integer id) {
         try {
             Imagen img = imagenServicio.imagenPorId(id);
-            if(img != null){
-                    Cabania cabania = img.getCabania();
-                    List<Imagen> imagenes = cabania.getImagen();
-                    if(imagenes != null){
-                        imagenes.removeIf(imagen -> imagen.getId().equals(id) );
-                        cabania.setImagen(imagenes);
-                        cabaniaRepositorio.save(cabania);
-                    }
-                    imagenRepositorio.delete(img);
-                    storageService.delete(img);
-                    
+            if (img != null) {
+                Cabania cabania = img.getCabania();
+                List<Imagen> imagenes = cabania.getImagen();
+                if (imagenes != null) {
+                    imagenes.removeIf(imagen -> imagen.getId().equals(id));
+                    cabania.setImagen(imagenes);
+                    cabaniaRepositorio.save(cabania);
+                }
+                imagenRepositorio.delete(img);
+                storageService.delete(img);
+
             }
-
-                
-
-            
 
         } catch (Exception e) {
 

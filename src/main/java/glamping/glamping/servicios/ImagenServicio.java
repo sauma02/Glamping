@@ -30,7 +30,8 @@ public class ImagenServicio {
     @Transactional
     public void guardarImagen(Cabania cabania, Imagen imagen, MultipartFile file) throws MiExcepcion{
         try {
-            Path ruta = Paths.get("src/main/resources/img" + file.getOriginalFilename());
+            Path ruta = Paths.get("src/main/resources/img/" + file.getOriginalFilename());
+
             imagen.setRuta(ruta.toString());
             imagen.setTamano(file.getSize());
             imagen.setFileName(file.getOriginalFilename());
@@ -44,6 +45,25 @@ public class ImagenServicio {
             
         }
               
+    }
+    public void editarImagen(Cabania cabania, Imagen imagen, MultipartFile file) throws MiExcepcion{
+        try {
+             Path ruta = Paths.get("src/main/resources/img/" + file.getOriginalFilename());
+            
+            imagen.setRuta(ruta.toString());
+            imagen.setTamano(file.getSize());
+            
+            imagen.setFileType(file.getContentType());
+            imagen.setCabania(cabania);
+            imagenRepositorio.save(imagen);
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            
+        }
     }
     public void eliminarImagen(Imagen img){
         storageService.deleteFileByName(img);

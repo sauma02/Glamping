@@ -62,6 +62,7 @@ public class FileStorageServiceImp implements FileStorageService {
          } catch (IOException e) {
         throw new RuntimeException("Error al eliminar el archivo: " + e.getMessage(), e);
     }
+        
    }
 
     @Override
@@ -110,6 +111,19 @@ public class FileStorageServiceImp implements FileStorageService {
                System.err.println("Error: "+ex.getCause().getMessage());
            }
         }
+    }
+
+    @Override
+    public void delete2(MultipartFile file) {
+         try {
+            Path filePath = this.root.resolve(file.getOriginalFilename());
+            if(Files.exists(filePath)){
+                Files.delete(filePath);
+                
+            }
+         } catch (IOException e) {
+        throw new RuntimeException("Error al eliminar el archivo: " + e.getMessage(), e);
+    }
     }
     
 }

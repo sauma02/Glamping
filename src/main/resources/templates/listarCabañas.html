@@ -69,16 +69,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                             </span>
                                         </span>
                                     </td>
-                                    <td th:text="${cabania.estado}"></td>
+                                    <td th:text="${cabania.estado == true} ? ' Activa ': 'Desactivada'"></td>
                                     <td>
                                         <form>
                                             <button id='editar' name="editar"><a th:href =" @{|/admin/cabania/editarCabaña/${cabania.id}|}">Editar</a></button>
                                         </form>
                                         <form>
-                                            <button id='editar' name="editar"><a th:href="@{|/admin/cabania/añadirImagenes/${cabania.id}|}">Añadir/Quitar Imagenes</a></button>
+                                            <button id='editar' name="editar"><a th:href="@{|/admin/cabania/aniadirImagenes/${cabania.id}|}">Añadir/Quitar/Editar Imagenes</a></button>
                                         </form>
-                                        <form  method="post" action="">
-                                            <button id="desactivar" name="desactivar">Estado</button>
+                                        <form th:action="@{|/admin/verCabanias/${cabania.id}|}" method="post" >
+                                            <span th:if="${cabania.estado == true}">
+                                            <button id="estado" name="estado" value="false">Estado</button>
+                                            </span>
+                                            <span th:unless="${cabania.estado == true}">
+                                                <button id="estado" name="estado" value="true">Estado</button>
+                                            </span>
                                         </form>
                                         <form>
                                             <button id='eliminar' name="eliminar">Eliminar</button>
