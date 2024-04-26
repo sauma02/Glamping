@@ -67,8 +67,8 @@ public class UsuarioServicio implements UserDetailsService {
         return user;
     }
     public void crearUsuarioAdmin(String nombre, String username, String password,String contacto, String contactoEmergencia,
-            String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento){
-         Roles rol = rolesRepositorio.findFirstById(2);
+            String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, String role){
+         Roles rol = rolesRepositorio.findFirstByName(role);
         if(rol == null){
             rol = new Roles(null, "admin");
             rolesRepositorio.save(rol);
@@ -81,6 +81,10 @@ public class UsuarioServicio implements UserDetailsService {
         admin.setUsername(username);
         admin.setEmail(email);
         admin.setPassword(password);
+        admin.setContactoEmergencia(contactoEmergencia);
+        admin.setContacto(contacto);
+        admin.setFechaNacimiento(fechaNacimiento);
+        admin.setParentesco(parentesco);
         admin.setRoles(rol);
         usuarioRepositorio.save(admin);
     }
@@ -109,11 +113,14 @@ public class UsuarioServicio implements UserDetailsService {
      
     }
     public void editar(Integer id, String nombre, String username, String password,String contacto, String contactoEmergencia,
-            String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{
+            String nombreContactoEmergencia, String parentesco, String email, String rol, LocalDate fechaNacimiento) throws MiExcepcion{
         
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+        
         if(respuesta.isPresent()){
-            Usuario usuario = respuesta.get();
+        Usuario usuario = respuesta.get();
+        Roles rol1 = usuario.getRoles();
+        rol1.setName(rol);
         usuario.setNombre(nombre);
         usuario.setUsername(username);
         usuario.setPassword(password);
@@ -123,6 +130,9 @@ public class UsuarioServicio implements UserDetailsService {
         usuario.setParentesco(parentesco);
         usuario.setEmail(email);
         usuario.setFechaNacimiento(fechaNacimiento);
+        usuario.setRoles(rol1);
+        
+        
         usuarioRepositorio.save(usuario);
         }
     }
@@ -151,7 +161,14 @@ public class UsuarioServicio implements UserDetailsService {
         Usuario usuario = usuarioRepositorio.findByEmail(email);
         return usuario;
     }
-    
+    public Usuario encontrarPorEmail(String email){
+        Usuario usuario = usuarioRepositorio.findFirstByEmail(email);
+        return usuario;
+    }
+    public Usuario encontrarPorUsername(String username){
+        Usuario usuario = usuarioRepositorio.findByUsername(username);
+        return usuario;
+    }
     public void validar(String nombre, String username, String password, 
             String email, LocalDate fechaNacimiento) throws MiExcepcion{
         if(nombre.isEmpty() || nombre == null){

@@ -37,6 +37,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </section>
                     <main>
                         <div class="main-container">
+                            <button id="userAdmin" name="userAdmin"><a th:href="@{|/admin/usuarios/crearUsuarioAdmin|}">Crear usuario</a></button>
                             <table>
                                 <tr>
                                     <th>Id:</th>
@@ -83,10 +84,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <form>
                                             <button id='editar' name="editar" ><a th:href="@{|/admin/usuarios/editarUsuario/${usuario.id}|}">Editar</a></button>
                                         </form>
-                                        <form  method="post" action="">
-                                            <button id="desactivar" name="desactivar">Estado</button>
-                                        </form>
-                                        <form>
+                                        <form method="post" th:action="@{|/admin/usuarios/eliminar/${usuario.id}|}">
                                             <button id='eliminar' name="eliminar">Eliminar</button>
                                         </form>
                                     </td>

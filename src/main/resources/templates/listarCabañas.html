@@ -85,7 +85,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                 <button id="estado" name="estado" value="true">Estado</button>
                                             </span>
                                         </form>
-                                        <form>
+                                        <form th:action="@{|/admin/verCabanias/eliminar/${cabania.id}|}" method="post">
                                             <button id='eliminar' name="eliminar">Eliminar</button>
                                         </form>
                                     </td>

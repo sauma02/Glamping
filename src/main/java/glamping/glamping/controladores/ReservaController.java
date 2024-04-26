@@ -24,7 +24,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -64,7 +66,13 @@ public class ReservaController {
         }
         return fechasNoDisponibles;
     }
-    
+    @GetMapping("/usuario/reservaForm/{id}")
+    public List<LocalDate> calendario(@PathVariable Integer id, ModelMap map){
+        Cabania cabania = cabaniaServicio.listarCabaniaPorId(id);
+        map.addAttribute("cabania", cabania);
+        List<LocalDate> listaFechas = reservaServicio.obtenerFechasReservadasParaCabañaPorId(id);
+       return listaFechas;
+    }
     @PostMapping("/usuario/reservaForm/reserva")
     public String submitReserva(@ModelAttribute("reserva") Reserva reserva, @RequestParam("nombreUsuario") String nombreUsuario, @RequestParam("cabaniaId") Integer cabaniaId,
     @RequestParam("fechaInicio") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaInicio, 
@@ -95,7 +103,7 @@ public class ReservaController {
                 map.addAttribute("reservaExito", "Se ha registrado su reserva con exito");
                 return "usuario.html";
             } else {
-                map.addAttribute("fecha_error", "La cabaña no se encuentra disponible en estas fechas");
+                map.addAttribute("fecha_error", "La cabaña no se encuentra disponible en estas fechas: "+fechaInicio+ " - " +fechaFinal);
                 map.addAttribute("fechasNoDisponibles", fechasNoDisponibles);
                 map.addAttribute("nombreUsuario", nombreUsuario); // Mantener el nombre de usuario en el formulario
                 map.addAttribute("cabaniasDisponibles", cabaniaRepositorio.findAll()); // Recargar la lista de cabañas disponibles

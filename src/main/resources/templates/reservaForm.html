@@ -6,155 +6,209 @@
         <title>Glamping</title>
         <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+                <script type="text/javascript" th:src="@{https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.js}"></script>
+                <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.css}" rel="stylesheet">
+                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-                <style>
-                    body {
-                        margin: 0;
-                        padding: 0;
-                        font-family: Arial, sans-serif;
-                        background-color: #f8f8f8;
-                    }
 
-                    /* Estilos para el encabezado */
-                    header {
-                        background-color: #333;
-                        color: #fff;
-                    }
+                    <style>
+                        body {
+                            margin: 0;
+                            padding: 0;
+                            font-family: Arial, sans-serif;
+                            background-color: #f8f8f8;
+                        }
 
-                    .nav-container {
-                        max-width: 960px;
-                        margin: 0 auto;
-                        padding: 10px;
-                    }
+                        /* Estilos para el encabezado */
+                        header {
+                            background-color: #333;
+                            color: #fff;
+                        }
 
-                    .nav {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                    }
+                        .nav-container {
+                            max-width: 960px;
+                            margin: 0 auto;
+                            padding: 10px;
+                        }
 
-                    .user-layer {
-                        margin-left: auto; /* Mueve .user-layer al extremo derecho */
-                    }
+                        .nav {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        }
 
-                    .nav ul {
-                        list-style: none;
-                        display: flex;
-                        align-items: center;
-                    }
+                        .user-layer {
+                            margin-left: auto; /* Mueve .user-layer al extremo derecho */
+                        }
 
-                    .nav li {
-                        margin-right: 20px;
-                    }
+                        .nav ul {
+                            list-style: none;
+                            display: flex;
+                            align-items: center;
+                        }
 
-                    .nav a {
-                        text-decoration: none;
-                        color: #fff;
-                        font-weight: bold;
-                    }
+                        .nav li {
+                            margin-right: 20px;
+                        }
 
-                    /* Estilos para la sección principal */
-                    section {
-                        text-align: center;
-                    }
+                        .nav a {
+                            text-decoration: none;
+                            color: #fff;
+                            font-weight: bold;
+                        }
 
-                    .hero {
-                        background: #f0f0f0;
-                        padding: 50px;
-                    }
+                        /* Estilos para la sección principal */
+                        section {
+                            text-align: center;
+                        }
 
-                    .hero-title {
-                        font-size: 2em;
-                        margin-bottom: 20px;
-                    }
+                        .hero {
+                            background: #f0f0f0;
+                            padding: 50px;
+                        }
 
-                    /* Estilos para la imagen de fondo */
-                    .hero img {
-                        width: 100%;
-                        height: auto;
-                        border-radius: 10px;
-                    }
+                        .hero-title {
+                            font-size: 2em;
+                            margin-bottom: 20px;
+                        }
 
-                    /* Estilos para el pie de página */
-                    footer {
-                        background-color: #333;
-                        color: #fff;
-                        text-align: center;
-                        padding: 10px;
-                    }
+                        /* Estilos para la imagen de fondo */
+                        .hero img {
+                            width: 100%;
+                            height: auto;
+                            border-radius: 10px;
+                        }
 
-                    /* Estilos para la sección del pie de página */
-                    .footer-section {
-                        height: 100px; /* Ajusta según sea necesario */
-                    }
-                </style>
-                </head>
+                        /* Estilos para el pie de página */
+                        footer {
+                            background-color: #333;
+                            color: #fff;
+                            text-align: center;
+                            padding: 10px;
+                        }
 
-                <body>
-                    <header>
-                        <div class="nav-container">
-                            <div class="nav">
-                                <ul>
-                                    <li><a href="/usuario">Inicio</a></li>
-                                    <li><a href="/usuario#servicios">Servicios</a></li>
-                                    <li><a href="/usuario/cabanias">Cabañas</a></li>
-                                    <li><a href="/usuario#nosotros">Nosotros</a></li>
-                                    <div class="user-layer">
-                                        <h2 th:text="${nombreUsuario}"></h2>
-                                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                                    </div>
-                                </ul>
+                        /* Estilos para la sección del pie de página */
+                        .footer-section {
+                            height: 100px; /* Ajusta según sea necesario */
+                        }
+                    </style>
+                    </head>
 
+                    <body>
+                        <header>
+                            <div class="nav-container">
+                                <div class="nav">
+                                    <ul>
+                                        <li><a href="/usuario">Inicio</a></li>
+                                        <li><a href="/usuario#servicios">Servicios</a></li>
+                                        <li><a href="/usuario/cabanias">Cabañas</a></li>
+                                        <li><a href="/usuario#nosotros">Nosotros</a></li>
+                                        <div class="user-layer">
+                                            <h2 th:text="${nombreUsuario}"></h2>
+                                            <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                                        </div>
+                                    </ul>
+
+                                </div>
                             </div>
-                        </div>
-                    </header>
-                    <section>
-                        <div class="hero">
-                            <div class="hero-title">Glamping Santa Helena</div>
-                            <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
-                        </div>
-                    </section>
-                    <main>
-                        <div class="main-container">
-                            <form th:action="@{/usuario/reservaForm/reserva}" method="post">
-                                <label for="usuario" >Usuario:</label>
-                                <input type="text" th:value="${nombreUsuario}" id="usuario" name="nombreUsuario" readOnly="true"><br><br>
+                        </header>
+                        <section>
+                            <div class="hero">
+                                <div class="hero-title">Glamping Santa Helena</div>
+                                <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
+                            </div>
+                        </section>
+                        <main>
+                            <div class="main-container">
+                                <form th:action="@{/usuario/reservaForm/reserva}" method="post">
+                                    <label for="usuario" >Usuario:</label>
+                                    <input type="text" th:value="${nombreUsuario}" id="usuario" name="nombreUsuario" readOnly="true"><br><br>
 
-                                            <label for="cabanias">Cabañas:</label>
-                                            <select id="cabanias" name="cabaniaId" required>
-                                                <option value="">Seleccionar Cabaña</option>
-                                                <option name="cabaniaId" th:each ="cabania : ${cabaniasDisponibles}" th:value="${cabania.id}" th:text="${cabania.nombre}"></option>
+                                                <label for="cabanias">Cabañas:</label>
+                                                <select id="cabanias" name="cabaniaId" required>
+                                                    <option value="">Seleccionar Cabaña</option>
+                                                    <option name="cabaniaId" th:each ="cabania : ${cabaniasDisponibles}" th:value="${cabania.id}" th:text="${cabania.nombre}"></option>
 
-                                            </select><br><br>
+                                                </select><br><br>
 
-                                                    <label for="fechaInicio">Fecha de inicio:</label>
-                                                    <input type="date" id="fechaInicio" name="fechaInicio" required>
-                                                        <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
-                                                        <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
-
-
-                                                        <br><br>
-
-                                                                <label for="fechaFinal">Fecha final:</label>
-                                                                <input type="date" id="fechaFinal" name="fechaFinal" required>
-                                                                    <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
-                                                                    <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+                                                        <label for="fechaInicio">Fecha de inicio:</label>
+                                                        <input type="date" id="fechaInicio" name="fechaInicio" required>
+                                                            <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
+                                                            <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
 
 
-                                                                    <br><br>
+                                                            <br><br>
 
-                                                                            <button type="submit">Reservar</button>
-                                                                            </form>
-                                                                            </div>
-                                                                            </main>
+                                                                    <label for="fechaFinal">Fecha final:</label>
+                                                                    <input type="date" id="fechaFinal" name="fechaFinal" required>
+                                                                        <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
+                                                                        <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
 
-                                                                            <section>
-                                                                                <div class="footer-section"></div>
-                                                                            </section>
-                                                                            <footer>
 
-                                                                            </footer>
-                                                                            </body>
+                                                                        <br><br>
 
-                                                                            </html>
+                                                                                <button type="submit">Reservar</button>
+                                                                                </form>
+                                                                                </div>
+                                                                                </main>
+
+                                                                                <section>
+                                                                                    <div class="footer-section"></div>
+                                                                                </section>
+                                                                                <footer>
+
+                                                                                </footer>
+                                                                                </body>
+                                                                                <script th:inline="javascript">
+                                                                                    $(document).ready(function () {
+                                                                                        var calendarInicio = document.getElementById('fechaInicio');
+                                                                                        var calendarFinal = document.getElementById('fechaFinal');
+                                                                                                var bookingUrl = /*[[ ${'/usuario/reservaForm/'} ]]*/;
+                                                                                                var cabaniaId = /*[[ ${'cabania.id'} ]]*/;
+
+                                                                                        var getBookedDates = function () {
+                                                                                            return $.ajax({
+                                                                                                url: bookingUrl + '${' + cabaniaId + '}',
+                                                                                                method: 'GET',
+                                                                                                success: function (data) {
+                                                                                                    var formattedDates = data.map(function (date) {
+                                                                                                        // Convert date format from dd-MM-yyyy to ISO 8601 format (yyyy-MM-dd)
+                                                                                                        var parts = date.split('-');
+                                                                                                        return parts[2] + '-' + parts[1] + '-' + parts[0];
+                                                                                                    });
+                                                                                                    renderEvents(formattedDates);
+
+                                                                                                },
+                                                                                                error: function (xhr, status, error) {
+                                                                                                    consoler.error("Error al traer fechas: ", error);
+                                                                                                }
+                                                                                            });
+                                                                                        };
+
+                                                                                        var renderEvents = function (bookedDates) {
+                                                                                            console.log("Rendering events on calendars...");
+                                                                                            var events = [];
+                                                                                            bookedDates.forEach(function (date) {
+                                                                                                events.push({
+                                                                                                    title: 'Booked',
+                                                                                                    start: date,
+                                                                                                    allDay: true,
+                                                                                                    rendering: 'background',
+                                                                                                    color: '#d9d9d9'
+                                                                                                });
+                                                                                            });
+                                                                                            renderCalendar(calendarInicio, events);
+                                                                                            renderCalendar(calendarFinal, events);
+                                                                                        }
+                                                                                        var renderCalendar = function (calendarEl, events) {
+                                                                                            var calendar = new FullCalendar.Calendar(calendarEl, {
+                                                                                                initialView: 'dayGridMonth',
+                                                                                                events: events
+                                                                                            });
+                                                                                            calendar.render();
+                                                                                        };
+                                                                                        getBookedDates();
+                                                                                    });
+
+                                                                                </script>   
+                                                                                </html>

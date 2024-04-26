@@ -34,13 +34,16 @@ import java.util.UUID;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -73,6 +76,8 @@ public class AdminController {
     private ReservaServicio reservaServicio;
     @Autowired
     private RolesServicio rolServicio;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/admin")
     public String admin(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -81,6 +86,57 @@ public class AdminController {
         model.addAttribute("nombreUsuario", username);
 
         return "admin.html";
+    }
+    @GetMapping("/admin/usuarios/crearUsuarioAdmin")
+    public String registrarUsuarioAdmin(){
+        try {
+            return "registrarUsuarioAdmin";
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
+            }
+            return "error.html";
+        }
+    }
+    @PostMapping("/admin/usuarios/crearUsuarioAdmin/crear")
+    public String registrarUserAdminForm(@ModelAttribute("user") Usuario user, @RequestParam("nombre") String nombre,
+            @RequestParam("username") String username,@RequestParam("email") String email, 
+        @RequestParam("password") String password, @RequestParam("contacto") String contacto, 
+        @RequestParam("contactoEmergencia") String contactoEmergencia,@RequestParam("nombreContactoEmergencia") String nombreContactoEmergencia,
+        @RequestParam("parentesco") String parentesco,
+        @RequestParam("fechaNacimiento") @DateTimeFormat(pattern = "dd/mm/yyyy") LocalDate fechaNacimiento,
+        @RequestParam("rol") String rol, ModelMap map){
+        try {
+            Usuario verificarEmail = usuarioServicio.encontrarPorEmail(email);
+            Usuario verificarUsuario = usuarioServicio.encontrarPorUsername(username);
+            if(verificarEmail != null){
+                
+                map.addAttribute("errorEmail", "El email ya esta en uso");
+                System.out.println("Existe");
+            }
+            if(verificarUsuario != null){
+                map.addAttribute("errorUsuario", "El nombre de usuario ya esta en uso");
+                System.out.println("Existe el usuario");
+                
+            }
+            
+            if(verificarUsuario == null && verificarEmail == null){
+                usuarioServicio.crearUsuarioAdmin(nombre, username, passwordEncoder.encode(password), 
+                        contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento, rol);
+                map.addAttribute("Exito", "Usuario creado con exito");
+                return "redirect:/admin/usuarios";
+            }
+            return "redirect:/admin/usuarios";
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
+            }
+            return "error.html";
+        }
     }
 
     @GetMapping("/admin/registrarCabañas")
@@ -343,11 +399,11 @@ public class AdminController {
 
     @PostMapping("/admin/usuarios/editarUsuario/editar")
     public String editarUsuarioForm(@ModelAttribute Usuario usuario, String username, String nombre, boolean estado, String rol, String password,
-            String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Model model) throws MiExcepcion, Exception {
+            String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email,  LocalDate fechaNacimiento, Model model) throws MiExcepcion, Exception {
 
         try {
 
-            usuarioServicio.editar(usuario.getId(), nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
+            usuarioServicio.editar(usuario.getId(), nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, rol, fechaNacimiento);
             return "redirect:/admin/usuarios";
         } catch (Exception e) {
             // Log the complete stack trace
@@ -378,6 +434,38 @@ public class AdminController {
 
             // You can return an error page or redirect the user to an error page
             return "error.html";
+        }
+    }
+    @PostMapping("/admin/verCabanias/eliminar/{id}")
+    public String eliminarCabana(@PathVariable Integer id){
+        try {
+            cabaniaServicio.eliminarCabaniaPorId(id);
+            return "redirect:/admin/verCabanias";
+        } catch (Exception e) {
+             e.printStackTrace();
+
+            // You can also log the cause of the exception if available
+            if (e.getCause() != null) {
+                System.err.println("Cause: " + e.getCause().getMessage());
+            }
+
+            // You can return an error page or redirect the user to an error page
+            return "error.html";
+        }
+    }
+    @PostMapping("/admin/usuarios/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable Integer id){
+        try {
+            usuarioServicio.eliminarUsuario(id);
+            return "redirect:/admin/usuarios";
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            return "Error";
         }
     }
 }

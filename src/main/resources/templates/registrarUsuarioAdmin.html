@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <main>
+            <div class="main-container">
+        <form th:action="@{|/admin/usuarios/crearUsuarioAdmin/crear|}" method="post">
+
+         
+
+            <label for="usuario" >Usuario:</label>
+            <input type="text" id="usuario" name="username"  placeholder="Usuario" required>
+                <span th:text="${errorUsuario}" style="color: red"></span>    
+                <br><br>
+            
+            <label for="cabanias">Nombre completo:</label>
+            <input type="text" id="nombre" name="nombre"  placeholder="Nombre completo" required>
+            
+            <label for="contrasenia">Contraseña:</label>
+            <input type="password" id="password" name="password"  placeholder="Contraseña"required><br><br>
+            
+            <label for="contacto">Numero de telefono:</label>
+            <input type="text" id="contacto" name="contacto"  placeholder="Numero de telefono" required><br><br>
+                        
+
+            <label for="contactoDeEmergencia">Contacto de emergencia:</label>
+            <input type="text" id="contactoDeEmergencia" name="contactoEmergencia" placeholder = "Contacto de emergencia " ><br><br>
+                        
+            <label for="nombreContactoDeEmergencia">Nombre del contacto de emergencia:</label>
+            <input type="text" id="nombreContactoDeEmergencia" name="nombreContactoEmergencia"  placeholder = "Nombre del contacto de emergencia " ><br><br>
+
+            <label for="parentesco">Parentesco:</label>
+            <input type="text" id="parentesco" name="parentesco"  placeholder="Parentesco" ><br><br>
+            <label for="fechaNacimiento">Fecha de nacimiento:</label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento"  ><br><br>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email"  placeholder="email" required>
+                <span th:text="${errorEmail}" style="color: red"></span>    
+                <br><br>
+             <label for="rol">Rol(Admin/Usuario):</label>
+            <input type="text" id="rol" name="rol"  placeholder="Rol" required>   
+                <br><br>
+            <button type="submit">Registrar</button>
+            <button><a th:href="@{/admin/usuarios}">Regresar</a></button>
+            
+            
+        </form>
+              
+    </div>
+        </main>
+    </body>
+</html>

@@ -13,19 +13,23 @@ import glamping.glamping.repositorios.ReservaRepositorio;
 import glamping.glamping.repositorios.UsuarioRepositorio;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.DateUtils;
+
 
 /**
  *
  * @author Admin
  */
 @Service
-public class ReservaServicio {
+public class ReservaServicio implements ServicioReserva {
     @Autowired
     private ReservaRepositorio reservaRepositorio;
     @Autowired
@@ -98,5 +102,23 @@ public class ReservaServicio {
     }
     public List<Reserva> listarReservas(){
         return reservaRepositorio.findAll();
+    }
+
+    @Override
+    public List<LocalDate> obtenerFechasReservadasParaCabañaPorId(Integer id) {
+         List<LocalDate> fechasNoDisponibles = new ArrayList();
+         Cabania cabania = cabaniaRepositorio.findFirstById(id);
+        List<Reserva> reservas = reservaRepositorio.findByCabania(cabania);
+        for (Reserva r : reservas) {
+            LocalDate fechaInicio = r.getFechaInicio();
+            LocalDate fechaFinal = r.getFechaFinal();
+            while(fechaInicio.isBefore(fechaFinal)){
+                fechasNoDisponibles.add(fechaFinal);
+                fechaInicio = fechaInicio.plusDays(1);
+               
+            }
+            
+        }
+        return fechasNoDisponibles;
     }
 }

@@ -44,6 +44,10 @@ public class CabaniaServicio {
             Optional<Cabania> cabania = cabaniaRepositorio.findById(id);
             if(cabania.isPresent()){
                 Cabania cab = cabania.get();
+                cab.getCapacidad();
+                cab.getNombre();
+                cab.getReserva();
+                cab.getImagen();
                 cab.setEstado(estado);
                 cabaniaRepositorio.save(cab);
                 

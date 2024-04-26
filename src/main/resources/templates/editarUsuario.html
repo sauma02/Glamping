@@ -66,7 +66,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <br><br>
                   <label for="rol">Rol:</label>
                   <span th:if="${usuario.roles != null}">
-                <input type="text" id="rol" name="rol" th:value="${usuario.roles.name != null ? usuario.roles.name : 'Sin rol'}" readonly = "true" ><br><br>
+                <input type="text" id="rol" name="rol" th:value="${usuario.roles.name != null ? usuario.roles.name : 'Sin rol'}" ><br><br>
                </span>
                   <span th:if="${usuario.roles == null}">
                       <p>Sin rol</p>
