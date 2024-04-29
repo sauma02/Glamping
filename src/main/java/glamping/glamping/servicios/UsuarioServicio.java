@@ -91,7 +91,9 @@ public class UsuarioServicio implements UserDetailsService {
     public void crearUsuario(String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{
         validar(nombre, username, password, email, fechaNacimiento);
-        Roles rol = rolesRepositorio.findFirstById(1);
+        Roles role = rolesRepositorio.findFirstById(1);
+        
+        Roles rol = rolesRepositorio.findFirstByName(role.getName());
         if(rol == null){
             rol = new Roles(null, "usuario");
             rolesRepositorio.save(rol);

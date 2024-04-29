@@ -11,6 +11,7 @@ import glamping.glamping.repositorios.CabaniaRepositorio;
 import glamping.glamping.repositorios.ReservaRepositorio;
 import glamping.glamping.repositorios.UsuarioRepositorio;
 import glamping.glamping.servicios.CabaniaServicio;
+import glamping.glamping.servicios.EmailServicioImpl;
 import glamping.glamping.servicios.ReservaServicio;
 import glamping.glamping.servicios.UsuarioServicio;
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -48,6 +50,10 @@ public class ReservaController {
     private CabaniaServicio cabaniaServicio;
     @Autowired
     private CabaniaRepositorio cabaniaRepositorio;
+    @Autowired
+    private JavaMailSender javaMail;
+    @Autowired
+    private EmailServicioImpl emailServicio;
      
     
     
@@ -78,6 +84,7 @@ public class ReservaController {
     @RequestParam("fechaInicio") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaInicio, 
     @RequestParam("fechaFinal") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaFinal, ModelMap map) throws Exception{
          try {
+             
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = userDetails.getUsername();
         
@@ -100,6 +107,8 @@ public class ReservaController {
             
             if (fechaDisponible) {
                 reservaServicio.crearReserva(cabania.getId(), usuario.getId(), usuario.getNombre(), fechaInicio, fechaFinal);
+                emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva", 
+                        "Reserva realizada con exito para los dias "+fechaInicio+" - "+fechaFinal+" para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
                 map.addAttribute("reservaExito", "Se ha registrado su reserva con exito");
                 return "usuario.html";
             } else {
