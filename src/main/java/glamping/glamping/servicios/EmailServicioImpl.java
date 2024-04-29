@@ -19,14 +19,22 @@ public class EmailServicioImpl implements EmailServicio {
     private JavaMailSender javaMail;
     @Override
     public void enviarMensajeSencillo(String to, String subject, String text) {
-       
+        try {
+            
+        
         SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setFrom("josedavids1234@gmail.com");
+        mensaje.setFrom("josedavids123@live.com");
         mensaje.setTo(to);
         mensaje.setSubject(subject);
         mensaje.setText(text);
         javaMail.send(mensaje);
-        
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+        }
     }
  
 }

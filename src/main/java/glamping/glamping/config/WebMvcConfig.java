@@ -33,11 +33,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("stmp.gmail.com");
+        mailSender.setHost("smtp-mail.outlook.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("josedavids1234@gmail.com");
-        mailSender.setPassword("Supergamo123.");
+        mailSender.setUsername("josedavids123@live.com");
+        mailSender.setPassword("operacion7");
         Properties pros = mailSender.getJavaMailProperties();
         pros.put("mail.transport.protocol", "smtp");
         pros.put("mail.smtp.auth", "true");

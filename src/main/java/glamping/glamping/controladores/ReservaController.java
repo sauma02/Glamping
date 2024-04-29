@@ -106,10 +106,11 @@ public class ReservaController {
             }
             
             if (fechaDisponible) {
-                reservaServicio.crearReserva(cabania.getId(), usuario.getId(), usuario.getNombre(), fechaInicio, fechaFinal);
                 emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva", 
                         "Reserva realizada con exito para los dias "+fechaInicio+" - "+fechaFinal+" para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
                 map.addAttribute("reservaExito", "Se ha registrado su reserva con exito");
+                reservaServicio.crearReserva(cabania.getId(), usuario.getId(), usuario.getNombre(), fechaInicio, fechaFinal);
+                
                 return "usuario.html";
             } else {
                 map.addAttribute("fecha_error", "La cabaña no se encuentra disponible en estas fechas: "+fechaInicio+ " - " +fechaFinal);
