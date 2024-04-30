@@ -81,8 +81,8 @@ public class ReservaController {
     }
     @PostMapping("/usuario/reservaForm/reserva")
     public String submitReserva(@ModelAttribute("reserva") Reserva reserva, @RequestParam("nombreUsuario") String nombreUsuario, @RequestParam("cabaniaId") Integer cabaniaId,
-    @RequestParam("fechaInicio") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaInicio, 
-    @RequestParam("fechaFinal") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaFinal, ModelMap map) throws Exception{
+    @RequestParam("fechaInicio") @DateTimeFormat(pattern = "yyyy-mm-dd") LocalDate fechaInicio, 
+    @RequestParam("fechaFinal") @DateTimeFormat(pattern = "yyyy-mm-dd") LocalDate fechaFinal, ModelMap map) throws Exception{
          try {
              
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
