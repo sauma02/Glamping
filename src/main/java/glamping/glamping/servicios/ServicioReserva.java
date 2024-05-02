@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface ServicioReserva {
     List<LocalDate> obtenerFechasReservadasParaCabañaPorId(Integer id);
+    
 }

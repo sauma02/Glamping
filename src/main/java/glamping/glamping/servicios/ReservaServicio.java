@@ -103,7 +103,10 @@ public class ReservaServicio implements ServicioReserva {
     public List<Reserva> listarReservas(){
         return reservaRepositorio.findAll();
     }
-
+    public List<Reserva> buscarReservaPorCabañaId(Integer id){
+        List<Reserva> r = reservaRepositorio.findByCabaniaId(id);
+        return r;
+    }
     @Override
     public List<LocalDate> obtenerFechasReservadasParaCabañaPorId(Integer id) {
          List<LocalDate> fechasNoDisponibles = new ArrayList();
@@ -120,5 +123,9 @@ public class ReservaServicio implements ServicioReserva {
             
         }
         return fechasNoDisponibles;
+    }
+    public List<Reserva> obtenerPorUsuarioId(Integer id){
+        List<Reserva> reservas = reservaRepositorio.findByUsuarioId(id);
+        return reservas;
     }
 }
