@@ -64,6 +64,8 @@ public class ReservaServicio implements ServicioReserva {
         Optional<Cabania> respuesta2 = cabaniaRepositorio.findById(cabaniaId);
         if(respuesta.isPresent()){
             Cabania cabania = respuesta2.get();
+            
+           
              boolean disponible = isCabinAvailable(cabania, startDate, endDate);
               if(!disponible){
                   throw new RuntimeException("La cabaña no esta disponible");

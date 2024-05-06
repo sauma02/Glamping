@@ -5,6 +5,7 @@
 package glamping.glamping.controladores;
 
 
+import glamping.glamping.config.MySimpleUrlAuthenticationSuccessHandler;
 import glamping.glamping.entidades.Cabania;
 import glamping.glamping.entidades.Reserva;
 import glamping.glamping.entidades.Usuario;
@@ -14,6 +15,8 @@ import glamping.glamping.repositorios.UsuarioRepositorio;
 import glamping.glamping.servicios.CabaniaServicio;
 import glamping.glamping.servicios.ReservaServicio;
 import glamping.glamping.servicios.UsuarioServicio;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,10 +25,15 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -61,9 +69,47 @@ public class PortalController {
     private CabaniaServicio cabaniaServicio;
     @Autowired
     private CabaniaRepositorio cabaniaRepositorio;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired 
+    private MySimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
     @GetMapping("/")
     public String inicio(){
         return "inicio.html";
+    }
+    @GetMapping("/login")
+    public String login(){
+        return "login.html";
+    }
+    @PostMapping("/login")
+    public String loginSubmit(@RequestParam("username") String username, @RequestParam("password") String password, ModelMap map){
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+    try {
+        // Authenticate the user
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        
+        // Determine the redirect URL using the authentication success handler
+        String redirectUrl = authenticationSuccessHandler.determineTargetUrlForAuthentication(authentication);
+
+        // Redirect the user to the determined URL
+        return "redirect:" + redirectUrl;
+    } catch (AuthenticationException e) {
+        e.printStackTrace();
+        if(e.getCause() != null){
+            System.err.println("Error: "+e.getCause().toString());
+        }
+        return "error.html";
+    }
+    
+}
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/"; // Redirect to login page with a logout parameter
     }
  
     @GetMapping("/usuario")

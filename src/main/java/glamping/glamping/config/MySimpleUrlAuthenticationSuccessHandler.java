@@ -58,6 +58,9 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         }
         throw new IllegalStateException();
     }
+    public String determineTargetUrlForAuthentication(Authentication authentication){
+        return determineTargetUrl(authentication);
+    }
     protected void clearAuthenticationAttributes(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if(session == null){

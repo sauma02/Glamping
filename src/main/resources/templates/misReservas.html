@@ -117,7 +117,7 @@
                                         <li><a href="/usuario#servicios">Servicios</a></li>
                                         <li><a href="/usuario/cabanias">Cabañas</a></li>
                                         <li><a href="/usuario#nosotros">Nosotros</a></li>
-                                        <li><a href="/usuario/misReservas">Mis reservas</a></li>
+                                        <li><a href="/usuario/reservaForm"">Realizar reserva</a></li>
                                         <div class="user-layer">
                                             <h2 th:text="${nombreUsuario}"></h2>
                                             <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
@@ -135,7 +135,7 @@
                     </section>
                     <main>
                         <div class="main-container">
-                            
+                            <button><a th:ref="@{/usuario/reservaForm"}">Realizar reserva</a></button>
                             <table>
                                 <tr>
                                     <th>Id:</th>
@@ -159,7 +159,7 @@
                                         <form>
                                             <button id='editar' name="editar" ><a th:href="@{|/usuario/misReservas/editar/${reserva.id}|}">Editar</a></button>
                                         </form>
-                                        <form method="post" th:action="@{|usuario/misReservas/eliminar/${reserva.id}|}">
+                                        <form method="post" th:action="@{|misReservas/eliminar/${reserva.id}|}">
                                             <button id='eliminar' name="eliminar">Eliminar</button>
                                         </form>
                                     </td>

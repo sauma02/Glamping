@@ -22,12 +22,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringToDateConverter("yyyy-mm-dd"));
+        registry.addConverter(new StringToDateConverter("dd/mm/yy"));
     }
 
     @Bean
     public StringToDateConverter stringToDateConverter() {
-        return new StringToDateConverter("yyyy-mm-dd");
+        return new StringToDateConverter("dd/mm/yy");
     }
 
     @Bean

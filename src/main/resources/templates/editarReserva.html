@@ -136,99 +136,107 @@
                         <main>
                             <div class="main-container">
                                 <form th:action="@{/usuario/misReservas/editar/editarReserva}" method="post">
-                                    <label for="usuario" >Usuario:</label>
-                                    <input type="text" th:value="${nombreUsuario}" id="usuario" name="nombreUsuario" readOnly="true"><br><br>
+                                    <br><br>
+                                            <label for="reserva" >Reserva id:</label>
+                                            <input type="number" th:value="${reserva.id}" id="reservaId" name="reservaId" readOnly="true"><br><br>
 
-                                                <label for="cabanias">Cabañas:</label>
-                                                <select type ="number" id="cabanias"  name="cabaniaId" required>
-                                                    <option value="">Seleccionar Cabaña</option>
-                                                    <option name="cabaniaId" th:each ="cabania : ${cabaniasDisponibles}" th:value="${cabania.id}" th:text="${cabania.nombre}"></option>
+                                                        <label for="usuario" >Usuario:</label>
+                                                        <input type="text" th:value="${nombreUsuario}" id="usuario" name="nombreUsuario" readOnly="true"><br><br>
 
-                                                </select><br><br>
+                                                                    <label for="cabanias">Cabañas:</label>
+                                                                    <select type ="number" id="cabanias"  name="cabaniaId" required>
+                                                                        <option value="">Seleccionar Cabaña</option>
+                                                                        <option name="cabaniaId" th:each ="cabania : ${cabanias}" th:value="${cabania.id}" th:text="${cabania.nombre}"></option>
 
-                                                        <label for="fechaInicio">Fecha de inicio:</label>
-                                                        <input type="date" id="fechaInicio" name="fechaInicio" required>
-                                                            <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
-                                                            <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+                                                                    </select><br><br>
 
-
-                                                            <br><br>
-
-                                                                    <label for="fechaFinal">Fecha final:</label>
-                                                                    <input type="date" id="fechaFinal" name="fechaFinal" required>
-                                                                        <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
-                                                                        <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+                                                                            <label for="fechaInicio">Fecha de inicio:</label>
+                                                                            <input type="date" id="fechaInicio" name="fechaInicio"  pattern="\d{2}-\d{2}-\d{4}" required>
+                                                                                <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
+                                                                                <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
 
 
-                                                                        <br><br>
+                                                                                <br><br>
 
-                                                                                <button type="submit">Editar Reserva</button>
-                                                                                </form>
-                                                                                </div>
-                                                                                </main>
-
-                                                                                <section>
-                                                                                    <div class="footer-section"></div>
-                                                                                </section>
-                                                                                <footer>
-
-                                                                                </footer>
-                                                                                <script th:object ="${cabania}" th:inline="javascript" type="text/javascript" >
-                                                                                    $(document).ready(function () {
-                                                                                        // Initialize the datepicker
-                                                                                        var arrayOfDates = [];
-
-                                                                                        // Function to initialize datepicker
-                                                                                        function initializeDatepicker() {
-                                                                                            $("#fechaInicio, #fechaFinal").datepicker({
-                                                                                                dateFormat: 'yy-mm-dd',
-                                                                                                beforeShowDay: function (date) {
-                                                                                                    var dateString = $.datepicker.formatDate('dd/mm/yy', date);
-                                                                                                    var highlight = arrayOfDates.indexOf(dateString) !== -1;
-                                                                                                    console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight); // Add this line to log the output
-                                                                                                    console.log(arrayOfDates, ' , ')
-                                                                                                    if(highlight){
-                                                                                                        return[false, 'highlight', 'Esta fecha ya se encuentra reservada'];
-                                                                                                    }else{
-                                                                                                        return[true, '', ''];
-                                                                                                    }
-                                                                                                }
-                                                                                            });
-                                                                                        }
-
-                                                                                        // Initialize datepicker on document ready
-                                                                                        initializeDatepicker();
-
-                                                                                        // Event listener for cabin selection change
-                                                                                        $("#cabanias").change(function () {
-                                                                                            var cabinId = $(this).val();
-                                                                                            updateUnavailableDates(cabinId);
-                                                                                        });
-
-                                                                                        // Function to update unavailable dates based on selected cabin
-                                                                                        function updateUnavailableDates(cabinId) {
-                                                                                            $.ajax({
-                                                                                                url: "/usuario/reservaForm/fechasNoDisponibles/" + cabinId,
-                                                                                                method: "GET",
-                                                                                                dataType: "json",
-                                                                                                success: function (availability) {
-                                                                                                    arrayOfDates = availability;
-                                                                                                    // Refresh datepicker
-                                                                                                    $("#fechaInicio, #fechaFinal").datepicker("destroy");
-                                                                                                    initializeDatepicker();
-                                                                                                },
-                                                                                                error: function () {
-                                                                                                    console.error("Failed to fetch cabin availability.");
-                                                                                                }
-                                                                                            });
-                                                                                        }
-                                                                                    });
+                                                                                        <label for="fechaFinal">Fecha final:</label>
+                                                                                        <input type="date" id="fechaFinal" name="fechaFinal"  required>
+                                                                                            <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
+                                                                                            <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
 
 
-                                                                                </script>
-                                                                                </body>
+                                                                                            <br><br>
+
+                                                                                                    <button type="submit">Editar Reserva</button>
+                                                                                                    <button ><a th:href="@{/usuario/misReservas}" >Regresar</a></button>
+                                                                                                    </form>
+                                                                                                    </div>
+                                                                                                    </main>
+
+                                                                                                    <section>
+                                                                                                        <div class="footer-section"></div>
+                                                                                                    </section>
+                                                                                                    <footer>
+
+                                                                                                    </footer>
+                                                                                                    <script th:object ="${cabania}" th:inline="javascript" type="text/javascript" >
+                                                                                                        $(document).ready(function () {
+                                                                                                            // Initialize the datepicker
+                                                                                                            var arrayOfDates = [];
+
+                                                                                                            // Function to initialize datepicker
+                                                                                                            function initializeDatepicker() {
+                                                                                                                $("#fechaInicio, #fechaFinal").datepicker({
+                                                                                                                    dateFormat: 'yy-mm-dd',
+                                                                                                                    minDate: 0, // Establecer la fecha mínima como hoy
+                                                                                                                    beforeShowDay: function (date) {
+                                                                                                                        
+                                                                                                                        var dateString = $.datepicker.formatDate('dd/mm/yy', date);
+                                                                                                                        var highlight = arrayOfDates.indexOf(dateString) !== -1;
+                                                                                                                          
+                                                                                                                        console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight); // Add this line to log the output
+                                                                                                                        console.log(arrayOfDates, ' , ');
+                                                                                                                        if (highlight) {
+                                                                                                                            return[false, 'highlight', 'Esta fecha ya se encuentra reservada o es una fecha pasada'];
+                                                                                                                        } else {
+                                                                                                                            return[true, '', ''];
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                });
+                                                                                                            }
+
+                                                                                                            // Initialize datepicker on document ready
+                                                                                                            initializeDatepicker();
+
+                                                                                                            // Event listener for cabin selection change
+                                                                                                            $("#cabanias").change(function () {
+                                                                                                                var cabinId = $(this).val();
+                                                                                                                updateUnavailableDates(cabinId);
+                                                                                                            });
+
+                                                                                                            // Function to update unavailable dates based on selected cabin
+                                                                                                            function updateUnavailableDates(cabinId) {
+                                                                                                                $.ajax({
+                                                                                                                    url: "/usuario/reservaForm/fechasNoDisponibles/" + cabinId,
+                                                                                                                    method: "GET",
+                                                                                                                    dataType: "json",
+                                                                                                                    success: function (availability) {
+                                                                                                                        arrayOfDates = availability;
+                                                                                                                        // Refresh datepicker
+                                                                                                                        $("#fechaInicio, #fechaFinal").datepicker("destroy");
+                                                                                                                        initializeDatepicker();
+                                                                                                                    },
+                                                                                                                    error: function () {
+                                                                                                                        console.error("Failed to fetch cabin availability.");
+                                                                                                                    }
+                                                                                                                });
+                                                                                                            }
+                                                                                                        });
+
+
+                                                                                                    </script>
+                                                                                                    </body>
 
 
 
 
-                                                                                </html>
+                                                                                                    </html>

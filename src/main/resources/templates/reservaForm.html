@@ -104,6 +104,10 @@
                             color: red; /* Black text color */
                             border-color: red; /* Light red border */
                         }
+                        .today-highlight a {
+                            background-color: yellow !important; /* Cambia el fondo a amarillo */
+                            color: black !important; /* Cambia el color del texto a negro */
+                        }
                     </style>
 
                     </head>
@@ -176,19 +180,21 @@
                                                                                     $(document).ready(function () {
                                                                                         // Initialize the datepicker
                                                                                         var arrayOfDates = [];
-
                                                                                         // Function to initialize datepicker
                                                                                         function initializeDatepicker() {
                                                                                             $("#fechaInicio, #fechaFinal").datepicker({
                                                                                                 dateFormat: 'yy-mm-dd',
+                                                                                                minDate: 0, // Establecer la fecha mínima como hoy
                                                                                                 beforeShowDay: function (date) {
                                                                                                     var dateString = $.datepicker.formatDate('dd/mm/yy', date);
                                                                                                     var highlight = arrayOfDates.indexOf(dateString) !== -1;
+                                                                                                   
                                                                                                     console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight); // Add this line to log the output
-                                                                                                    console.log(arrayOfDates, ' , ')
-                                                                                                    if(highlight){
-                                                                                                        return[false, 'highlight', 'Esta fecha ya se encuentra reservada'];
-                                                                                                    }else{
+                                                                                                    console.log(arrayOfDates, ' , ');
+                                                                                                    if (highlight) {
+                                                                                                        return[false, 'highlight', 'Esta fecha ya se encuentra reservada o es pasada'];
+                                                                                                    }
+                                                                                                    else {
                                                                                                         return[true, '', ''];
                                                                                                     }
                                                                                                 }
@@ -197,13 +203,11 @@
 
                                                                                         // Initialize datepicker on document ready
                                                                                         initializeDatepicker();
-
                                                                                         // Event listener for cabin selection change
                                                                                         $("#cabanias").change(function () {
                                                                                             var cabinId = $(this).val();
                                                                                             updateUnavailableDates(cabinId);
                                                                                         });
-
                                                                                         // Function to update unavailable dates based on selected cabin
                                                                                         function updateUnavailableDates(cabinId) {
                                                                                             $.ajax({
