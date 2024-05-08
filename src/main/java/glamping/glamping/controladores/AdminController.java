@@ -99,6 +99,31 @@ public class AdminController {
         model.addAttribute("nombreUsuario", username);
         return "panelDeManejo.html";
     }
+    @GetMapping("/admin/panelDeManejo/registrarInfo")
+    public String crearInfoForm(){
+        return "registrarInfo.html";
+    }
+    @PostMapping("/admin/panelDeManejo/registrarInfo/registrar")
+    public String submitRegistroForm(@RequestParam("titulo") String titulo, @RequestParam("texto") String texto, @RequestParam("imagen") MultipartFile imagen, ModelMap map){
+        try {
+            if(imagen == null){
+                infoServicio.crearNuevaInfo(titulo, texto, null);
+                return "redirect:/admin/panelDeManejo";
+            }else{
+                storageService.init();
+                infoServicio.crearNuevaInfo(titulo, texto, imagen);
+                return "redirect:/admin/panelDeManejo";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            return "error.html";
+        }
+        
+    }
     
     @GetMapping("/admin/usuarios/crearUsuarioAdmin")
     public String registrarUsuarioAdmin(){
