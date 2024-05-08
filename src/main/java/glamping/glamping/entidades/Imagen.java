@@ -48,6 +48,9 @@ public class Imagen {
    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="Cabania_id")
     private Cabania cabania;
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name="Informacion_id")
+   private Informacion info;
     private Long tamano;
   
    

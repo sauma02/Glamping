@@ -6,6 +6,7 @@ package glamping.glamping.servicios;
 
 import glamping.glamping.entidades.Cabania;
 import glamping.glamping.entidades.Imagen;
+import glamping.glamping.entidades.Informacion;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.repositorios.ImagenRepositorio;
 import jakarta.transaction.Transactional;
@@ -46,6 +47,24 @@ public class ImagenServicio {
         }
               
     }
+    public void guardarImagenInfo(Informacion info, Imagen imagen, MultipartFile file) throws MiExcepcion{
+        try {
+            Path ruta = Paths.get("src/main/resources/img/" + file.getOriginalFilename());
+
+            imagen.setRuta(ruta.toString());
+            imagen.setTamano(file.getSize());
+            imagen.setFileName(file.getOriginalFilename());
+            imagen.setFileType(file.getContentType());
+            imagen.setInfo(info);
+            imagenRepositorio.save(imagen);
+            
+      
+        } catch (Exception ex){
+            throw new MiExcepcion("Error al guardar imagen" + ex.getCause());
+            
+        }
+              
+    }
     public void editarImagen(Cabania cabania, Imagen imagen, MultipartFile file) throws MiExcepcion{
         try {
              Path ruta = Paths.get("src/main/resources/img/" + file.getOriginalFilename());
@@ -55,6 +74,25 @@ public class ImagenServicio {
             
             imagen.setFileType(file.getContentType());
             imagen.setCabania(cabania);
+            imagenRepositorio.save(imagen);
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            
+        }
+    }
+    public void editarImagenInfo(Informacion info, Imagen imagen, MultipartFile file) throws MiExcepcion{
+        try {
+             Path ruta = Paths.get("src/main/resources/img/" + file.getOriginalFilename());
+            
+            imagen.setRuta(ruta.toString());
+            imagen.setTamano(file.getSize());
+            
+            imagen.setFileType(file.getContentType());
+            imagen.setInfo(info);
             imagenRepositorio.save(imagen);
         } catch (Exception e) {
             e.printStackTrace();

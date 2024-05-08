@@ -7,6 +7,7 @@ package glamping.glamping.controladores;
 import glamping.glamping.config.FileUploadUtil;
 import glamping.glamping.entidades.Cabania;
 import glamping.glamping.entidades.Imagen;
+import glamping.glamping.entidades.Informacion;
 import glamping.glamping.entidades.Reserva;
 
 import glamping.glamping.entidades.ResponseMessage;
@@ -16,6 +17,7 @@ import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.servicios.CabaniaServicio;
 import glamping.glamping.servicios.FileStorageService;
 import glamping.glamping.servicios.ImagenServicio;
+import glamping.glamping.servicios.InformacionServicio;
 import glamping.glamping.servicios.ReservaServicio;
 import glamping.glamping.servicios.RolesServicio;
 import glamping.glamping.servicios.UsuarioServicio;
@@ -78,6 +80,8 @@ public class AdminController {
     private RolesServicio rolServicio;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private InformacionServicio infoServicio;
 
     @GetMapping("/admin")
     public String admin(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -87,6 +91,15 @@ public class AdminController {
 
         return "admin.html";
     }
+    @GetMapping("/admin/panelDeManejo")
+    public String panelDeManejoLista(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        String username = userDetails.getUsername();
+        List<Informacion> listaInfo = infoServicio.listarInformacion();
+        model.addAttribute("infoLista", listaInfo);
+        model.addAttribute("nombreUsuario", username);
+        return "panelDeManejo.html";
+    }
+    
     @GetMapping("/admin/usuarios/crearUsuarioAdmin")
     public String registrarUsuarioAdmin(){
         try {
