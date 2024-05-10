@@ -223,20 +223,13 @@ footer {
             <div class="main-container">
             <div class="form-container">
                 <h2>Registrar info</h2>
-                <form th:action="@{/admin/registrarCabañas/registrarCabaña}" method="post" enctype="multipart/form-data" >
-                    <label for="nombre">Nombre de la cabaña:</label>
-                    <input type="text" id="nombre" name="nombre"  >
+                <form th:action="@{/admin/panelDeManejo/registrarInfo/registrar}" method="post" enctype="multipart/form-data" >
+                    <label for="titulo">Titulo:</label>
+                    <input type="text" id="titulo" name="titulo"  >
 
-                    <label for="capacidad">Capacidad:</label>
-                    <input type="number" id="capacidad" name="capacidad">
+                    <label for="texto">Texto:</label>
+                    <input type="text" id="texto" name="texto">
 
-                    <label for="estado">Estado:</label>
-                    <select type="text" id="estado" name="estado" required>
-                     <option value="">Seleccionar estado</option>
-                        <option value="true">Activa</option>
-                         <option value="false">Inactiva</option>
-                
-                    </select><br><br>
                      <label for="imagen">Imagen:</label>
                      <input type="file" id="imagen" name="imagen" multiple> 
                     <button type="submit" name="save" value="save">Registrar cabaña</button>

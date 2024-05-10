@@ -26,7 +26,7 @@ public class Informacion {
     private Integer id;
     private String titulo;
     private String texto;
-   @OneToOne
+   @OneToOne(mappedBy="info")
     private Imagen imagen;
 
     public Informacion(Integer id, String titulo, String texto, Imagen imagen) {

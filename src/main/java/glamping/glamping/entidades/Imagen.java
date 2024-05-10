@@ -35,7 +35,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Setter
 @AllArgsConstructor     
 @NoArgsConstructor   
-@Table(name = "imagenesCabaña")        
+@Table(name = "imagenes")        
 public class Imagen {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

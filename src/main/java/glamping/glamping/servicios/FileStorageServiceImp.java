@@ -42,11 +42,15 @@ public class FileStorageServiceImp implements FileStorageService {
    public void save(MultipartFile file) {
     try {
         
-        Path filePath = this.root.resolve(file.getOriginalFilename());
+            Path filePath = this.root.resolve(file.getOriginalFilename());
+       
         if (Files.exists(filePath)) {
+           
             throw new FileAlreadyExistsException("Ya existe este archivo: " + filePath);
         }
-        Files.copy(file.getInputStream(), filePath);
+            Files.copy(file.getInputStream(), filePath);
+        
+        
     } catch (IOException e) {
         throw new RuntimeException("Error al guardar el archivo: " + e.getMessage(), e);
     }

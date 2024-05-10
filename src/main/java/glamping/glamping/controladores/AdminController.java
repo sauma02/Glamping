@@ -107,7 +107,9 @@ public class AdminController {
     public String submitRegistroForm(@RequestParam("titulo") String titulo, @RequestParam("texto") String texto, @RequestParam("imagen") MultipartFile imagen, ModelMap map){
         try {
             if(imagen == null){
+                
                 infoServicio.crearNuevaInfo(titulo, texto, null);
+                
                 return "redirect:/admin/panelDeManejo";
             }else{
                 storageService.init();
@@ -123,6 +125,72 @@ public class AdminController {
             return "error.html";
         }
         
+    }
+    @GetMapping("/admin/panelDeManejo/registrarInfo/editarInfo/{id}")
+    public String editarInfoForm(@PathVariable("id") Integer id, ModelMap map){
+        Informacion info = infoServicio.buscarPorId(id);
+        map.addAttribute("informacion", info);
+        return "editarPagina.html";
+    }
+    @PostMapping("/admin/panelDeManejo/registrarInfo/editarInfo/editar")
+    public String editarAccionInfo(@RequestParam("id") Integer id, @RequestParam("titulo") String titulo, 
+            @RequestParam("texto") String texto, @RequestParam("imagen") MultipartFile imagen, ModelMap map){
+        try {
+            if(imagen.isEmpty()){
+                Informacion info = infoServicio.buscarPorId(id);
+                Imagen img = info.getImagen();
+                info.setTexto(texto);
+                info.setTitulo(titulo);
+                info.setImagen(img);
+                infoServicio.editarInfo(info);
+                return "redirect:/admin/panelDeManejo";
+            }else{
+                storageService.init();
+                
+                storageService.save(imagen);
+                Imagen img = new Imagen();
+                img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
+                Informacion info = infoServicio.buscarPorId(id);
+                imagenServicio.guardarImagenInfo(info, img, imagen);
+                info.setImagen(img);
+                info.setTexto(texto);
+                info.setTitulo(titulo);
+                infoServicio.editarInfo(info);
+                return "redirect:/admin/panelDeManejo";
+                
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }       
+                 Informacion info = infoServicio.buscarPorId(id);
+                    map.addAttribute("informacion", info);
+                    map.addAttribute("errorException", e);
+                    System.out.println("Error exception: "+e);
+                    Imagen img = new Imagen();
+                    img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
+                    map.addAttribute("imgDuplicada", img);
+                    map.addAttribute("errorDuplicado", "La imagen que intentas registrar ya existe");
+                    return "editarPagina.html";
+        }
+    }
+    @PostMapping("/admin/panelDeManejo/registrarInfo/registrar/eliminar/{id}")
+    public String eliminarInfo(@PathVariable("id") Integer id){
+        try {
+            Informacion info = infoServicio.buscarPorId(id);
+            
+            infoServicio.eliminarInfo(id);
+            return "redirect:/admin/panelDeManejo";
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            return "error.html";
+        }
     }
     
     @GetMapping("/admin/usuarios/crearUsuarioAdmin")

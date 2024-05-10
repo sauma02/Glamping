@@ -9,7 +9,57 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
+     <header>
+            <div class="nav-container">
+                <div class="nav">
+                    <ul>
+                        <li><a href="/admin">Inicio</a></li>
+                        <li><a href="/admin#servicios">Servicios</a></li>
+                        <li><a href="/admin#nosotros">Nosotros</a></li>
+                        <li><a href="/admin/usuarios">Ver Usuarios</a></li>
+
+
+                    </ul>
+                    <div class="user-layer">
+                        <h2 th:text="${nombreUsuario}"></h2>
+                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                    </div>
+                </div>
+            </div>
+        </header>
     <body>
-        <div>TODO write content</div>
+        <div> 
+            <form th:action="@{|/admin/panelDeManejo/registrarInfo/editarInfo/editar|}" method="post" enctype="multipart/form-data">
+
+
+                <label for="id" >Id:</label>
+                <input type="number" id="id" name="id"  placeholder="id" th:value="${informacion.id}" readonly="true">
+               
+                <br><br>
+                <label for="titulo" >Titulo:</label>
+                <input type="text" id="titulo" name="titulo" th:value="${informacion.titulo}" placeholder="informacion">
+                    
+                <br><br>
+                <label for="texto" >Texto:</label>
+                <input type="text" id="texto" name="texto" th:value="${informacion.texto}" placeholder="texto">
+                
+                <label for="imagen" >Imagen:</label>
+                <span th:if="${informacion.imagen?.fileName == null}"></span>
+                <span th:if="${informacion.imagen?.fileName != null}">
+                    <img th:src="${informacion.imagen.fileName}">
+                </span>
+                
+                <input type="file" id="imagen" name="imagen" placeholder="imagen">
+                <span th:if="${errorException != null}" th:text="${errorDuplicado}" style="color: red; visibility: visible;"></span>
+
+                
+                
+              
+                <button type="submit">Editar</button>
+                <button><a th:href="@{/admin/panelDeManejo}">Regresar</a></button>
+
+
+            </form>
+        </div>
     </body>
 </html>

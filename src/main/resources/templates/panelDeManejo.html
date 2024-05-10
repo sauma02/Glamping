@@ -49,30 +49,32 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </tr>
                     <span th:if="${#lists.isEmpty(infoLista)}">No hay Informacion registrada</span>
                     <span th:if="${not #lists.isEmpty(infoLista)}">
-                    <tr th:each="info : ${infoLista}">
-                        <td th:text="${info.id}"></td>
-                        <td th:text="${info.titulo}"></td>
-                        <td th:text="${info.texto}"></td>
-                        <td>
+                        <tr th:each="info : ${infoLista}">
+                            <td th:text="${info.id}"></td>
+                            <td th:text="${info.titulo}"></td>
+                            <td th:text="${info.texto}"></td>
+                            <td>
+                                <!--<!--                            #a0ea81 -> color
+                                -->
+                                <span th:if="${info.imagen?.fileName != null}">
+                                    <img th:src="${info.imagen.fileName}">
+                                </span>
+                                <span th:unless="${info.imagen?.fileName != null}">No hay imágenes registradas</span>
 
-                            <img th:src="${info.imagen.fileName}">
+                            </td>
 
-                        </td>
+                            <td>
+                                <form>
+                                    <button id='editar' name="editar">
+                                        <a th:href="@{|/admin/panelDeManejo/registrarInfo/editarInfo/${info.id}|}">Editar</a>
+                                    </button>
+                                </form>
+                                <form th:action="@{|/admin/panelDeManejo/registrarInfo/registrar/eliminar/${info.id}|}" method="post">
+                                    <button id='eliminar' name="eliminar">Eliminar</button>
+                                </form>
+                            </td>
 
-                        <td>
-                            <form>
-                                <button id='editar' name="editar"><a th:href =" @{|/admin/cabania/editarCabaña/${cabania.id}|}">Editar</a></button>
-                            </form>
-                            <form>
-                                <button id='editar' name="editar"><a th:href="@{|/admin/cabania/aniadirImagenes/${cabania.id}|}">Añadir/Quitar/Editar Imagenes</a></button>
-                            </form>
-
-                            <form th:action="@{|/admin/verCabanias/eliminar/${cabania.id}|}" method="post">
-                                <button id='eliminar' name="eliminar">Eliminar</button>
-                            </form>
-                        </td>
-
-                    </tr>
+                        </tr>
 
                     </span>
                 </table>

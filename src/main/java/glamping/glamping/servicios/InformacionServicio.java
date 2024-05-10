@@ -29,15 +29,24 @@ public class InformacionServicio {
     @Transactional
     public Informacion crearNuevaInfo(String titulo, String texto, MultipartFile imagen){
         try {
-            
+            if(imagen.isEmpty()){
+                Informacion info = new Informacion(null, titulo, texto, null);
+                 informacionRepositorio.save(info);
+                 return info;
+           
+             
+            }else{
             storageService.save(imagen);
             Imagen img = new Imagen();
             img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
             
             Informacion info = new Informacion(null, titulo, texto, img);
-            imagenServicio.editarImagenInfo(info, img, imagen);
+            imagenServicio.guardarImagenInfo(info, img, imagen);
             informacionRepositorio.save(info);
-        return info;
+            return info;
+            }
+           
+       
         } catch (Exception e) {
             e.printStackTrace();
             
@@ -49,26 +58,27 @@ public class InformacionServicio {
         
         
     }
-    public void editarInfo(Integer id, String titulo, String texto, Imagen imagen){
-        Optional<Informacion> optionalInfo = informacionRepositorio.findById(id);
-        if(optionalInfo.isPresent()){
-            Informacion info = optionalInfo.get();
-            info.setTexto(texto);
-            info.setTitulo(titulo);
-            if(imagen == null){
-                info.setImagen(null);
-                informacionRepositorio.save(info);
-            }else{
-                info.setImagen(imagen);
-                informacionRepositorio.save(info);
-            }
-        }
+    public void editarInfo(Informacion info){
+       informacionRepositorio.save(info);
+        
     }
     public void eliminarInfo(Integer id){
         Optional<Informacion> optionalInfo = informacionRepositorio.findById(id);
         if(optionalInfo.isPresent()){
             Informacion info = optionalInfo.get();
+             Imagen img = imagenServicio.imagenPorId(id);
+            
             informacionRepositorio.delete(info);
+        }
+    }
+    public Informacion buscarPorId(Integer id){
+        Optional<Informacion> optionalInfo = informacionRepositorio.findById(id);
+        if(optionalInfo.isPresent()){
+            Informacion info = optionalInfo.get();
+           
+            return info;
+        }else{
+            return null;
         }
     }
     public List<Informacion> listarInformacion(){
