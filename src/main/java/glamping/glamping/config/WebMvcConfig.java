@@ -12,6 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 /**
  *
@@ -47,10 +49,26 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     }
 
+    @Bean
+    public ClassLoaderTemplateResolver secondaryTemplateResolver() {
+        ClassLoaderTemplateResolver secondaryTemplateResolver = new ClassLoaderTemplateResolver();
+        secondaryTemplateResolver.setPrefix("css/");
+        secondaryTemplateResolver.setSuffix(".css");
+        secondaryTemplateResolver.setTemplateMode(TemplateMode.CSS);
+        secondaryTemplateResolver.setCharacterEncoding("UTF-8");
+        secondaryTemplateResolver.setOrder(1);
+        secondaryTemplateResolver.setCheckExistence(true);
+
+        return secondaryTemplateResolver;
+    }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/img/**")
                 .addResourceLocations("classpath:/static/img/");
+
     }
 
 }

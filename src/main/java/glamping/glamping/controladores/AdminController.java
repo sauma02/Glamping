@@ -181,7 +181,8 @@ public class AdminController {
     public String eliminarInfo(@PathVariable("id") Integer id){
         try {
             Informacion info = infoServicio.buscarPorId(id);
-            
+            Imagen img = info.getImagen();
+            imagenServicio.eliminarImagen(img);
             infoServicio.eliminarInfo(id);
             return "redirect:/admin/panelDeManejo";
         } catch (Exception e) {

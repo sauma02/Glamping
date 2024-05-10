@@ -1,123 +1,28 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+        Alpha by HTML5 UP
+        html5up.net | @ajlkn
+        Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
     <head>
-        <title>Glamping</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <title th:text="${info.titulo == 'Titulo-pagina' ? info.texto : ' '}"></title>
+        <link rel="icon" th:href="${info.titulo == 'Titulo-pagina' ? @{/images/{filename}(filename=${info.imagen.fileName})} : ' '">
+     
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+
     </head>
-    <style>
-        body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
+    <body class="landing is-preload">
+        <div id="page-wrapper">
 
-/* Estilos para el encabezado */
-header {
-    background-color: #333;
-    color: #fff;
-}
-
-.nav-container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 10px;
-}
-
-.nav {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav ul {
-    list-style: none;
-}
-
-.nav li {
-    display: inline-block;
-    margin-right: 20px;
-}
-
-.nav a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-}
-
-/* Estilos para la sección principal */
-section {
-    text-align: center;
-}
-
-.hero {
-    background: #f0f0f0;
-    padding: 50px;
-}
-
-.hero-title {
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-/* Estilos para la imagen de fondo */
-.hero img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-}
-
-/* Estilos para el pie de página */
-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-}
-
-/* Estilos para la sección del pie de página */
-.footer-section {
-    height: 100px; /* Ajusta según sea necesario */
-}
-
-/* Media queries para diseño responsivo */
-@media (max-width: 768px) {
-    .nav-container {
-        padding: 5px;
-    }
-
-    .nav li {
-        display: block;
-        margin: 0;
-        margin-bottom: 10px;
-    }
-
-    .hero {
-        padding: 20px;
-    }
-
-    .hero-title {
-        font-size: 1.5em;
-    }
-}
-
-@media (max-width: 480px) {
-    .nav a {
-        font-size: 0.9em;
-    }
-}
-    </style>
-
-    <body>
-        <header>
-            <div class="nav-container">
-                <div class="nav">
+            <!-- Header -->
+            <header id="header" class="alt">
+                <h1><a href="index.html">MANTRA</a></h1>
+                <nav id="nav">
                     <ul>
                         <li><a href="/">Inicio</a></li>
                         <li><a href="#servicios">Servicios</a></li>
@@ -126,25 +31,132 @@ footer {
                         <li><a href="/login">Iniciar Sesion</a></li>
                         <li><a href="/register">Registrar</a></li>
                     </ul>
-                </div>
-            </div>
-        </header>
-        <section>
-            <div class="hero">
-                <div class="hero-title">Glamping Santa Helena</div>
-                    <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
-            </div> 
-        </section>
-        <main>
-            <div class="main-container">
+                </nav>
+            </header>
+
+            <!-- Banner -->
+            <section id="banner">
+                <h2>MANTRA</h2>
+                <p>Cabaña de campo.</p>
                 
-            </div>
-        </main>
-        <section>
-            <div class="footer-section"></div>
-        </section>
-        <footer>
-            
-        </footer>
+            </section>
+
+            <!-- Main -->
+            <section id="main" class="container">
+
+                <section class="box special">
+                    <header class="major">
+                        <h2>Introducing the ultimate mobile app
+                            <br />
+                            for doing stuff with your phone</h2>
+                        <p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc ornare<br />
+                            adipiscing nunc adipiscing. Condimentum turpis massa.</p>
+                    </header>
+                    <span class="image featured"><img src="images/pic01.jpg" alt="" /></span>
+                </section>
+
+                <section class="box special features">
+                    <div class="features-row">
+                        <section>
+                            <span class="icon solid major fa-bolt accent2"></span>
+                            <h3>Magna etiam</h3>
+                            <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
+                        </section>
+                        <section>
+                            <span class="icon solid major fa-chart-area accent3"></span>
+                            <h3>Ipsum dolor</h3>
+                            <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
+                        </section>
+                    </div>
+                    <div class="features-row">
+                        <section>
+                            <span class="icon solid major fa-cloud accent4"></span>
+                            <h3>Sed feugiat</h3>
+                            <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
+                        </section>
+                        <section>
+                            <span class="icon solid major fa-lock accent5"></span>
+                            <h3>Enim phasellus</h3>
+                            <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
+                        </section>
+                    </div>
+                </section>
+
+                <div class="row">
+                    <div class="col-6 col-12-narrower">
+
+                        <section class="box special">
+                            <span class="image featured"><img src="images/pic02.jpg" alt="" /></span>
+                            <h3>Sed lorem adipiscing</h3>
+                            <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
+                            <ul class="actions special">
+                                <li><a href="#" class="button alt">Learn More</a></li>
+                            </ul>
+                        </section>
+
+                    </div>
+                    <div class="col-6 col-12-narrower">
+
+                        <section class="box special">
+                            <span class="image featured"><img src="images/pic03.jpg" alt="" /></span>
+                            <h3>Accumsan integer</h3>
+                            <p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
+                            <ul class="actions special">
+                                <li><a href="#" class="button alt">Learn More</a></li>
+                            </ul>
+                        </section>
+
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- CTA -->
+            <section id="cta">
+
+                <h2>Sign up for beta access</h2>
+                <p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc.</p>
+
+                <form>
+                    <div class="row gtr-50 gtr-uniform">
+                        <div class="col-8 col-12-mobilep">
+                            <input type="email" name="email" id="email" placeholder="Email Address" />
+                        </div>
+                        <div class="col-4 col-12-mobilep">
+                            <input type="submit" value="Sign Up" class="fit" />
+                        </div>
+                    </div>
+                </form>
+
+            </section>
+
+            <!-- Footer -->
+            <footer id="footer">
+                <ul class="icons">
+                    <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                    <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                    <li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                    <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+                    <li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
+                </ul>
+                <ul class="copyright">
+                    <li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                </ul>
+            </footer>
+
+        </div>
+
+        <!-- Scripts -->
+        <script src="../static/js/jquery.min.js"></script>
+        <script src="../static/js/jquery.dropotron.min.js"></script>
+        <script src="../static/js/jquery.scrollex.min.js"></script>
+        <script src="../static/js/browser.min.js"></script>
+        <script src="../static/js/breakpoints.min.js"></script>
+        <script src="../static/js/util.js"></script>
+        <script src="../static/js/main.js"></script>
+
     </body>
+
+
 </html>

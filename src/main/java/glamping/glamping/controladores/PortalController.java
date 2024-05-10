@@ -7,12 +7,14 @@ package glamping.glamping.controladores;
 
 import glamping.glamping.config.MySimpleUrlAuthenticationSuccessHandler;
 import glamping.glamping.entidades.Cabania;
+import glamping.glamping.entidades.Informacion;
 import glamping.glamping.entidades.Reserva;
 import glamping.glamping.entidades.Usuario;
 import glamping.glamping.repositorios.CabaniaRepositorio;
 import glamping.glamping.repositorios.ReservaRepositorio;
 import glamping.glamping.repositorios.UsuarioRepositorio;
 import glamping.glamping.servicios.CabaniaServicio;
+import glamping.glamping.servicios.InformacionServicio;
 import glamping.glamping.servicios.ReservaServicio;
 import glamping.glamping.servicios.UsuarioServicio;
 import jakarta.servlet.http.HttpServletRequest;
@@ -71,10 +73,16 @@ public class PortalController {
     private CabaniaRepositorio cabaniaRepositorio;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private InformacionServicio informacionServicio;
     @Autowired 
     private MySimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
     @GetMapping("/")
-    public String inicio(){
+    public String inicio(ModelMap map){
+        List<Informacion> listaInfo = informacionServicio.listarInformacion();
+        System.out.println("Lista: "+listaInfo.toString());
+        map.addAttribute("listaInfo", listaInfo);
+        
         return "inicio.html";
     }
     @GetMapping("/login")
