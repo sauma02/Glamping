@@ -27,10 +27,10 @@ public class InformacionServicio {
     @Autowired
     private ImagenServicio imagenServicio;
     @Transactional
-    public Informacion crearNuevaInfo(String titulo, String texto, MultipartFile imagen){
+    public Informacion crearNuevaInfo(String titulo, String texto, String seccion, MultipartFile imagen){
         try {
             if(imagen.isEmpty()){
-                Informacion info = new Informacion(null, titulo, texto, null);
+                Informacion info = new Informacion(null, titulo, texto,seccion, null);
                  informacionRepositorio.save(info);
                  return info;
            
@@ -40,7 +40,7 @@ public class InformacionServicio {
             Imagen img = new Imagen();
             img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
             
-            Informacion info = new Informacion(null, titulo, texto, img);
+            Informacion info = new Informacion(null, titulo, texto, seccion, img);
             imagenServicio.guardarImagenInfo(info, img, imagen);
             informacionRepositorio.save(info);
             return info;

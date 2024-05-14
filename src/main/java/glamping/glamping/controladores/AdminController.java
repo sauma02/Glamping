@@ -104,16 +104,17 @@ public class AdminController {
         return "registrarInfo.html";
     }
     @PostMapping("/admin/panelDeManejo/registrarInfo/registrar")
-    public String submitRegistroForm(@RequestParam("titulo") String titulo, @RequestParam("texto") String texto, @RequestParam("imagen") MultipartFile imagen, ModelMap map){
+    public String submitRegistroForm(@RequestParam("titulo") String titulo, @RequestParam("texto") String texto, @RequestParam("seccion") String seccion, 
+            @RequestParam("imagen") MultipartFile imagen, ModelMap map){
         try {
             if(imagen == null){
                 
-                infoServicio.crearNuevaInfo(titulo, texto, null);
+                infoServicio.crearNuevaInfo(titulo, texto, seccion, null);
                 
                 return "redirect:/admin/panelDeManejo";
             }else{
                 storageService.init();
-                infoServicio.crearNuevaInfo(titulo, texto, imagen);
+                infoServicio.crearNuevaInfo(titulo, texto, seccion, imagen);
                 return "redirect:/admin/panelDeManejo";
             }
         } catch (Exception e) {
@@ -134,7 +135,7 @@ public class AdminController {
     }
     @PostMapping("/admin/panelDeManejo/registrarInfo/editarInfo/editar")
     public String editarAccionInfo(@RequestParam("id") Integer id, @RequestParam("titulo") String titulo, 
-            @RequestParam("texto") String texto, @RequestParam("imagen") MultipartFile imagen, ModelMap map){
+            @RequestParam("texto") String texto, @RequestParam("seccion") String seccion, @RequestParam("imagen") MultipartFile imagen, ModelMap map){
         try {
             if(imagen.isEmpty()){
                 Informacion info = infoServicio.buscarPorId(id);
@@ -142,6 +143,7 @@ public class AdminController {
                 info.setTexto(texto);
                 info.setTitulo(titulo);
                 info.setImagen(img);
+                info.setSeccion(seccion);
                 infoServicio.editarInfo(info);
                 return "redirect:/admin/panelDeManejo";
             }else{
@@ -155,6 +157,7 @@ public class AdminController {
                 info.setImagen(img);
                 info.setTexto(texto);
                 info.setTitulo(titulo);
+                info.setSeccion(seccion);
                 infoServicio.editarInfo(info);
                 return "redirect:/admin/panelDeManejo";
                 

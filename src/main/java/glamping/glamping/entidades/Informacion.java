@@ -25,13 +25,15 @@ public class Informacion {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     private String titulo;
+    private String seccion;
     private String texto;
    @OneToOne(mappedBy="info")
     private Imagen imagen;
 
-    public Informacion(Integer id, String titulo, String texto, Imagen imagen) {
+    public Informacion(Integer id, String titulo, String texto, String seccion , Imagen imagen) {
         this.id = id;
         this.titulo = titulo;
+        this.seccion = seccion;
         this.texto = texto;
         this.imagen = imagen;
     }

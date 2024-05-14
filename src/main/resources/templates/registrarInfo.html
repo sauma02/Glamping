@@ -224,6 +224,9 @@ footer {
             <div class="form-container">
                 <h2>Registrar info</h2>
                 <form th:action="@{/admin/panelDeManejo/registrarInfo/registrar}" method="post" enctype="multipart/form-data" >
+                    <label for="seccion">Seccion:</label>
+                    <input type="text" id="seccion" name="seccion"  >
+                        
                     <label for="titulo">Titulo:</label>
                     <input type="text" id="titulo" name="titulo"  >
 
