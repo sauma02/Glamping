@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/" , "/js/**", "/css/**").permitAll()
+                .requestMatchers("/templates/**").permitAll()
                 .requestMatchers("/img/**").permitAll()
                 .requestMatchers("/cabania/**").permitAll()
                 .requestMatchers("/register/**").permitAll()

@@ -64,7 +64,7 @@ public class CabaniaServicio {
 
     }
 
-    public void editarCabana(Integer id, String nombre, Integer capacidad) {
+    public void editarCabana(Integer id, String nombre, String descripcion, Integer capacidad) {
         try {
             Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);
             if (respuesta.isPresent()) {
@@ -73,6 +73,7 @@ public class CabaniaServicio {
 
                 cabania.setNombre(nombre);
                 cabania.setCapacidad(capacidad);
+                cabania.setDescripcion(descripcion);
 
                 cabaniaRepositorio.save(cabania);
 

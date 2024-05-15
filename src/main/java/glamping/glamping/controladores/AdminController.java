@@ -259,7 +259,7 @@ public class AdminController {
 
     @PostMapping("/admin/registrarCabañas/registrarCabaña")
     public String registerForm(@RequestParam("nombre") String nombre,
-            @RequestParam("capacidad") Integer capacidad, @RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") boolean estado, Model map) throws MiExcepcion, IOException, Exception {
+            @RequestParam("capacidad") Integer capacidad,@RequestParam("descripcion") String descripcion, @RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") boolean estado, Model map) throws MiExcepcion, IOException, Exception {
         String mensaje = "";
         try {
             Cabania cab = cabaniaServicio.listarCabaniaPorNombre(nombre);
@@ -284,7 +284,7 @@ public class AdminController {
                 cabania.setNombre(nombre);
                 cabania.setCapacidad(capacidad);
                 cabania.setEstado(estado);
-
+                cabania.setDescripcion(descripcion);
                 storageService.save(imagen);
                 img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
                 // Asignar la imagen a la lista de imágenes de la cabaña
@@ -470,10 +470,10 @@ public class AdminController {
     }
 
     @PostMapping("/admin/cabania/editarCabaña/editar")
-    public String editarCabanaForm(@ModelAttribute Cabania cabania, String nombre, Integer capacidad) {
+    public String editarCabanaForm(@ModelAttribute Cabania cabania, String nombre, String descripcion, Integer capacidad) {
         try {
 
-            cabaniaServicio.editarCabana(cabania.getId(), nombre, capacidad);
+            cabaniaServicio.editarCabana(cabania.getId(), nombre, descripcion, capacidad);
             return "redirect:/admin/verCabanias";
         } catch (Exception e) {
             e.printStackTrace();

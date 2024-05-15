@@ -1,0 +1,149 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <span th:each="info : ${listaInfo}">
+            <span th:if="${info.seccion == 'Titulo-pagina'}">
+                <title th:text="${info.titulo}"></title>
+                <link rel="icon"  th:href="${info.imagen.fileName}">
+            </span>
+        </span>
+
+
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+
+    </head>
+    <body class="landing is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header" class="alt">
+                <h1>
+                    <a href="/"><img th:src="@{img/MANTRA.png}">M A N T R A</a>
+                </h1>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="/usuario">Inicio</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="/usuario/cabania">Cabañas</a></li>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="/usuario/reservaForm">Realizar Reserva</a></li>
+                        <div class="user-layer">
+                            <h2 th:text="${nombreUsuario}"><a href="/usuario/perfil"></a></h2>
+                            <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                        </div>
+                    </ul>
+
+                </nav>
+            </header>
+
+
+            <!-- Main -->
+            <section id="main" class="container">
+                <header>
+
+                    <h2 th:text="${nombreUsuario}"></h2>
+                    <p th:text="${emailUsuario}"></p>
+                </header>
+                <div class="box">
+                    <form th:action="@{/usuario/miPerfil/editar}" method="post">
+
+
+                        <label for="id" >Id:</label>
+                        <input type="text" id="id" name="id"  placeholder="id" th:value="${usuario.id}" readonly="true">
+                            <span th:text="${errorUsuario}" style="color: red"></span>    
+                            <br><br>
+                                    <label for="usuario" >Usuario:</label>
+                                    <input type="text" id="usuario" name="username" th:value="${usuario.username}" placeholder="Usuario">
+                                        <span th:text="${errorUsuario}" style="color: red"></span>    
+                                        <br><br>
+
+                                                <label for="cabanias">Nombre completo:</label>
+                                                <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" placeholder="Nombre completo">
+
+                                                    <label for="contrasenia">Contraseña:</label>
+                                                    <input type="password" id="password" name="password"  th:value="${usuario.password}" placeholder="Contraseña"><br><br>
+
+                                                                <label for="contacto">Numero de telefono:</label>
+                                                                <input type="text" id="contacto" name="contacto" th:value="${usuario.contacto}" placeholder="Numero de telefono" ><br><br>
+
+
+                                                                            <label for="contactoDeEmergencia">Contacto de emergencia:</label>
+                                                                            <input type="text" id="contactoDeEmergencia" name="contactoEmergencia" th:value="${usuario.contactoEmergencia}" placeholder = "Contacto de emergencia " ><br><br>
+
+                                                                                        <label for="nombreContactoDeEmergencia">Nombre del contacto de emergencia:</label>
+                                                                                        <input type="text" id="nombreContactoDeEmergencia" name="nombreContactoEmergencia" th:value="${usuario.nombreContactoEmergencia}" placeholder = "Nombre del contacto de emergencia " ><br><br>
+
+                                                                                                    <label for="parentesco">Parentesco:</label>
+                                                                                                    <input type="text" id="parentesco" name="parentesco" th:value="${usuario.parentesco}" placeholder="Parentesco" ><br><br>
+                                                                                                                <label for="fechaNacimiento">Fecha de nacimiento:</label>
+                                                                                                                <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="${usuario.fechaNacimiento != null ? usuario.fechaNacimiento : 'Sin fecha'}" ><br><br>
+                                                                                                                            <label for="email">Email:</label>
+                                                                                                                            <input type="text" id="email" name="email" th:value="${usuario.email}" placeholder="email" >
+                                                                                                                                <span th:text="${errorEmail}" style="color: red"></span>    
+
+
+
+                                                                                                                                <button type="submit">Editar</button>
+                                                                                                                                <button><a th:href="@{/usuario/}">Regresar</a></button>
+
+
+                                                                                                                                </form>
+                                                                                                                                </div>
+                                                                                                                                </div>
+                                                                                                                                </div>
+                                                                                                                                </section>
+
+
+                                                                                                                                <div class="center">
+                                                                                                                                    <div class="col-6 col-12-narrower">
+
+                                                                                                                                        <section class="box special">
+
+                                                                                                                                            <span class="image featured"><img src="images/pic02.jpg" alt="" /></span>
+                                                                                                                                            <h3>Nuestras cabañas</h3>
+                                                                                                                                            <p>En el siguiente boton podras conocer nuestra cabañas</p>
+                                                                                                                                            <ul class="actions special">
+                                                                                                                                                <li><a href="/cabania" class="button alt">Cabañas</a></li>
+                                                                                                                                            </ul>
+
+                                                                                                                                        </section>
+
+                                                                                                                                    </div>
+                                                                                                                                </div>
+
+                                                                                                                                </section>
+
+
+
+                                                                                                                                <!-- Footer -->
+                                                                                                                                <footer id="footer">
+                                                                                                                                    <ul th:each="info : ${listaInfo}"class="icons">
+                                                                                                                                        <span th:if="${info.seccion == 'Contactanos'}">
+                                                                                                                                            <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{info.imagen.fileName}" alt="alt"/></a></li>
+                                                                                                                                        </span>
+                                                                                                                                    </ul>
+                                                                                                                                    <ul class="copyright">
+                                                                                                                                        <li>&copy; MANTRA. All rights reserved.</li>
+                                                                                                                                    </ul>
+                                                                                                                                </footer>
+
+                                                                                                                                </div>
+
+                                                                                                                                <!-- Scripts -->
+                                                                                                                                <script th:src="@{../static/js/jquery.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/jquery.dropotron.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/jquery.scrollex.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/browser.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/breakpoints.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/util.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/main.js}"></script>
+
+                                                                                                                                </body>
+
+
+                                                                                                                                </html>

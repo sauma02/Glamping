@@ -114,6 +114,23 @@ public class UsuarioServicio implements UserDetailsService {
         
      
     }
+    public void editarUsuario(Integer id, String nombre, String username, String password,String contacto, String contactoEmergencia,
+            String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento) throws MiExcepcion{
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+        if(respuesta.isPresent()){
+            Usuario usuario = respuesta.get();
+            usuario.setNombre(nombre);
+            usuario.setUsername(username);
+            usuario.setPassword(password);
+            usuario.setContacto(contacto);
+            usuario.setContactoEmergencia(contactoEmergencia);
+            usuario.setNombreContactoEmergencia(nombreContactoEmergencia);
+            usuario.setParentesco(parentesco);
+            usuario.setEmail(email);
+            usuario.setFechaNacimiento(fechaNacimiento);
+            usuarioRepositorio.save(usuario);
+        }
+    }
     public void editar(Integer id, String nombre, String username, String password,String contacto, String contactoEmergencia,
             String nombreContactoEmergencia, String parentesco, String email, String rol, LocalDate fechaNacimiento) throws MiExcepcion{
         

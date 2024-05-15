@@ -122,10 +122,21 @@ public class PortalController {
  
     @GetMapping("/usuario")
     public String usuario(@AuthenticationPrincipal UserDetails userDetails, Model model){
-        String username = userDetails.getUsername();
+        List<Informacion> listaInfo = informacionServicio.listarInformacion();
         
+        String username = userDetails.getUsername();
+        model.addAttribute("listaInfo", listaInfo);
         model.addAttribute("nombreUsuario", username);
         return "usuario.html";
+    }
+    @GetMapping("/usuario/cabania")
+    public String usuarioCabania(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        List<Informacion> listaInfo = informacionServicio.listarInformacion();
+        
+        String username = userDetails.getUsername();
+        model.addAttribute("listaInfo", listaInfo);
+        model.addAttribute("nombreUsuario", username);
+        return "cabaniaUsuario.html";
     }
    
  
@@ -136,6 +147,34 @@ public class PortalController {
         model.addAttribute("nombreUsuario", username);
         model.addAttribute("cabaniasDisponibles", cabaniasDisponibles);
         return "reservaForm.html";
+    }
+    @GetMapping("/usuario/miPerfil")
+    public String miPerfilForm(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        String username = userDetails.getUsername();
+        Usuario usuario = usuarioServicio.encontrarPorUsername(username);
+        String email = usuario.getEmail();
+        List<Cabania> cabaniasDisponibles = cabaniaServicio.listarCabanias();
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("nombreUsuario", username);
+        model.addAttribute("emailUsuario", email);
+        model.addAttribute("cabaniasDisponibles", cabaniasDisponibles);
+        return "miPerfil.html";
+    }
+    @PostMapping("/usuario/miPerfil/editar")
+    public String miPerfilEditarForm(@RequestParam("id") Integer id, @RequestParam("username") String username, @RequestParam("nombre") String nombre,@RequestParam("password") String password,
+            @RequestParam("contacto") String contacto, @RequestParam("contactoEmergencia") String contactoEmergencia, @RequestParam("nombreContactoEmergencia") 
+                    String nombreContactoEmergencia, @RequestParam("parentesco") String parentesco, @RequestParam("email") String email, @RequestParam("fechaNacimiento")  LocalDate fechaNacimiento
+            , Model model){
+        try {
+            usuarioServicio.editarUsuario(id, nombre, username, passwordEncoder.encode(password), contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
+            return "redirect:/usuario/miPerfil";
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            return "error.html";
+        }
     }
     @GetMapping("/register")
     public String registroForm(Model model){

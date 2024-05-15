@@ -33,18 +33,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                 <label for="id" >Id:</label>
                 <input type="text" id="id" name="id"  placeholder="id" th:value="${cabana.id}" readonly="true">
-               
+
                 <br><br>
                 <label for="nombre" >Nombre:</label>
                 <input type="text" id="nombre" name="nombre" th:value="${cabana.nombre}" placeholder="Nombre">
-                
+
                 <br><br>
 
                 <label for="capacidad">Capacidad:</label>
-                    <input type="text" id="capacidad" name="capacidad" th:value="${cabana.capacidad}" placeholder="Capacidad">
+                <input type="number" id="capacidad" name="capacidad" th:value="${cabana.capacidad}" placeholder="Capacidad">
+                <br><br>
 
-                 
-              
+                 <label for="descripcion">Descripcion:</label>
+                <input type="text" id="descripcion" name="descripcion" th:value="${cabana.descripcion}" placeholder="descripcion">
+
+
                 <button type="submit">Editar</button>
                 <button><a th:href="@{/admin/verCabanias}">Regresar</a></button>
 

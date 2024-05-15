@@ -42,6 +42,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <th>Id:</th>
                                     <th>Nombre:</th>
                                     <th>Capacidad:</th>
+                                    <th>Descripcion:</th>
                                     <th>Imagen:</th>
                                     <th>Reserva:</th> 
                                     <th>Estado:</th>
@@ -53,6 +54,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <td th:text="${cabania.id}"></td>
                                     <td th:text="${cabania.nombre}"></td>
                                     <td th:text="${cabania.capacidad}"></td>
+                                    <td th:text="${cabania.descripcion}"></td>
                                     <td>
                                         <div th:each="imagen : ${cabania.imagen}">
                                             <img th:src="${imagen.fileName}">

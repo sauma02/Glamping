@@ -36,6 +36,7 @@ public class Cabania {
     @Column(name="Cabania_id")
     private Integer id;
     private String nombre;
+    private String descripcion;
     private Integer capacidad;
     @ManyToMany(mappedBy = "cabania")
     private List<Imagen> imagen;
@@ -46,10 +47,11 @@ public class Cabania {
     public Cabania() {
     }
 
-    public Cabania(Integer id, String nombre, Integer capacidad, List<Imagen> imagen, List<Reserva> reserva, boolean estado) {
+    public Cabania(Integer id, String nombre, String descripcion, Integer capacidad, List<Imagen> imagen, List<Reserva> reserva, boolean estado) {
         this.id = id;
         this.nombre = nombre;
         this.capacidad = capacidad;
+        this.descripcion = descripcion;
         this.imagen = imagen;
         this.reserva = reserva;
         this.estado = estado;

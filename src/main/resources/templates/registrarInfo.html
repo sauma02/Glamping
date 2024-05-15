@@ -204,25 +204,26 @@ footer {
                         <li><a href="/admin/verCabanias">ver cabañas</a></li>
                         <li><a href="/admin#nosotros">Nosotros</a></li>
                         <li><a href="/admin/usuarios">Ver usuarios</a></li>
-                         <div class="user-layer">
+                    
+                    </ul>
+                    <div class="user-layer">
                           <h2 th:text="${nombreUsuario}"></h2>
                         <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                     </div>
-                    </ul>
                    
                 </div>
             </div>
         </header>
         <section>
             <div class="hero">
-                <div class="hero-title">Glamping Santa Helena</div>
+                <div class="hero-title">Mantra - Cabaña de campo</div>
                     <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
             </div> 
         </section>
         <main>
             <div class="main-container">
             <div class="form-container">
-                <h2>Registrar info</h2>
+                <h2>Registrar informacion</h2>
                 <form th:action="@{/admin/panelDeManejo/registrarInfo/registrar}" method="post" enctype="multipart/form-data" >
                     <label for="seccion">Seccion:</label>
                     <input type="text" id="seccion" name="seccion"  >
@@ -235,7 +236,7 @@ footer {
 
                      <label for="imagen">Imagen:</label>
                      <input type="file" id="imagen" name="imagen" multiple> 
-                    <button type="submit" name="save" value="save">Registrar cabaña</button>
+                    <button type="submit" name="save" value="save">Registrar informacion</button>
 
                     <!-- Mostrar mensaje de error si existe -->
                     

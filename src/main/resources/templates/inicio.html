@@ -8,14 +8,14 @@
       xmlns:th="http://www.thymeleaf.org">
     <head>
         <span th:each="info : ${listaInfo}">
-         <span th:if="${info.seccion == 'Titulo-pagina'}">
-        <title th:text="${info.titulo}"></title>
-        <link rel="icon"  th:href="${'../img/'+info.imagen.fileName}">
-         </span>
+            <span th:if="${info.seccion == 'Titulo-pagina'}">
+                <title th:text="${info.titulo}"></title>
+                <link rel="icon"  th:href="${info.imagen.fileName}">
+            </span>
         </span>
-        
 
-        
+
+
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
@@ -27,7 +27,7 @@
             <!-- Header -->
             <header id="header" class="alt">
                 <h1>
-                    <a href="/"><img th:src="@{/img/MANTRA.png}">M A N T R A</a>
+                    <a href="/"><img th:src="@{img/MANTRA.png}">M A N T R A</a>
                 </h1>
                 <nav id="nav">
                     <ul>
@@ -37,71 +37,96 @@
                         <li><a href="/cabania">Cabañas</a></li>
                         <li><a href="/login">Iniciar sesion</a></li>
                         <li><a href="/register">Registrar</a></li>
-                        
+
                     </ul>
                 </nav>
             </header>
 
             <!-- Banner -->
-            
+
             <section id="banner">
-                <span th:each="info : ${listaInfo}">
-                     <span th:if="${info.seccion == 'Titulo-principal'}">
-                <h2 th:text="${info.titulo}"></h2>
-                <p th:text="${info.texto}"></p>
-                     </span>
-                </span>
+
             </section>
-             
+            <div style="
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+                 position: relative;
+                 bottom: 300px;
+                 width: auto;
+                 height: auto;
+                 "
+                 class="center">
+                <span th:each="info : ${listaInfo}">
+                    <span th:if="${info.seccion == 'Titulo-principal'}">
+                        <h2 style="
+                            font-family: 'Glacial indifference', glacial-indifference;
+                            font-size: -webkit-xxx-large;
+                            color: #ffbd59;
+                            filter: blur(1px);"
+
+                            th:text="${info.titulo}"></h2>
+                        <p style="
+                           display: flex;
+                           align-items: center;
+                           flex-direction: column;
+                           font-size: larger;
+                           font-family: 'Julius Sans One', julius-sans-one;
+                           color: #ffbd59;
+                           filter: blur(1px);" 
+                           th:text="${info.texto}"></p>
+                    </span>
+                </span>
+            </div>
             <!-- Main -->
             <section id="main" class="container">
 
                 <section  id="nosotros" class="box special">
-                   
+
                     <header  class="major">
-                        
+
                         <span th:each= "info : ${listaInfo}">
-                        <span th:if="${info.seccion == 'Conocenos'}">
-                        <h2 th:text="${info.titulo}">
-                            <br />
-                            </h2>
-                        <p th:text="${info.texto}"><br />
-                            </p>
-                        </span>
+                            <span th:if="${info.seccion == 'Conocenos'}">
+                                <h2 th:text="${info.titulo}">
+                                    <br />
+                                </h2>
+                                <p th:text="${info.texto}"><br />
+                                </p>
+                            </span>
                         </span>
                     </header>
                     <span class="image featured"><img src="images/pic01.jpg" alt="" /></span>
-                    
+
                 </section>
 
                 <section id="servicios" class="box special features">
                     <div  class="center" >
                         <section >
                             <span th:each="info : ${listaInfo}">
-                             <span th:if="${info.seccion == 'Servicios'}">
-                            <span  class="icon solid major fa-bolt accent2"></span>
-                            
-                            <h3 th:text="${info.titulo}" ></h3>
-                            <p th:text="${info.texto}"></p>
-                             </span>
+                                <span th:if="${info.seccion == 'Servicios'}">
+                                    <span  class="icon solid major fa-bolt accent2"></span>
+
+                                    <h3 th:text="${info.titulo}" ></h3>
+                                    <p th:text="${info.texto}"></p>
+                                </span>
                             </span>
                         </section>
                     </div>
-                   
+
                 </section>
 
                 <div class="center">
                     <div class="col-6 col-12-narrower">
 
                         <section class="box special">
-                           
+
                             <span class="image featured"><img src="images/pic02.jpg" alt="" /></span>
-                            <h3>Conocenos</h3>
+                            <h3>Nuestras cabañas</h3>
                             <p>En el siguiente boton podras conocer nuestra cabañas</p>
                             <ul class="actions special">
-                                <li><a href="#" class="button alt">Cabañas</a></li>
+                                <li><a href="/cabania" class="button alt">Cabañas</a></li>
                             </ul>
-                           
+
                         </section>
 
                     </div>
@@ -113,18 +138,18 @@
             <section id="cta">
 
                 <h2>Haz tu reserva ya</h2>
-                 <div class="col-4 col-12-mobilep">
-                     <button class="button alt"><a class="solid" href="/login">Inicia sesión</a></button>
-                 </div>
+                <div class="col-4 col-12-mobilep">
+                    <button class="button alt"><a class="solid" href="/login">Inicia sesión</a></button>
+                </div>
 
             </section>
 
             <!-- Footer -->
             <footer id="footer">
                 <ul th:each="info : ${listaInfo}"class="icons">
-                     <span th:if="${info.seccion == 'Contactanos'}">
-                         <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="${'../img/'+info.imagen.fileName}" alt="alt"/></a></li>
-                     </span>
+                    <span th:if="${info.seccion == 'Contactanos'}">
+                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{info.imagen.fileName}" alt="alt"/></a></li>
+                    </span>
                 </ul>
                 <ul class="copyright">
                     <li>&copy; MANTRA. All rights reserved.</li>

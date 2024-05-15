@@ -1,192 +1,172 @@
-<!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Glamping</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <style>
-        body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
+                        <html xmlns="http://www.w3.org/1999/xhtml"
+                              xmlns:th="http://www.thymeleaf.org">
+                            <head>
+                                <span th:each="info : ${listaInfo}">
+                                    <span th:if="${info.seccion == 'Titulo-pagina'}">
+                                        <title th:text="${info.titulo}"></title>
+                                        <link rel="icon"  th:href="${info.imagen.fileName}">
+                                    </span>
+                                </span>
 
-/* Estilos para el encabezado */
-header {
-    background-color: #333;
-    color: #fff;
-}
 
-.nav-container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 10px;
-}
 
-.nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+                                <meta charset="utf-8" />
+                                <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+                                <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
 
-.user-layer {
-    margin-left: auto; /* Mueve .user-layer al extremo derecho */
-}
+                            </head>
+                            <body class="landing is-preload">
+                                <div id="page-wrapper">
 
-.nav ul {
-    list-style: none;
-    display: flex;
-    align-items: center;
-}
+                                    <!-- Header -->
+                                    <header id="header" class="alt">
+                                        <h1>
+                                            <a href="/"><img th:src="@{img/MANTRA.png}">M A N T R A</a>
+                                        </h1>
+                                        <nav id="nav">
+                                            <ul>
+                                                <li><a href="/usuario">Inicio</a></li>
+                                                <li><a href="#servicios">Servicios</a></li>
+                                                <li><a href="/usuario/cabania">Cabañas</a></li>
+                                                <li><a href="#nosotros">Nosotros</a></li>
+                                                <li><a href="/usuario/reservaForm">Realizar Reserva</a></li>
+                                                <li><a href="/usuario/misReservas">Mis reservas</a></li>
+                                                <div class="user-layer">
+                                                <h2 th:text="${nombreUsuario}"><a href="/usuario/miPerfil"></a></h2>
+                                                <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                                            </div>
+                                            </ul>
+                                         
+                                        </nav>
+                                    </header>
 
-.nav li {
-    margin-right: 20px;
-}
+                                    <!-- Banner -->
 
-.nav a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-}
+                                    <section id="banner">
 
-/* Resto de tu CSS ... */
+                                    </section>
+                                    <div style="
+                                         display: flex;
+                                         justify-content: center;
+                                         align-items: center;
+                                         position: relative;
+                                         bottom: 300px;
+                                         width: auto;
+                                         height: auto;
+                                         "
+                                         class="center">
+                                        <span th:each="info : ${listaInfo}">
+                                            <span th:if="${info.seccion == 'Titulo-principal'}">
+                                                <h2 style="
+                                                    font-family: 'Glacial indifference', glacial-indifference;
+                                                    font-size: -webkit-xxx-large;
+                                                    color: #ffbd59;
+                                                    filter: blur(1px);"
 
-/* Media queries para diseño responsivo */
-@media (max-width: 768px) {
-    .nav-container {
-        padding: 5px;
-    }
+                                                    th:text="${info.titulo}"></h2>
+                                                <p style="
+                                                   display: flex;
+                                                   align-items: center;
+                                                   flex-direction: column;
+                                                   font-size: larger;
+                                                   font-family: 'Julius Sans One', julius-sans-one;
+                                                   color: #ffbd59;
+                                                   filter: blur(1px);" 
+                                                   th:text="${info.texto}"></p>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <!-- Main -->
+                                    <section id="main" class="container">
 
-    .nav {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+                                        <section  id="nosotros" class="box special">
 
-    .user-layer {
-        margin-left: 0;
-        margin-top: 10px; /* Añade un margen superior para separar del resto de los elementos */
-    }
+                                            <header  class="major">
 
-    .nav li {
-        margin: 0;
-        margin-bottom: 10px;
-    }
+                                                <span th:each= "info : ${listaInfo}">
+                                                    <span th:if="${info.seccion == 'Conocenos'}">
+                                                        <h2 th:text="${info.titulo}">
+                                                            <br />
+                                                        </h2>
+                                                        <p th:text="${info.texto}"><br />
+                                                        </p>
+                                                    </span>
+                                                </span>
+                                            </header>
+                                            <span class="image featured"><img src="images/pic01.jpg" alt="" /></span>
 
-    .hero {
-        padding: 20px;
-    }
+                                        </section>
 
-    .hero-title {
-        font-size: 1.5em;
-    }
-}
+                                        <section id="servicios" class="box special features">
+                                            <div  class="center" >
+                                                <section >
+                                                    <span th:each="info : ${listaInfo}">
+                                                        <span th:if="${info.seccion == 'Servicios'}">
+                                                            <span  class="icon solid major fa-bolt accent2"></span>
 
-/* Estilos para la sección principal */
-section {
-    text-align: center;
-}
+                                                            <h3 th:text="${info.titulo}" ></h3>
+                                                            <p th:text="${info.texto}"></p>
+                                                        </span>
+                                                    </span>
+                                                </section>
+                                            </div>
 
-.hero {
-    background: #f0f0f0;
-    padding: 50px;
-}
+                                        </section>
 
-.hero-title {
-    font-size: 2em;
-    margin-bottom: 20px;
-}
+                                        <div class="center">
+                                            <div class="col-6 col-12-narrower">
 
-/* Estilos para la imagen de fondo */
-.hero img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-}
+                                                <section class="box special">
 
-/* Estilos para el pie de página */
-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-}
+                                                    <span class="image featured"><img src="images/pic02.jpg" alt="" /></span>
+                                                    <h3>Nuestras cabañas</h3>
+                                                    <p>En el siguiente boton podras conocer nuestra cabañas</p>
+                                                    <ul class="actions special">
+                                                        <li><a href="/cabania" class="button alt">Cabañas</a></li>
+                                                    </ul>
 
-/* Estilos para la sección del pie de página */
-.footer-section {
-    height: 100px; /* Ajusta según sea necesario */
-}
+                                                </section>
 
-/* Media queries para diseño responsivo */
-@media (max-width: 768px) {
-    .nav-container {
-        padding: 5px;
-    }
+                                            </div>
+                                        </div>
 
-    .nav li {
-        display: block;
-        margin: 0;
-        margin-bottom: 10px;
-    }
+                                    </section>
 
-    .hero {
-        padding: 20px;
-    }
+                                    <!-- CTA -->
+                                    <section id="cta">
 
-    .hero-title {
-        font-size: 1.5em;
-    }
-}
+                                        <h2>Haz tu reserva ya</h2>
+                                        <div class="col-4 col-12-mobilep">
+                                            <button class="button alt"><a class="solid" href="/login">Inicia sesión</a></button>
+                                        </div>
 
-@media (max-width: 480px) {
-    .nav a {
-        font-size: 0.9em;
-    }
-}
-    </style>
+                                    </section>
 
-    <body>
-        <header>
-            <div class="nav-container">
-                <div class="nav">
-                    
-                    <ul>
-                        <li><a href="/usuario">Inicio</a></li>
-                        <li><a href="#servicios">Servicios</a></li>
-                        <li><a href="/usuario/cabanias">Cabañas</a></li>
-                        <li><a href="#nosotros">Nosotros</a></li>
-                        <li><a href="/usuario/reservaForm">Realizar Reserva</a></li>
-                        <li><a href="/usuario/misReservas">Mis reservas</a></li>
-                    </ul>
-                    <div class="user-layer">
-                        <h2 th:text="${nombreUsuario}"></h2>
-                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <section>
-            <div class="hero">
-                <div class="hero-title">Glamping Santa Helena</div>
-                    <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
-            </div> 
-        </section>
-        <main>
-            <div class="main-container">
-                
-            </div>
-        </main>
-        <section>
-            <div class="footer-section"></div>
-        </section>
-        <footer>
-            
-        </footer>
-    </body>
-</html>
+                                    <!-- Footer -->
+                                    <footer id="footer">
+                                        <ul th:each="info : ${listaInfo}"class="icons">
+                                            <span th:if="${info.seccion == 'Contactanos'}">
+                                                <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{info.imagen.fileName}" alt="alt"/></a></li>
+                                            </span>
+                                        </ul>
+                                        <ul class="copyright">
+                                            <li>&copy; MANTRA. All rights reserved.</li>
+                                        </ul>
+                                    </footer>
+
+                                </div>
+
+                                <!-- Scripts -->
+                                <script th:src="@{../static/js/jquery.min.js}"></script>
+                                <script th:src="@{../static/js/jquery.dropotron.min.js}"></script>
+                                <script th:src="@{../static/js/jquery.scrollex.min.js}"></script>
+                                <script th:src="@{../static/js/browser.min.js}"></script>
+                                <script th:src="@{../static/js/breakpoints.min.js}"></script>
+                                <script th:src="@{../static/js/util.js}"></script>
+                                <script th:src="@{../static/js/main.js}"></script>
+
+                            </body>
+
+
+                        </html>
