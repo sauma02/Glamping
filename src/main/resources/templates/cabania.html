@@ -10,16 +10,15 @@
         <span th:each="info : ${listaInfo}">
             <span th:if="${info.seccion == 'Titulo-pagina'}">
                 <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${info.imagen.fileName}">
+                <link rel="icon"  th:href="${info.imagen.ruta}">
             </span>
         </span>
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <script th:src="${'https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js'}" crossorigin="anonymous" defer></script>
+
         <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css" 
-              th:href="@{'https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css'}" crossorigin="anonymous" />
+
     </head>
     <body class="is-preload">
         <div id="page-wrapper">
@@ -56,24 +55,16 @@
 
                         <!-- Text -->
                         <section class="box">
-                            <div class="swiffy-slider">
-                                <ul class="slider-container">
-                                    <span th:each="cabania : ${cabaniaLista}">
-
-                                        <span th:each="imagen : ${cabania.imagen}">
-                                            <li><img th:src="${imagen.fileName}" style="max-width: 100%;height: auto;"></li>
-                                        </span>
-
+                            <div style="display: flex;
+                                 justify-content: center;
+                                 "class="w3-content w3-display-container">
+                                <span th:each=" cabania : ${cabaniaLista}">
+                                    <span th:each="imagen : ${cabania.imagen}">
+                                        <img class="mySlides" th:src="${imagen.ruta}" style="width:100%">
                                     </span>
-                                </ul>
-                                <button type="button" class="slider-nav"></button>
-                                <button type="button" class="slider-nav slider-nav-next"></button>
-                                <div class="slider-indicators">
-                                    <button class="active"></button>
-                                    <button></button>
-                                    <button></button>
-
-                                </div>
+                                </span>
+                                <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+                                <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
                             </div>
                             <span th:each="info : ${listaInfo}">
                                 <span th:if="${info.seccion == 'cabaña-textos'}">
@@ -81,7 +72,11 @@
                                     <p th:text="${info.texto}"> </p>
                                 </span>
                             </span>
-
+                            <div style="display: flex;
+                                justify-content: center;
+                                "class="w3-content w3-display-container">
+                                <button class="button alt"><a class="solid" href="/login">Reservar</a></button>
+                                </div>
                         </section>
 
                     </div>
@@ -114,6 +109,28 @@
         <script src="assets/js/breakpoints.min.js"></script>
         <script src="assets/js/util.js"></script>
         <script src="assets/js/main.js"></script>
+        <script>
+                                    var slideIndex = 1;
+                                    showDivs(slideIndex);
 
+                                    function plusDivs(n) {
+                                        showDivs(slideIndex += n);
+                                    }
+
+                                    function showDivs(n) {
+                                        var i;
+                                        var x = document.getElementsByClassName("mySlides");
+                                        if (n > x.length) {
+                                            slideIndex = 1
+                                        }
+                                        if (n < 1) {
+                                            slideIndex = x.length
+                                        }
+                                        for (i = 0; i < x.length; i++) {
+                                            x[i].style.display = "none";
+                                        }
+                                        x[slideIndex - 1].style.display = "block";
+                                    }
+        </script>
     </body>
 </html>

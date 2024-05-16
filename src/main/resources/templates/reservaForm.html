@@ -119,13 +119,11 @@
                                     <ul>
                                         <li><a href="/usuario">Inicio</a></li>
                                         <li><a href="/usuario#servicios">Servicios</a></li>
-                                         <li><a href="/usuario/cabania">Cabañas</a></li>
+                                        <li><a href="/usuario/cabania">Cabañas</a></li>
                                         <li><a href="/usuario#nosotros">Nosotros</a></li>
-                                         <li><a href="/usuario/misReservas">Mis reservas</a></li>
-                                        <div class="user-layer">
-                                            <h2 th:text="${nombreUsuario}"><a href="/usuario/miPerfil"></a></h2>
-                                            <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                                        </div>
+                                        <li><a href="/usuario/misReservas">Mis reservas</a></li>
+                                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                                     </ul>
 
                                 </div>
@@ -189,13 +187,12 @@
                                                                                                 beforeShowDay: function (date) {
                                                                                                     var dateString = $.datepicker.formatDate('dd/mm/yy', date);
                                                                                                     var highlight = arrayOfDates.indexOf(dateString) !== -1;
-                                                                                                   
+
                                                                                                     console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight); // Add this line to log the output
                                                                                                     console.log(arrayOfDates, ' , ');
                                                                                                     if (highlight) {
                                                                                                         return[false, 'highlight', 'Esta fecha ya se encuentra reservada o es pasada'];
-                                                                                                    }
-                                                                                                    else {
+                                                                                                    } else {
                                                                                                         return[true, '', ''];
                                                                                                     }
                                                                                                 }

@@ -48,7 +48,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <label for="imagen" >Imagen:</label>
                 <span th:if="${informacion.imagen?.fileName == null}"></span>
                 <span th:if="${informacion.imagen?.fileName != null}">
-                    <img th:src="${informacion.imagen.fileName}">
+                    <img th:src="${informacion.imagen.ruta}">
                 </span>
 
                 <input type="file" id="imagen" name="imagen" placeholder="imagen">

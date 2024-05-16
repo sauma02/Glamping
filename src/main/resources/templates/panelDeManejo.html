@@ -19,12 +19,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <li><a href="/admin#nosotros">Nosotros</a></li>
                         <li><a href="/admin/usuarios">Ver Usuarios</a></li>
 
-
-                    </ul>
-                    <div class="user-layer">
-                        <h2 th:text="${nombreUsuario}"></h2>
+                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
                         <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                    </div>
+                    </ul>
+
                 </div>
             </div>
         </header>
@@ -59,7 +57,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <!--<!--                            #a0ea81 -> color
                                 -->
                                 <span th:if="${info.imagen?.fileName != null}">
-                                    <img th:src="${info.imagen.fileName}">
+                                    <img th:src="${info.imagen.ruta}">
                                 </span>
                                 <span th:unless="${info.imagen?.fileName != null}">No hay imágenes registradas</span>
 

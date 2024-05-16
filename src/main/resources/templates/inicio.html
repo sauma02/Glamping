@@ -10,7 +10,7 @@
         <span th:each="info : ${listaInfo}">
             <span th:if="${info.seccion == 'Titulo-pagina'}">
                 <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${info.imagen.fileName}">
+                <link rel="icon"  th:href="${info.imagen.ruta}">
             </span>
         </span>
 
@@ -27,7 +27,7 @@
             <!-- Header -->
             <header id="header" class="alt">
                 <h1>
-                    <a href="/"><img th:src="@{img/MANTRA.png}">M A N T R A</a>
+                    <a href="/"><img th:src="@{/img/MANTRA.png}">M A N T R A</a>
                 </h1>
                 <nav id="nav">
                     <ul>

@@ -19,10 +19,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <li><a href="/admin/verCabanias">Ver Cabañas</a></li>
                         <li><a href="/admin#nosotros">Nosotros</a></li>
                         <li><a href="/admin/usuarios">Ver usuarios</a></li>
-                        <div class="user-layer">
-                            <h2 th:text="${nombreUsuario}"></h2>
-                            <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                        </div>
+                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -44,7 +42,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="number" id="capacidad" name="capacidad" th:value="${cabana.capacidad}" placeholder="Capacidad">
                 <br><br>
 
-                 <label for="descripcion">Descripcion:</label>
+                <label for="descripcion">Descripcion:</label>
                 <input type="text" id="descripcion" name="descripcion" th:value="${cabana.descripcion}" placeholder="descripcion">
 
 

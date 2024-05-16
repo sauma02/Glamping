@@ -5,7 +5,7 @@
                                 <span th:each="info : ${listaInfo}">
                                     <span th:if="${info.seccion == 'Titulo-pagina'}">
                                         <title th:text="${info.titulo}"></title>
-                                        <link rel="icon"  th:href="${info.imagen.fileName}">
+                                        <link rel="icon"  th:href="${info.imagen.ruta}">
                                     </span>
                                 </span>
 
@@ -32,8 +32,7 @@
                                                 <li><a href="#nosotros">Nosotros</a></li>
                                                 <li><a href="/usuario/reservaForm">Realizar Reserva</a></li>
                                                 <li><a href="/usuario/misReservas">Mis reservas</a></li>
-                                                <div class="user-layer">
-                                                <h2 th:text="${nombreUsuario}"><a href="/usuario/miPerfil"></a></h2>
+                                                <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
                                                 <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                                             </div>
                                             </ul>
@@ -147,7 +146,7 @@
                                     <footer id="footer">
                                         <ul th:each="info : ${listaInfo}"class="icons">
                                             <span th:if="${info.seccion == 'Contactanos'}">
-                                                <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{info.imagen.fileName}" alt="alt"/></a></li>
+                                                <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{info.imagen.ruta}" alt="alt"/></a></li>
                                             </span>
                                         </ul>
                                         <ul class="copyright">

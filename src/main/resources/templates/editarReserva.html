@@ -118,10 +118,8 @@
                                         <li><a href="/usuario/cabanias">Cabañas</a></li>
                                         <li><a href="/usuario#nosotros">Nosotros</a></li>
                                         <li><a href="/usuario/misReservas">Mis reservas</a></li>
-                                        <div class="user-layer">
-                                            <h2 th:text="${nombreUsuario}"></h2>
-                                            <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                                        </div>
+                                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                                     </ul>
 
                                 </div>
@@ -189,10 +187,10 @@
                                                                                                                     dateFormat: 'yy-mm-dd',
                                                                                                                     minDate: 0, // Establecer la fecha mínima como hoy
                                                                                                                     beforeShowDay: function (date) {
-                                                                                                                        
+
                                                                                                                         var dateString = $.datepicker.formatDate('dd/mm/yy', date);
                                                                                                                         var highlight = arrayOfDates.indexOf(dateString) !== -1;
-                                                                                                                          
+
                                                                                                                         console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight); // Add this line to log the output
                                                                                                                         console.log(arrayOfDates, ' , ');
                                                                                                                         if (highlight) {

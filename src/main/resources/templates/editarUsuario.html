@@ -19,10 +19,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <li><a href="/admin/verCabanias">Ver Cabañas</a></li>
                         <li><a href="/admin#nosotros">Nosotros</a></li>
                         <li><a href="/admin/usuarios">Ver usuarios</a></li>
-                        <div class="user-layer">
-                            <h2 th:text="${nombreUsuario}"></h2>
-                            <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                        </div>
+                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -64,15 +62,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="text" id="email" name="email" th:value="${usuario.email}" placeholder="email" >
                 <span th:text="${errorEmail}" style="color: red"></span>    
                 <br><br>
-                  <label for="rol">Rol:</label>
-                  <span th:if="${usuario.roles != null}">
-                <input type="text" id="rol" name="rol" th:value="${usuario.roles.name != null ? usuario.roles.name : 'Sin rol'}" ><br><br>
-               </span>
-                  <span th:if="${usuario.roles == null}">
-                      <p>Sin rol</p>
+                <label for="rol">Rol:</label>
+                <span th:if="${usuario.roles != null}">
+                    <input type="text" id="rol" name="rol" th:value="${usuario.roles.name != null ? usuario.roles.name : 'Sin rol'}" ><br><br>
                 </span>
-                 
-              
+                <span th:if="${usuario.roles == null}">
+                    <p>Sin rol</p>
+                </span>
+
+
                 <button type="submit">Editar</button>
                 <button><a th:href="@{/admin/usuarios}">Regresar</a></button>
 

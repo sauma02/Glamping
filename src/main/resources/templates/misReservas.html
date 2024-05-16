@@ -115,14 +115,12 @@
                                     <ul>
                                         <li><a href="/usuario">Inicio</a></li>
                                         <li><a href="/usuario#servicios">Servicios</a></li>
-                                         <li><a href="/usuario/cabania">Cabañas</a></li>
+                                        <li><a href="/usuario/cabania">Cabañas</a></li>
                                         <li><a href="/usuario#nosotros">Nosotros</a></li>
                                         <li><a href="/usuario/reservaForm">Realizar reserva</a></li>
                                         <li><a href="/usuario/misReservas">Mis reservas</a></li>
-                                        <div class="user-layer">
-                                            <h2 th:text="${nombreUsuario}"></h2>
-                                            <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                                        </div>
+                                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                                     </ul>
 
                                 </div>
