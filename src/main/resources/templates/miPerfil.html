@@ -6,7 +6,7 @@
         <span th:each="info : ${listaInfo}">
             <span th:if="${info.seccion == 'Titulo-pagina'}">
                 <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${info.imagen.ruta}">
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
             </span>
         </span>
 
@@ -22,18 +22,21 @@
 
             <!-- Header -->
             <header id="header" class="alt">
-                <h1>
-                    <a href="/"><img th:src="@{img/MANTRA.png}">M A N T R A</a>
+                <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
                 </h1>
                 <nav id="nav">
                     <ul>
                         <li><a href="/usuario">Inicio</a></li>
-                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="/usuario#servicios">Servicios</a></li>
                         <li><a href="/usuario/cabania">Cabañas</a></li>
-                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="/usuario#nosotros">Nosotros</a></li>
                         <li><a href="/usuario/reservaForm">Realizar Reserva</a></li>
-                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
-                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                         
+                                <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                     </ul>
 
                 </nav>
@@ -102,7 +105,7 @@
 
                                                                                                                                         <section class="box special">
 
-                                                                                                                                            <span class="image featured"><img src="images/pic02.jpg" alt="" /></span>
+                                                                                                                                           
                                                                                                                                             <h3>Nuestras cabañas</h3>
                                                                                                                                             <p>En el siguiente boton podras conocer nuestra cabañas</p>
                                                                                                                                             <ul class="actions special">
@@ -122,7 +125,7 @@
                                                                                                                                 <footer id="footer">
                                                                                                                                     <ul th:each="info : ${listaInfo}"class="icons">
                                                                                                                                         <span th:if="${info.seccion == 'Contactanos'}">
-                                                                                                                                            <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{info.imagen.fileName}" alt="alt"/></a></li>
+                                                                                                                                            <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
                                                                                                                                         </span>
                                                                                                                                     </ul>
                                                                                                                                     <ul class="copyright">
@@ -140,7 +143,21 @@
                                                                                                                                 <script th:src="@{../static/js/breakpoints.min.js}"></script>
                                                                                                                                 <script th:src="@{../static/js/util.js}"></script>
                                                                                                                                 <script th:src="@{../static/js/main.js}"></script>
+                                                                                                                                <script th:inline="javascript">
+                                                        console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                                                                                                                                console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
 
+                                                                                                                                                var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                                                                                                                                var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
+
+                                                                                                                                                if (exitoStatus === 'success') {
+                                                                                                                                                    console.log("Exito: ", exitoMensaje);
+                                                                                                                                                    Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                                                                                                                                } else if (exitoStatus !== 'success') {
+                                                                                                                                                    console.log("Error: ", "Error al crear info");
+                                                                                                                                                    Swal.fire("¡Error!", "Error al editar usuario", "error");
+                                                                                                                                                }
+        </script>
                                                                                                                                 </body>
 
 

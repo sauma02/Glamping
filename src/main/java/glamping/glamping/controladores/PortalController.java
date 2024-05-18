@@ -80,7 +80,7 @@ public class PortalController {
     @GetMapping("/")
     public String inicio(ModelMap map){
         List<Informacion> listaInfo = informacionServicio.listarInformacion();
-        System.out.println("Lista: "+listaInfo.toString());
+     
         map.addAttribute("listaInfo", listaInfo);
         
         return "inicio.html";
@@ -93,15 +93,23 @@ public class PortalController {
     public String loginSubmit(@RequestParam("username") String username, @RequestParam("password") String password, ModelMap map){
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
     try {
-        // Authenticate the user
+        Usuario user = usuarioServicio.encontrarPorUsername(username);
+        if(user.getPassword().equals(password)){
+            // Authenticate the user
         Authentication authentication = authenticationManager.authenticate(token);
+        
         SecurityContextHolder.getContext().setAuthentication(authentication);
         
         // Determine the redirect URL using the authentication success handler
         String redirectUrl = authenticationSuccessHandler.determineTargetUrlForAuthentication(authentication);
-
+    
         // Redirect the user to the determined URL
         return "redirect:" + redirectUrl;
+        }else{
+           
+            return "redirect:/login";
+        }
+        
     } catch (AuthenticationException e) {
         e.printStackTrace();
         if(e.getCause() != null){
@@ -123,7 +131,7 @@ public class PortalController {
     @GetMapping("/usuario")
     public String usuario(@AuthenticationPrincipal UserDetails userDetails, Model model){
         List<Informacion> listaInfo = informacionServicio.listarInformacion();
-        
+         
         String username = userDetails.getUsername();
         model.addAttribute("listaInfo", listaInfo);
         model.addAttribute("nombreUsuario", username);
@@ -143,7 +151,9 @@ public class PortalController {
     @GetMapping("/usuario/reservaForm")
     public String reservaForm(@AuthenticationPrincipal UserDetails userDetails, Model model){
         String username = userDetails.getUsername();
+        List<Informacion> listaInfo = informacionServicio.listarInformacion();
         List<Cabania> cabaniasDisponibles = cabaniaServicio.listarCabanias();
+        model.addAttribute("listaInfo", listaInfo);
         model.addAttribute("nombreUsuario", username);
         model.addAttribute("cabaniasDisponibles", cabaniasDisponibles);
         return "reservaForm.html";
@@ -151,6 +161,9 @@ public class PortalController {
     @GetMapping("/usuario/miPerfil")
     public String miPerfilForm(@AuthenticationPrincipal UserDetails userDetails, Model model){
         String username = userDetails.getUsername();
+           List<Informacion> listaInfo = informacionServicio.listarInformacion();
+     
+        model.addAttribute("listaInfo", listaInfo);
         Usuario usuario = usuarioServicio.encontrarPorUsername(username);
         String email = usuario.getEmail();
         List<Cabania> cabaniasDisponibles = cabaniaServicio.listarCabanias();
@@ -166,8 +179,12 @@ public class PortalController {
                     String nombreContactoEmergencia, @RequestParam("parentesco") String parentesco, @RequestParam("email") String email, @RequestParam("fechaNacimiento")  LocalDate fechaNacimiento
             , Model model){
         try {
+               List<Informacion> listaInfo = informacionServicio.listarInformacion();
+               model.addAttribute("exitoStatus", "success");
+               model.addAttribute("exitoMensaje", "Exito al editar usuario");
+        model.addAttribute("listaInfo", listaInfo);
             usuarioServicio.editarUsuario(id, nombre, username, passwordEncoder.encode(password), contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
-            return "redirect:/usuario/miPerfil";
+            return "miPerfil.html";
         } catch (Exception e) {
             e.printStackTrace();
             if(e.getCause() != null){

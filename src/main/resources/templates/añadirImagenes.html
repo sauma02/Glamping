@@ -1,32 +1,63 @@
-<!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <span th:each="info : ${listaInfo}">
+            <span th:if="${info.seccion == 'Titulo-pagina'}">
+                <title th:text="${info.titulo}"></title>
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}"">
+            </span>
+        </span>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <script th:src="${'https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js'}" crossorigin="anonymous" defer></script>
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css" 
+              th:href="@{'https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css'}" crossorigin="anonymous" />
     </head>
-    <body>
-        <header>
-            <div class="nav-container">
-                <div class="nav">
+    <body class="is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header" class="alt">
+                 <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
+                </h1>
+                <nav id="nav">
                     <ul>
                         <li><a href="/admin">Inicio</a></li>
                         <li><a href="/admin#servicios">Servicios</a></li>
                         <li><a href="/admin/verCabanias">Ver Cabañas</a></li>
                         <li><a href="/admin#nosotros">Nosotros</a></li>
                         <li><a href="/admin/usuarios">Ver usuarios</a></li>
-                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
-                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                        <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/admin/miPerfil"></a></li>
+                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                     </ul>
-                </div>
-            </div>
-        </header>
-        <div> 
-            <label for="id" >Id:</label>
+
+                </nav>
+            </header>
+
+            <!-- Main -->
+            <section id="main" class="container">
+                <header>
+                    <span th:each="info : ${listaInfo}">
+                        <span th:if="${info.seccion == 'cabaña'}">
+                            <h2 th:text="${info.titulo}"></h2>
+                            <p th:text="${info.texto}"></p>
+                        </span>
+                    </span>
+                </header>
+                <div class="row">
+                    <div class="col-12">
+
+                        <!-- Text -->
+                        <section class="box">
+                            <div style="display: flex;
+                                 justify-content: center;
+                                 "class="w3-content w3-display-container">
+                               <label for="id" >Id:</label>
             <input type="text" id="id" name="id"  placeholder="id" th:value="${cabana.id}" readonly="true">
 
             <br><br>
@@ -85,6 +116,39 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
             <button><a th:href="@{/admin/verCabanias}">Regresar</a></button>
 
+
+                        </section>
+
+                    </div>
+                </div>
+
+
+            </section>
+
+
+
+            <!-- Footer -->
+            <footer id="footer">
+                <ul th:each="info : ${listaInfo}"class="icons">
+                    <span th:if="${info.seccion == 'Contactanos'}">
+                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
+                    </span>
+                </ul>
+                <ul class="copyright">
+                    <li>&copy; MANTRA. All rights reserved.</li>
+                </ul>
+            </footer>
+
         </div>
+
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.dropotron.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+
     </body>
 </html>

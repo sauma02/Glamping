@@ -10,7 +10,7 @@
         <span th:each="info : ${listaInfo}">
             <span th:if="${info.seccion == 'Titulo-pagina'}">
                 <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${info.imagen.ruta}">
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}"">
             </span>
         </span>
 
@@ -26,19 +26,21 @@
 
             <!-- Header -->
             <header id="header" class="alt">
-                <h1>
-                    <a href="/usuario"><img th:src="@{img/MANTRA.png}">M A N T R A</a>
+                <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
                 </h1>
                 <nav id="nav">
                     <ul>
                         <li><a href="/usuario">Inicio</a></li>
-                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="/usuario#servicios">Servicios</a></li>
                         <li><a href="/usuario/cabania">Cabañas</a></li>
-                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="/usuario#nosotros">Nosotros</a></li>
                         <li><a href="/usuario/reservaForm">Realizar Reserva</a></li>
                         <li><a href="/usuario/misReservas">Mis reservas</a></li>
-                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
-                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                        <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                     </ul>
 
                 </nav>
@@ -59,23 +61,17 @@
 
                         <!-- Text -->
                         <section class="box">
-                            <div class="swiffy-slider">
-                                <ul class="slider-container">
-                                    <span th:each="cabania : ${cabaniaLista}">
-
-                                <img class="mySlides" th:src="${cabania.imagen.ruta}" style="width:100%">
-                                
-
+                           <div style="display: flex;
+                                 justify-content: center;
+                                 "class="w3-content w3-display-container">
+                                <span th:each=" cabania : ${cabaniaLista}">
+                                    <span th:each="imagen : ${cabania.imagen}">
+                                        <img class="mySlides" th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt" style="width:100%">
                                     </span>
-                                </ul>
-                                <button type="button" class="slider-nav"></button>
-                                <button type="button" class="slider-nav slider-nav-next"></button>
-                                <div class="slider-indicators">
-                                    <button class="active"></button>
-                                    <button></button>
-                                    <button></button>
-
-                                </div>
+                                </span>
+                                <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+                                <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+                            
                             </div>
                             <span th:each="info : ${listaInfo}">
                                 <span th:if="${info.seccion == 'cabaña-textos'}">
@@ -83,6 +79,11 @@
                                     <p th:text="${info.texto}"> </p>
                                 </span>
                             </span>
+                              <div style="display: flex;
+                                justify-content: center;
+                                "class="w3-content w3-display-container">
+                                <button class="button alt"><a class="solid" href="/login">Reservar</a></button>
+                                </div>
 
                         </section>
 
@@ -98,7 +99,7 @@
             <footer id="footer">
                 <ul th:each="info : ${listaInfo}"class="icons">
                     <span th:if="${info.seccion == 'Contactanos'}">
-                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="${info.imagen.fileName}" alt="alt"/></a></li>
+                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
                     </span>
                 </ul>
                 <ul class="copyright">

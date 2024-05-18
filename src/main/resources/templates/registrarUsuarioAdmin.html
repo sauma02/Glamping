@@ -1,20 +1,49 @@
-<!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <span th:each="info : ${listaInfo}">
+            <span th:if="${info.seccion == 'Titulo-pagina'}">
+                <title th:text="${info.titulo}"></title>
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
+            </span>
+        </span>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
     </head>
-    <body>
-        <main>
-            <div class="main-container">
-        <form th:action="@{|/admin/usuarios/crearUsuarioAdmin/crear|}" method="post">
+    </head>
+    <body class="is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header" class="alt">
+                <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
+                </h1>
+               
+            </header>
+
+            <!-- Main -->
+            <section id="main" class="container">
+               
+                <div class="row">
+                    <div class="col-12">
+
+                        <!-- Text -->
+                        <section class="box">
+                           <div style="display: flex;
+                                 justify-content: center;
+                                 "class="w3-content w3-display-container">
+                                 <form th:action="@{|/admin/usuarios/crearUsuarioAdmin/crear|}" method="post">
 
          
 
@@ -55,8 +84,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             
             
         </form>
-              
-    </div>
-        </main>
+
+                        </section>
+
+                    </div>
+                </div>
+
+
+            </section>
+
+
+
+            <!-- Footer -->
+            <footer id="footer">
+               
+                <ul class="copyright">
+                    <li>&copy; MANTRA. All rights reserved.</li>
+                </ul>
+            </footer>
+
+        </div>
+
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.dropotron.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+
     </body>
 </html>

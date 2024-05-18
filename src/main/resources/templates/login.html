@@ -2,43 +2,53 @@
       xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>TODO supply a title</title>
+        <title>Mantra</title>
         <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
                 <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/registerForm.css}" />
-                </head>
-                <body>
-                    <main>
-                        <div class="form-bg">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-offset-3 col-md-6">
-                                        <div class="form-container">
-                                            <h3 class="title">Iniciar Sesión</h3>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-                                            <form class="form-horizontal" th:action="@{/login}" method="post" >
+                <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+                                </head>
+                                <body>
+                                    <main>
+                                        <div class="form-bg">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-md-offset-3 col-md-6">
+                                                        <div class="form-container">
+                                                            <h3 class="title">Iniciar Sesión</h3>
 
-                                                <div class="form-group">
-                                                    <input type="text" name="username" placeholder="Nombre de usuario">
+                                                            <form id="loginForm" class="form-horizontal" th:action="@{/login}" method="post" >
+
+                                                                <div class="form-group">
+                                                                    <span th:if="${errorLogin}" th:text="${errorPassword}" style="color:red;"></span>
+                                                                    <input type="text" name="username" placeholder="Nombre de usuario">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <input type="password" name="password" placeholder="••••••••••••">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <input type="submit" value="Iniciar Sesión">
+                                                                </div>
+                                                                <span class="signin-link">¿Olvidaste tu usuario o contraseña? <a href="/login/forgotPassword">Haz click aqui!</a></span>
+                                                                <span class="signin-link">¿Aun no tienes cuenta? Que esperas! <a href="/register">Registrarme</a></span>
+                                                                <span class="signin-link"><a href="/">Regresar</a></span>
+
+                                                            </form>
+                                                        </div>
+                                                    </div>
                                                 </div>
-
-                                                <div class="form-group">
-                                                    <input type="password" name="password" placeholder="••••••••••••">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <input type="submit" value="Iniciar Sesión">
-                                                </div>
-                                                <span class="signin-link">¿Olvidaste tu usuario o contraseña? <a href="/login/forgotPassword">Haz click aqui!</a></span
-                                                 <span class="signin-link">¿Aun no tienes cuenta? Que esperas! <a href="/register">Registrarme</a></span
-                                           
-
-                                            </form>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
-                </body>
-                </html>
+                                    </main>
+                                   
+                    </body>
+
+                    </html>

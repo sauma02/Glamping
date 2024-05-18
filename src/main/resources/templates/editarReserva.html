@@ -1,138 +1,64 @@
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
     <head>
-        <title>Glamping</title>
-        <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-                <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-                <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+        <span th:each="info : ${listaInfo}">
+            <span th:if="${info.seccion == 'Titulo-pagina'}">
+                <title th:text="${info.titulo}"></title>
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
+            </span>
+        </span>
 
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <script th:src="${'https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js'}" crossorigin="anonymous" defer></script>
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css" 
+              th:href="@{'https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css'}" crossorigin="anonymous" />
+    </head>
+    <body class="is-preload">
+        <div id="page-wrapper">
 
+            <!-- Header -->
+            <header id="header" class="alt">
+                 <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
+                </h1>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="/usuario">Inicio</a></li>
+                        <li><a href="/usuario#servicios">Servicios</a></li>
+                        <li><a href="/usuario/cabania">Cabañas</a></li>
+                        <li><a href="/usuario#nosotros">Nosotros</a></li>
+                        <li><a href="/usuario/reservaForm">Realizar Reserva</a></li>
+                        <li><a href="/usuario/misReservas">Mis reservas</a></li>
 
-                    <!-- Include Flatpickr JavaScript -->
-                    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+                       <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/admin/miPerfil"></a></li>
+                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                    </ul>
 
+                </nav>
+            </header>
 
-                    <style>
-                        body {
-                            margin: 0;
-                            padding: 0;
-                            font-family: Arial, sans-serif;
-                            background-color: #f8f8f8;
-                        }
+            <!-- Main -->
+            <section id="main" class="container">
+                <header>
+                    <span th:each="info : ${listaInfo}">
+                        <span th:if="${info.seccion == 'cabaña'}">
+                            <h2 th:text="${info.titulo}"></h2>
+                            <p th:text="${info.texto}"></p>
+                        </span>
+                    </span>
+                </header>
+                <div class="row">
+                    <div class="col-12">
 
-                        /* Estilos para el encabezado */
-                        header {
-                            background-color: #333;
-                            color: #fff;
-                        }
-
-                        .nav-container {
-                            max-width: 960px;
-                            margin: 0 auto;
-                            padding: 10px;
-                        }
-
-                        .nav {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                        }
-
-                        .user-layer {
-                            margin-left: auto; /* Mueve .user-layer al extremo derecho */
-                        }
-
-                        .nav ul {
-                            list-style: none;
-                            display: flex;
-                            align-items: center;
-                        }
-
-                        .nav li {
-                            margin-right: 20px;
-                        }
-
-                        .nav a {
-                            text-decoration: none;
-                            color: #fff;
-                            font-weight: bold;
-                        }
-
-                        /* Estilos para la sección principal */
-                        section {
-                            text-align: center;
-                        }
-
-                        .hero {
-                            background: #f0f0f0;
-                            padding: 50px;
-                        }
-
-                        .hero-title {
-                            font-size: 2em;
-                            margin-bottom: 20px;
-                        }
-
-                        /* Estilos para la imagen de fondo */
-                        .hero img {
-                            width: 100%;
-                            height: auto;
-                            border-radius: 10px;
-                        }
-
-                        /* Estilos para el pie de página */
-                        footer {
-                            background-color: #333;
-                            color: #fff;
-                            text-align: center;
-                            padding: 10px;
-                        }
-
-                        /* Estilos para la sección del pie de página */
-                        .footer-section {
-                            height: 100px; /* Ajusta según sea necesario */
-                        }
-                        input[type="date"]::-webkit-calendar-picker-indicator {
-                            display: none;
-                        }
-                        .highlight {
-                            background-color: grey; /* Light red background */
-                            color: red; /* Black text color */
-                            border-color: red; /* Light red border */
-                        }
-                    </style>
-
-                    </head>
-
-                    <body>
-                        <header>
-                            <div class="nav-container">
-                                <div class="nav">
-                                    <ul>
-                                        <li><a href="/usuario">Inicio</a></li>
-                                        <li><a href="/usuario#servicios">Servicios</a></li>
-                                        <li><a href="/usuario/cabanias">Cabañas</a></li>
-                                        <li><a href="/usuario#nosotros">Nosotros</a></li>
-                                        <li><a href="/usuario/misReservas">Mis reservas</a></li>
-                                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
-                                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                                    </ul>
-
-                                </div>
-                            </div>
-                        </header>
-                        <section>
-                            <div class="hero">
-                                <div class="hero-title">Glamping Santa Helena</div>
-                                <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
-                            </div>
-                        </section>
-                        <main>
-                            <div class="main-container">
+                        <!-- Text -->
+                        <section class="box">
+                            <div style="display: flex;
+                                 justify-content: center;
+                                 "class="w3-content w3-display-container">
                                 <form th:action="@{/usuario/misReservas/editar/editarReserva}" method="post">
                                     <br><br>
                                             <label for="reserva" >Reserva id:</label>
@@ -167,74 +93,107 @@
                                                                                                     <button type="submit">Editar Reserva</button>
                                                                                                     <button ><a th:href="@{/usuario/misReservas}" >Regresar</a></button>
                                                                                                     </form>
+
                                                                                                     </div>
-                                                                                                    </main>
 
-                                                                                                    <section>
-                                                                                                        <div class="footer-section"></div>
+
                                                                                                     </section>
-                                                                                                    <footer>
 
-                                                                                                    </footer>
+                                                                                                    </div>
+                                                                                                    </div>
+
+
+                                                                                                    </section>
+
                                                                                                     <script th:object ="${cabania}" th:inline="javascript" type="text/javascript" >
                                                                                                         $(document).ready(function () {
-                                                                                                            // Initialize the datepicker
-                                                                                                            var arrayOfDates = [];
+                                                                                                        // Initialize the datepicker
+                                                                                                        var arrayOfDates = [];
 
-                                                                                                            // Function to initialize datepicker
-                                                                                                            function initializeDatepicker() {
-                                                                                                                $("#fechaInicio, #fechaFinal").datepicker({
-                                                                                                                    dateFormat: 'yy-mm-dd',
-                                                                                                                    minDate: 0, // Establecer la fecha mínima como hoy
-                                                                                                                    beforeShowDay: function (date) {
+                                                                                                        // Function to initialize datepicker
+                                                                                                        function initializeDatepicker() {
+                                                                                                        $("#fechaInicio, #fechaFinal").datepicker({
+                                                                                                        dateFormat: 'yy-mm-dd',
+                                                                                                        minDate: 0, // Establecer la fecha mínima como hoy
+                                                                                                        beforeShowDay: function (date) {
 
-                                                                                                                        var dateString = $.datepicker.formatDate('dd/mm/yy', date);
-                                                                                                                        var highlight = arrayOfDates.indexOf(dateString) !== -1;
+                                                                                                        var dateString = $.datepicker.formatDate('dd/mm/yy', date);
+                                                                                                        var highlight = arrayOfDates.indexOf(dateString) !== -1;
 
-                                                                                                                        console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight); // Add this line to log the output
-                                                                                                                        console.log(arrayOfDates, ' , ');
-                                                                                                                        if (highlight) {
-                                                                                                                            return[false, 'highlight', 'Esta fecha ya se encuentra reservada o es una fecha pasada'];
-                                                                                                                        } else {
-                                                                                                                            return[true, '', ''];
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                });
-                                                                                                            }
+                                                                                                        console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight); // Add this line to log the output
+                                                                                                        console.log(arrayOfDates, ' , ');
+                                                                                                        if (highlight) {
+                                                                                                        return[false, 'highlight', 'Esta fecha ya se encuentra reservada o es una fecha pasada'];
+                                                                                                        } else {
+                                                                                                        return[true, '', ''];
+                                                                                                        }
+                                                                                                        }
+                                                                                                        });
+                                                                                                        }
 
-                                                                                                            // Initialize datepicker on document ready
-                                                                                                            initializeDatepicker();
+                                                                                                        // Initialize datepicker on document ready
+                                                                                                        initializeDatepicker();
 
-                                                                                                            // Event listener for cabin selection change
-                                                                                                            $("#cabanias").change(function () {
-                                                                                                                var cabinId = $(this).val();
-                                                                                                                updateUnavailableDates(cabinId);
-                                                                                                            });
+                                                                                                        // Event listener for cabin selection change
+                                                                                                        $("#cabanias").change(function () {
+                                                                                                        var cabinId = $(this).val();
+                                                                                                        updateUnavailableDates(cabinId);
+                                                                                                        });
 
-                                                                                                            // Function to update unavailable dates based on selected cabin
-                                                                                                            function updateUnavailableDates(cabinId) {
-                                                                                                                $.ajax({
-                                                                                                                    url: "/usuario/reservaForm/fechasNoDisponibles/" + cabinId,
-                                                                                                                    method: "GET",
-                                                                                                                    dataType: "json",
-                                                                                                                    success: function (availability) {
-                                                                                                                        arrayOfDates = availability;
-                                                                                                                        // Refresh datepicker
-                                                                                                                        $("#fechaInicio, #fechaFinal").datepicker("destroy");
-                                                                                                                        initializeDatepicker();
-                                                                                                                    },
-                                                                                                                    error: function () {
-                                                                                                                        console.error("Failed to fetch cabin availability.");
-                                                                                                                    }
-                                                                                                                });
-                                                                                                            }
+                                                                                                        // Function to update unavailable dates based on selected cabin
+                                                                                                        function updateUnavailableDates(cabinId) {
+                                                                                                        $.ajax({
+                                                                                                        url: "/usuario/reservaForm/fechasNoDisponibles/" + cabinId,
+                                                                                                        method: "GET",
+                                                                                                        dataType: "json",
+                                                                                                        success: function (availability) {
+                                                                                                        arrayOfDates = availability;
+                                                                                                        // Refresh datepicker
+                                                                                                        $("#fechaInicio, #fechaFinal").datepicker("destroy");
+                                                                                                        initializeDatepicker();
+                                                                                                        },
+                                                                                                        error: function () {
+                                                                                                        console.error("Failed to fetch cabin availability.");
+                                                                                                        }
+                                                                                                        });
+                                                                                                        }
                                                                                                         });
 
 
                                                                                                     </script>
+                                                                                                    <!-- Footer -->
+                                                                                                    <footer id="footer">
+                                                                                                        <ul th:each="info : ${listaInfo}"class="icons">
+                                                                                                            <span th:if="${info.seccion == 'Contactanos'}">
+                                                                                                                <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
+                                                                                                            </span>
+                                                                                                        </ul>
+                                                                                                        <ul class="copyright">
+                                                                                                            <li>&copy; MANTRA. All rights reserved.</li>
+                                                                                                        </ul>
+                                                                                                    </footer>
+
+                                                                                                    </div>
+
+                                                                                                    <!-- Scripts -->
+                                                                                                    <script src="assets/js/jquery.min.js"></script>
+                                                                                                    <script src="assets/js/jquery.dropotron.min.js"></script>
+                                                                                                    <script src="assets/js/jquery.scrollex.min.js"></script>
+                                                                                                    <script src="assets/js/browser.min.js"></script>
+                                                                                                    <script src="assets/js/breakpoints.min.js"></script>
+                                                                                                    <script src="assets/js/util.js"></script>
+                                                                                                    <script src="assets/js/main.js"></script>
+                                                                                                    <script th:inline="javascript">
+                                                        console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                                                                                                                                console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
+
+                                                                                                                                                var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                                                                                                                                var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
+
+                                                                                                                                                if (exitoStatus === 'success') {
+                                                                                                                                                    console.log("Exito: ", exitoMensaje);
+                                                                                                                                                    Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                                                                                                                                } 
+        </script>
                                                                                                     </body>
-
-
-
-
                                                                                                     </html>

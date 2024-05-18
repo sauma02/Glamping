@@ -129,15 +129,18 @@ public class ReservaController {
                 if (fechaDisponible) {
                     emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva",
                             "Reserva realizada con exito para los dias " + fechaInicio + " - " + fechaFinal + " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
-                    map.addAttribute("reservaExito", "Se ha registrado su reserva con exito");
+                    map.addAttribute("reservationStatus", "success");
+                    map.addAttribute("reservationMessage", "Reserva realizada con éxito, a tu correo recibiras informacion sobre tu reserva");
                     reservaServicio.crearReserva(cabania.getId(), usuario.getId(), usuario.getNombre(), fechaInicio, fechaFinal);
 
-                    return "usuario.html";
+                    return "reservaForm.html";
                 } else {
                     map.addAttribute("fecha_error", "La cabaña no se encuentra disponible en estas fechas: " + fechaInicio + " - " + fechaFinal);
                     map.addAttribute("fechasNoDisponibles", fechasNoDisponibles);
                     map.addAttribute("nombreUsuario", nombreUsuario); // Mantener el nombre de usuario en el formulario
                     map.addAttribute("cabaniasDisponibles", cabaniaRepositorio.findAll()); // Recargar la lista de cabañas disponibles
+                     map.addAttribute("reservationStatus", "error");
+            map.addAttribute("reservationMessage", "Hubo un error al realizar la reserva");
                     return "reservaForm.html";
                 }
             } else {
@@ -226,8 +229,9 @@ public class ReservaController {
                     }
                     
                     reservaServicio.editarReserva(reserva.getId(), cabaniaId, usuario.getUsername(), fechaInicio, fechaFinal);
-
-                    return "redirect:/usuario/misReservas";
+                    map.addAttribute("exitoStatus", "success");
+               map.addAttribute("exitoMensaje", "Exito al editar reserva");
+                    return "editarReserva.html";
                     
                 } else {
                     map.addAttribute("fecha_error", "La cabaña no se encuentra disponible en estas fechas: " + fechaInicio + " - " + fechaFinal);

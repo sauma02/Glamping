@@ -10,7 +10,7 @@
         <span th:each="info : ${listaInfo}">
             <span th:if="${info.seccion == 'Titulo-pagina'}">
                 <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${info.imagen.ruta}">
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
             </span>
         </span>
 
@@ -18,16 +18,21 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+     
+      
         <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
 
     </head>
+    
     <body class="landing is-preload">
         <div id="page-wrapper">
 
             <!-- Header -->
             <header id="header" class="alt">
-                <h1>
-                    <a href="/"><img th:src="@{/img/MANTRA.png}">M A N T R A</a>
+                 <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
                 </h1>
                 <nav id="nav">
                     <ul>
@@ -37,7 +42,7 @@
                         <li><a href="/cabania">Cabañas</a></li>
                         <li><a href="/login">Iniciar sesion</a></li>
                         <li><a href="/register">Registrar</a></li>
-
+   
                     </ul>
                 </nav>
             </header>
@@ -95,7 +100,6 @@
                             </span>
                         </span>
                     </header>
-                    <span class="image featured"><img src="images/pic01.jpg" alt="" /></span>
 
                 </section>
 
@@ -148,7 +152,7 @@
             <footer id="footer">
                 <ul th:each="info : ${listaInfo}"class="icons">
                     <span th:if="${info.seccion == 'Contactanos'}">
-                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{info.imagen.fileName}" alt="alt"/></a></li>
+                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
                     </span>
                 </ul>
                 <ul class="copyright">
@@ -166,7 +170,7 @@
         <script th:src="@{../static/js/breakpoints.min.js}"></script>
         <script th:src="@{../static/js/util.js}"></script>
         <script th:src="@{../static/js/main.js}"></script>
-
+        
     </body>
 
 

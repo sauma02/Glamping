@@ -7,7 +7,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
       xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>TODO supply a title</title>
+        <title>Mantra</title>
         <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/registerForm.css}" />
@@ -63,7 +63,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <input class="form-control" type="text" id="email" name="email"  placeholder="email" required>
                                                         <span th:text="${errorEmail}" style="color: red"></span>    
                                                 </div>
-                                                <span class="signin-link">¿Ya tiene una cuenta? Haz click aqui para hacer <a href="/login">Login</a></span
+                                                <span class="signin-link">¿Ya tiene una cuenta? Haz click aqui para hacer <a href="/login">Login</a></span>
                                                 <button class="btn signup" type="submit">Registrar</button>
                                                 <button class="btn signup"><a th:href="@{/inicio}">Regresar</a></button>
 

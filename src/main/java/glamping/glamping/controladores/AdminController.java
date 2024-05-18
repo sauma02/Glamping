@@ -85,59 +85,80 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String admin(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+        model.addAttribute("listaInfo", listaInfo);
         String username = userDetails.getUsername();
 
         model.addAttribute("nombreUsuario", username);
 
         return "admin.html";
     }
+
     @GetMapping("/admin/panelDeManejo")
-    public String panelDeManejoLista(@AuthenticationPrincipal UserDetails userDetails, Model model){
+    public String panelDeManejoLista(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         List<Informacion> listaInfo = infoServicio.listarInformacion();
         model.addAttribute("infoLista", listaInfo);
         model.addAttribute("nombreUsuario", username);
         return "panelDeManejo.html";
     }
+
     @GetMapping("/admin/panelDeManejo/registrarInfo")
-    public String crearInfoForm(){
+    public String crearInfoForm() {
         return "registrarInfo.html";
     }
+
     @PostMapping("/admin/panelDeManejo/registrarInfo/registrar")
-    public String submitRegistroForm(@RequestParam("titulo") String titulo, @RequestParam("texto") String texto, @RequestParam("seccion") String seccion, 
-            @RequestParam("imagen") MultipartFile imagen, ModelMap map){
+    public String submitRegistroForm(@RequestParam("titulo") String titulo, @RequestParam("texto") String texto, @RequestParam("seccion") String seccion,
+            @RequestParam("imagen") MultipartFile imagen, ModelMap map) {
         try {
-            if(imagen == null){
-                
+            if (imagen == null) {
+                List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+                map.addAttribute("listaInfo", listaInfo);
                 infoServicio.crearNuevaInfo(titulo, texto, seccion, null);
-                
-                return "redirect:/admin/panelDeManejo";
-            }else{
+                map.addAttribute("Exito", "success");
+                map.addAttribute("exitoMensaje", "Exito al crear Informacion");
+                return "registrarInfo.html";
+            } else {
+                List<Informacion> listaInfo = infoServicio.listarInformacion();
+                map.addAttribute("Exito", "success");
+                map.addAttribute("exitoMensaje", "Exito al crear Informacion");
+                map.addAttribute("listaInfo", listaInfo);
                 storageService.init();
                 infoServicio.crearNuevaInfo(titulo, texto, seccion, imagen);
-                return "redirect:/admin/panelDeManejo";
+                return "registrarInfo.html";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
             return "error.html";
         }
-        
+
     }
+
     @GetMapping("/admin/panelDeManejo/registrarInfo/editarInfo/{id}")
-    public String editarInfoForm(@PathVariable("id") Integer id, ModelMap map){
+    public String editarInfoForm(@PathVariable("id") Integer id, ModelMap map) {
+        List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+        map.addAttribute("listaInfo", listaInfo);
         Informacion info = infoServicio.buscarPorId(id);
         map.addAttribute("informacion", info);
         return "editarPagina.html";
     }
+
     @PostMapping("/admin/panelDeManejo/registrarInfo/editarInfo/editar")
-    public String editarAccionInfo(@RequestParam("id") Integer id, @RequestParam("titulo") String titulo, 
-            @RequestParam("texto") String texto, @RequestParam("seccion") String seccion, @RequestParam("imagen") MultipartFile imagen, ModelMap map){
+    public String editarAccionInfo(@RequestParam("id") Integer id, @RequestParam("titulo") String titulo,
+            @RequestParam("texto") String texto, @RequestParam("seccion") String seccion, @RequestParam("imagen") MultipartFile imagen, ModelMap map) {
         try {
-            if(imagen.isEmpty()){
+            if (imagen.isEmpty()) {
+                List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+                map.addAttribute("listaInfo", listaInfo);
                 Informacion info = infoServicio.buscarPorId(id);
                 Imagen img = info.getImagen();
                 info.setTexto(texto);
@@ -145,10 +166,15 @@ public class AdminController {
                 info.setImagen(img);
                 info.setSeccion(seccion);
                 infoServicio.editarInfo(info);
-                return "redirect:/admin/panelDeManejo";
-            }else{
+                 map.addAttribute("exitoStatus", "success");
+               map.addAttribute("exitoMensaje", "Exito al editar informacion");
+                return "panelDeManejo.html";
+            } else {
+                List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+                map.addAttribute("listaInfo", listaInfo);
                 storageService.init();
-                
+
                 storageService.save(imagen);
                 Imagen img = new Imagen();
                 img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
@@ -158,31 +184,39 @@ public class AdminController {
                 info.setTexto(texto);
                 info.setTitulo(titulo);
                 info.setSeccion(seccion);
+                 map.addAttribute("exitoStatus", "success");
+               map.addAttribute("exitoMensaje", "Exito al editar informacion");
                 infoServicio.editarInfo(info);
-                return "redirect:/admin/panelDeManejo";
-                
-                
+                return "panelDeManejo.html";
+
             }
         } catch (Exception e) {
             e.printStackTrace();
-            
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
-            }       
-                 Informacion info = infoServicio.buscarPorId(id);
-                    map.addAttribute("informacion", info);
-                    map.addAttribute("errorException", e);
-                    System.out.println("Error exception: "+e);
-                    Imagen img = new Imagen();
-                    img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
-                    map.addAttribute("imgDuplicada", img);
-                    map.addAttribute("errorDuplicado", "La imagen que intentas registrar ya existe");
-                    return "editarPagina.html";
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
+            }
+            List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+            map.addAttribute("listaInfo", listaInfo);
+            Informacion info = infoServicio.buscarPorId(id);
+            map.addAttribute("informacion", info);
+            map.addAttribute("errorException", e);
+            System.out.println("Error exception: " + e);
+            Imagen img = new Imagen();
+            img.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
+            map.addAttribute("imgDuplicada", img);
+            map.addAttribute("errorDuplicado", "La imagen que intentas registrar ya existe");
+            return "editarPagina.html";
         }
     }
+
     @PostMapping("/admin/panelDeManejo/registrarInfo/registrar/eliminar/{id}")
-    public String eliminarInfo(@PathVariable("id") Integer id){
+    public String eliminarInfo(@PathVariable("id") Integer id, Model model) {
         try {
+            List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+            model.addAttribute("listaInfo", listaInfo);
             Informacion info = infoServicio.buscarPorId(id);
             Imagen img = info.getImagen();
             imagenServicio.eliminarImagen(img);
@@ -190,16 +224,19 @@ public class AdminController {
             return "redirect:/admin/panelDeManejo";
         } catch (Exception e) {
             e.printStackTrace();
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
             return "error.html";
         }
     }
-    
+
     @GetMapping("/admin/usuarios/crearUsuarioAdmin")
-    public String registrarUsuarioAdmin(){
+    public String registrarUsuarioAdmin(Model model) {
         try {
+            List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+            model.addAttribute("listaInfo", listaInfo);
             return "registrarUsuarioAdmin";
         } catch (Exception e) {
             e.printStackTrace();
@@ -210,30 +247,34 @@ public class AdminController {
             return "error.html";
         }
     }
+
     @PostMapping("/admin/usuarios/crearUsuarioAdmin/crear")
     public String registrarUserAdminForm(@ModelAttribute("user") Usuario user, @RequestParam("nombre") String nombre,
-            @RequestParam("username") String username,@RequestParam("email") String email, 
-        @RequestParam("password") String password, @RequestParam("contacto") String contacto, 
-        @RequestParam("contactoEmergencia") String contactoEmergencia,@RequestParam("nombreContactoEmergencia") String nombreContactoEmergencia,
-        @RequestParam("parentesco") String parentesco,
-        @RequestParam("fechaNacimiento") @DateTimeFormat(pattern = "dd/mm/yyyy") LocalDate fechaNacimiento,
-        @RequestParam("rol") String rol, ModelMap map){
+            @RequestParam("username") String username, @RequestParam("email") String email,
+            @RequestParam("password") String password, @RequestParam("contacto") String contacto,
+            @RequestParam("contactoEmergencia") String contactoEmergencia, @RequestParam("nombreContactoEmergencia") String nombreContactoEmergencia,
+            @RequestParam("parentesco") String parentesco,
+            @RequestParam("fechaNacimiento") @DateTimeFormat(pattern = "dd/mm/yyyy") LocalDate fechaNacimiento,
+            @RequestParam("rol") String rol, ModelMap map) {
         try {
+            List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+            map.addAttribute("listaInfo", listaInfo);
             Usuario verificarEmail = usuarioServicio.encontrarPorEmail(email);
             Usuario verificarUsuario = usuarioServicio.encontrarPorUsername(username);
-            if(verificarEmail != null){
-                
+            if (verificarEmail != null) {
+
                 map.addAttribute("errorEmail", "El email ya esta en uso");
                 System.out.println("Existe");
             }
-            if(verificarUsuario != null){
+            if (verificarUsuario != null) {
                 map.addAttribute("errorUsuario", "El nombre de usuario ya esta en uso");
                 System.out.println("Existe el usuario");
-                
+
             }
-            
-            if(verificarUsuario == null && verificarEmail == null){
-                usuarioServicio.crearUsuarioAdmin(nombre, username, passwordEncoder.encode(password), 
+
+            if (verificarUsuario == null && verificarEmail == null) {
+                usuarioServicio.crearUsuarioAdmin(nombre, username, passwordEncoder.encode(password),
                         contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento, rol);
                 map.addAttribute("Exito", "Usuario creado con exito");
                 return "redirect:/admin/usuarios";
@@ -252,16 +293,21 @@ public class AdminController {
     @GetMapping("/admin/registrarCabañas")
     public String registrarCabania(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
+        List<Informacion> listaInfo = infoServicio.listarInformacion();
 
+        model.addAttribute("listaInfo", listaInfo);
         model.addAttribute("nombreUsuario", username);
         return "registrarCabania.html";
     }
 
     @PostMapping("/admin/registrarCabañas/registrarCabaña")
     public String registerForm(@RequestParam("nombre") String nombre,
-            @RequestParam("capacidad") Integer capacidad,@RequestParam("descripcion") String descripcion, @RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") boolean estado, Model map) throws MiExcepcion, IOException, Exception {
+            @RequestParam("capacidad") Integer capacidad, @RequestParam("descripcion") String descripcion, @RequestParam("imagen") MultipartFile imagen, @RequestParam("estado") boolean estado, Model map) throws MiExcepcion, IOException, Exception {
         String mensaje = "";
         try {
+            List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+            map.addAttribute("listaInfo", listaInfo);
             Cabania cab = cabaniaServicio.listarCabaniaPorNombre(nombre);
             if (cab != null) {
                 map.addAttribute("errorCabaniaExistente", "La cabaña con el nombre " + nombre + " ya existe");
@@ -272,6 +318,8 @@ public class AdminController {
             }
             if (imagen == null || imagen.isEmpty()) {
                 map.addAttribute("imagenVacia", "Imagen nula");
+                map.addAttribute("exitoStatus", "Error");
+                map.addAttribute("exitoCabania", "Error al crear cabaña");
                 throw new Exception("Error, la imagen es nula, no puede ser nula");
 
             } else {
@@ -297,6 +345,7 @@ public class AdminController {
                 imagenServicio.guardarImagen(cabania, img, imagen);
 
                 // Informar sobre el éxito del registro
+                map.addAttribute("exitoStatus", "Exito");
                 map.addAttribute("exitoCabania", "Éxito al crear cabaña");
                 mensaje = "admin.html";
                 return mensaje;
@@ -311,6 +360,9 @@ public class AdminController {
     @GetMapping("/admin/verCabanias")
     public String listarCabanias(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
+        List<Informacion> listaInfo = infoServicio.listarInformacion();
+
+        model.addAttribute("listaInfo", listaInfo);
         List<Cabania> listaCabanias = cabaniaServicio.listarCabanias();
         for (Cabania cab : listaCabanias) {
             model.addAttribute("cabania", cab);
@@ -342,20 +394,20 @@ public class AdminController {
             Imagen img = imagenServicio.imagenPorId(id);
             Cabania cabania = img.getCabania();
             storageService.init();
-            if(imagen.isEmpty()){
+            if (imagen.isEmpty()) {
                 System.err.println("Imagen vacia");
                 return "redirect:/admin/verCabanias";
             }
-            if(storageService.listOneFile(imagen) == imagen){
+            if (storageService.listOneFile(imagen) == imagen) {
                 storageService.delete2(imagen);
-                
-            }else if(storageService.listOneFile(imagen).isEmpty()){
+
+            } else if (storageService.listOneFile(imagen).isEmpty()) {
                 return "redirect:/admin/verCabanias";
             }
-           
+
             List<Imagen> imagenes = cabania.getImagen();
-              for (Imagen imag : imagenes) {
-                if(img == imag){
+            for (Imagen imag : imagenes) {
+                if (img == imag) {
                     storageService.delete(imag);
                     storageService.save(imagen);
                     imag.setFileName(storageService.listOneFile(imagen).getOriginalFilename());
@@ -364,11 +416,8 @@ public class AdminController {
                     imagenes.add(img);
                 }
             }
-              cabaniaServicio.editarImagenes(cabania);
-             
-                
-            
-            
+            cabaniaServicio.editarImagenes(cabania);
+
             return "redirect:/admin/verCabanias";
         } catch (Exception e) {
             e.printStackTrace();
@@ -412,30 +461,30 @@ public class AdminController {
 
                     }
                 }
-            }else{
+            } else {
                 for (MultipartFile file : imagen) {
-                if (storageService.listOneFile(file).isEmpty() || storageService.listOneFile(file) == null) {
-                    img.setFileName(storageService.listOneFile(file).getOriginalFilename());
-                    // Asignar la imagen a la lista de imágenes de la cabaña
+                    if (storageService.listOneFile(file).isEmpty() || storageService.listOneFile(file) == null) {
+                        img.setFileName(storageService.listOneFile(file).getOriginalFilename());
+                        // Asignar la imagen a la lista de imágenes de la cabaña
 
-                    listaImagenes.add(img);
+                        listaImagenes.add(img);
 
-                    storageService.save(file);
+                        storageService.save(file);
+                    }
+                    if (file == storageService.listOneFile(file)) {
+                        MultipartFile file2 = storageService.listOneFile(file);
+                        storageService.delete2(file2);
+                        img.setFileName(storageService.listOneFile(file).getOriginalFilename());
+                        // Asignar la imagen a la lista de imágenes de la cabaña
+
+                        listaImagenes.add(img);
+                        storageService.save(file);
+
+                    }
+
                 }
-                if (file == storageService.listOneFile(file)) {
-                    MultipartFile file2 = storageService.listOneFile(file);
-                    storageService.delete2(file2);
-                    img.setFileName(storageService.listOneFile(file).getOriginalFilename());
-                    // Asignar la imagen a la lista de imágenes de la cabaña
-
-                    listaImagenes.add(img);
-                    storageService.save(file);
-
-                }
-
             }
-            }
-            
+
             cabania.setImagen(listaImagenes);
             cabaniaServicio.añadirImagenes(cabania, imagen);
             // Informar sobre el éxito del registro
@@ -509,12 +558,13 @@ public class AdminController {
 
     @PostMapping("/admin/usuarios/editarUsuario/editar")
     public String editarUsuarioForm(@ModelAttribute Usuario usuario, String username, String nombre, boolean estado, String rol, String password,
-            String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email,  LocalDate fechaNacimiento, Model model) throws MiExcepcion, Exception {
+            String contacto, String contactoEmergencia, String nombreContactoEmergencia, String parentesco, String email, LocalDate fechaNacimiento, Model model) throws MiExcepcion, Exception {
 
         try {
-
+            model.addAttribute("exitoStatus", "success");
+            model.addAttribute("exitoMensaje", "Exito al editar Usuario");
             usuarioServicio.editar(usuario.getId(), nombre, username, password, contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, rol, fechaNacimiento);
-            return "redirect:/admin/usuarios";
+            return "listaCabañas.html";
         } catch (Exception e) {
             // Log the complete stack trace
             e.printStackTrace();
@@ -529,13 +579,14 @@ public class AdminController {
         }
 
     }
+
     @PostMapping("/admin/verCabanias/{id}")
-    public String cambiarEstado(@PathVariable Integer id, @RequestParam("estado") boolean estado){
+    public String cambiarEstado(@PathVariable Integer id, @RequestParam("estado") boolean estado) {
         try {
             cabaniaServicio.cambiarEstado(id, estado);
             return "redirect:/admin/verCabanias";
         } catch (Exception e) {
-             e.printStackTrace();
+            e.printStackTrace();
 
             // You can also log the cause of the exception if available
             if (e.getCause() != null) {
@@ -546,13 +597,14 @@ public class AdminController {
             return "error.html";
         }
     }
+
     @PostMapping("/admin/verCabanias/eliminar/{id}")
-    public String eliminarCabana(@PathVariable Integer id){
+    public String eliminarCabana(@PathVariable Integer id) {
         try {
             cabaniaServicio.eliminarCabaniaPorId(id);
             return "redirect:/admin/verCabanias";
         } catch (Exception e) {
-             e.printStackTrace();
+            e.printStackTrace();
 
             // You can also log the cause of the exception if available
             if (e.getCause() != null) {
@@ -563,17 +615,18 @@ public class AdminController {
             return "error.html";
         }
     }
+
     @PostMapping("/admin/usuarios/eliminar/{id}")
-    public String eliminarUsuario(@PathVariable Integer id){
+    public String eliminarUsuario(@PathVariable Integer id) {
         try {
             usuarioServicio.eliminarUsuario(id);
             return "redirect:/admin/usuarios";
-            
+
         } catch (Exception e) {
             e.printStackTrace();
-            
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
             return "Error";
         }

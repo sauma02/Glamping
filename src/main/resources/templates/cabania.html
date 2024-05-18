@@ -10,7 +10,7 @@
         <span th:each="info : ${listaInfo}">
             <span th:if="${info.seccion == 'Titulo-pagina'}">
                 <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${info.imagen.ruta}">
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}"">
             </span>
         </span>
 
@@ -25,8 +25,10 @@
 
             <!-- Header -->
             <header id="header" class="alt">
-                <h1>
-                    <a href="/"><img th:src="@{img/MANTRA.png}">M A N T R A</a>
+                <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
                 </h1>
                 <nav id="nav">
                     <ul>
@@ -60,7 +62,7 @@
                                  "class="w3-content w3-display-container">
                                 <span th:each=" cabania : ${cabaniaLista}">
                                     <span th:each="imagen : ${cabania.imagen}">
-                                        <img class="mySlides" th:src="${imagen.ruta}" style="width:100%">
+                                        <img class="mySlides" th:src="@{imagen.ruta}" style="width:100%">
                                     </span>
                                 </span>
                                 <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
@@ -91,7 +93,7 @@
             <footer id="footer">
                 <ul th:each="info : ${listaInfo}"class="icons">
                     <span th:if="${info.seccion == 'Contactanos'}">
-                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="${info.imagen.fileName}" alt="alt"/></a></li>
+                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{info.imagen.ruta}" alt="alt"/></a></li>
                     </span>
                 </ul>
                 <ul class="copyright">

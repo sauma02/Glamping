@@ -1,179 +1,120 @@
-<!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
     <head>
-        <title>Glamping</title>
-        <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-                <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-                <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+        <span th:each="info : ${listaInfo}">
+            <span th:if="${info.seccion == 'Titulo-pagina'}">
+                <title th:text="${info.titulo}"></title>
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
+            </span>
+        </span>
 
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+</head>
+<body class="is-preload">
+    <div id="page-wrapper">
+        <!-- Header -->
+        <header id="header" class="alt">
+            <h1 style="display: flex; flex-direction: row;">
+                <img th:src="@{img/MANTRA.png}">
+                <a href="/">M A N T R A</a>
+            </h1>
+            <nav id="nav">
+                <ul>
+                    <li><a href="/usuario">Inicio</a></li>
+                    <li><a href="/usuario#servicios">Servicios</a></li>
+                    <li><a href="/usuario/cabania">Cabañas</a></li>
+                    <li><a href="/usuario#nosotros">Nosotros</a></li>
+                    <li><a href="/usuario/reservaForm">Realizar reserva</a></li>
+                    <li><a href="/usuario/misReservas">Mis reservas</a></li>
+                    <li><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                    <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                </ul>
+            </nav>
+        </header>
 
-
-                    <!-- Include Flatpickr JavaScript -->
-                    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-
-                    <style>
-                        body {
-                            margin: 0;
-                            padding: 0;
-                            font-family: Arial, sans-serif;
-                            background-color: #f8f8f8;
-                        }
-
-                        /* Estilos para el encabezado */
-                        header {
-                            background-color: #333;
-                            color: #fff;
-                        }
-
-                        .nav-container {
-                            max-width: 960px;
-                            margin: 0 auto;
-                            padding: 10px;
-                        }
-
-                        .nav {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                        }
-
-                        .user-layer {
-                            margin-left: auto; /* Mueve .user-layer al extremo derecho */
-                        }
-
-                        .nav ul {
-                            list-style: none;
-                            display: flex;
-                            align-items: center;
-                        }
-
-                        .nav li {
-                            margin-right: 20px;
-                        }
-
-                        .nav a {
-                            text-decoration: none;
-                            color: #fff;
-                            font-weight: bold;
-                        }
-
-                        /* Estilos para la sección principal */
-                        section {
-                            text-align: center;
-                        }
-
-                        .hero {
-                            background: #f0f0f0;
-                            padding: 50px;
-                        }
-
-                        .hero-title {
-                            font-size: 2em;
-                            margin-bottom: 20px;
-                        }
-
-                        /* Estilos para la imagen de fondo */
-                        .hero img {
-                            width: 100%;
-                            height: auto;
-                            border-radius: 10px;
-                        }
-
-                        /* Estilos para el pie de página */
-                        footer {
-                            background-color: #333;
-                            color: #fff;
-                            text-align: center;
-                            padding: 10px;
-                        }
-
-                        /* Estilos para la sección del pie de página */
-                        .footer-section {
-                            height: 100px; /* Ajusta según sea necesario */
-                        }
-                        input[type="date"]::-webkit-calendar-picker-indicator {
-                            display: none;
-                        }
-                        .highlight {
-                            background-color: grey; /* Light red background */
-                            color: red; /* Black text color */
-                            border-color: red; /* Light red border */
-                        }
-                    </style>
-
-                    </head>
-
-                    <body>
-                        <header>
-                            <div class="nav-container">
-                                <div class="nav">
-                                    <ul>
-                                        <li><a href="/usuario">Inicio</a></li>
-                                        <li><a href="/usuario#servicios">Servicios</a></li>
-                                        <li><a href="/usuario/cabania">Cabañas</a></li>
-                                        <li><a href="/usuario#nosotros">Nosotros</a></li>
-                                        <li><a href="/usuario/reservaForm">Realizar reserva</a></li>
-                                        <li><a href="/usuario/misReservas">Mis reservas</a></li>
-                                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
-                                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                                    </ul>
-
-                                </div>
-                            </div>
-                        </header>
-                        <section>
-                            <div class="hero">
-                                <div class="hero-title">Glamping Santa Helena</div>
-                                <img src="https://th.bing.com/th/id/OIP.HSqB1HI7rn4Amo0_PW64VgHaE8?rs=1&pid=ImgDetMain" alt="background-img-section"/>
-                            </div> 
-                        </section>
-                        <main>
-                            <div class="main-container">
-                                <button><a th:href="@{/usuario/reservaForm}">Realizar reserva</a></button>
-                                <table>
+        <!-- Main -->
+        <section id="main" class="container">
+            <header>
+                <span th:each="info : ${listaInfo}">
+                    <span th:if="${info.seccion == 'cabaña'}">
+                        <h2 th:text="${info.titulo}"></h2>
+                        <p th:text="${info.texto}"></p>
+                    </span>
+                </span>
+            </header>
+            <div class="row">
+                <div class="col-12">
+                    <!-- Text -->
+                    <section class="box">
+                        <button><a th:href="@{/usuario/reservaForm}">Realizar reserva</a></button>
+                        <div style="display: flex; justify-content: center;" class="w3-content w3-display-container">
+                            <table id="listaReservas" class="display">
+                                <thead>
                                     <tr>
-                                        <th>Id:</th>
-                                        <th>Nombre:</th>
-                                        <th>Cabaña:</th>
-                                        <th>Reserva:</th>
-                                        <th>Acciones:</th>
-
-
+                                        <th>Id</th>
+                                        <th>Nombre</th>
+                                        <th>Cabaña</th>
+                                        <th>Reserva</th>
+                                        <th>Acciones</th>
                                     </tr>
+                                </thead>
+                                <tbody>
                                     <span th:if="${#lists.isEmpty(reservas)}">No hay reservas realizadas</span>
                                     <span th:if="${not #lists.isEmpty(reservas)}">
-
-
                                         <tr th:each="reserva : ${reservas}">
                                             <td th:text="${reserva.id}"></td>
                                             <td th:text="${reserva.usuario.nombre}"></td>
                                             <td th:text="${reserva.cabania.nombre}"></td>
-                                            <td th:text="${reserva.fechaInicio} + ' - ' + ${reserva.fechaFinal}"> </td>
+                                            <td th:text="${reserva.fechaInicio} + ' - ' + ${reserva.fechaFinal}"></td>
                                             <td>
                                                 <form>
-                                                    <button id='editar' name="editar" ><a th:href="@{|/usuario/misReservas/editar/${reserva.id}|}">Editar</a></button>
+                                                    <button id="editar" name="editar"><a th:href="@{|/usuario/misReservas/editar/${reserva.id}|}">Editar</a></button>
                                                 </form>
-                                                <form method="post" th:action="@{|misReservas/eliminar/${reserva.id}|}">
-                                                    <button id='eliminar' name="eliminar">Eliminar</button>
+                                                <form method="post" th:action="@{|/usuario/misReservas/eliminar/${reserva.id}|}">
+                                                    <button id="eliminar" name="eliminar">Eliminar</button>
                                                 </form>
                                             </td>
-
                                         </tr>
                                     </span>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
 
-                                </table>
-                            </div>
-                        </main>
-                        <section>
-                            <div class="footer-section"></div>
-                        </section>
-                        <footer>
+        <!-- Footer -->
+        <footer id="footer">
+            <ul th:each="info : ${listaInfo}" class="icons">
+                <span th:if="${info.seccion == 'Contactanos'}">
+                    <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
+                </span>
+            </ul>
+            <ul class="copyright">
+                <li>&copy; MANTRA. All rights reserved.</li>
+            </ul>
+        </footer>
+    </div>
 
-                        </footer>
-                    </body>
-                    </html>
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.dropotron.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#listaReservas').DataTable();
+        });
+    </script>
+</body>
+</html>

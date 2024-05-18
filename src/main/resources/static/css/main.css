@@ -3048,7 +3048,10 @@ body.landing #page-wrapper {
 #header .container h1 {
     left: 0;
 }
-
+#fechaInicio::-webkit-calendar-picker-indicator,
+#fechaFinal::-webkit-calendar-picker-indicator {
+    display: none;
+}
 #header .container nav {
     right: 0;
 }
@@ -3058,6 +3061,7 @@ body.landing #page-wrapper {
     -webkit-animation: reveal-header 0.5s;
     -ms-animation: reveal-header 0.5s;
     animation: reveal-header 0.5s;
+    background-color: #0e2b01;
 }
 
 #header.alt {
@@ -3596,7 +3600,7 @@ body.landing #main {
         top: 0;
         width: 275px;
         z-index: 10002;
-        background: #2b2b2b;
+        background: #0e2b01;
         color: #bbb;
     }
 

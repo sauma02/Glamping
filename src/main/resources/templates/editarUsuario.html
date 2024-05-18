@@ -3,9 +3,16 @@
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
 -->
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>TODO supply a title</title>
+          <span th:each="info : ${listaInfo}">
+            <span th:if="${info.seccion == 'Titulo-pagina'}">
+                <title th:text="${info.titulo}"></title>
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
+            </span>
+        </span>
+        <title>Mantra</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -19,8 +26,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <li><a href="/admin/verCabanias">Ver Cabañas</a></li>
                         <li><a href="/admin#nosotros">Nosotros</a></li>
                         <li><a href="/admin/usuarios">Ver usuarios</a></li>
-                        <li ><a th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
-                        <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+
+                        <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/admin/miPerfil"></a></li>
+                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -77,5 +85,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
             </form>
         </div>
+        <script th:inline="javascript">
+                                                        console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                                                                                                                                console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
+
+                                                                                                                                                var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                                                                                                                                var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
+
+                                                                                                                                                if (exitoStatus === 'success') {
+                                                                                                                                                    console.log("Exito: ", exitoMensaje);
+                                                                                                                                                    Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                                                                                                                                } 
+        </script>
     </body>
 </html>

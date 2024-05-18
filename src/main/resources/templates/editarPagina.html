@@ -1,67 +1,144 @@
-<!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <span th:each="info : ${listaInfo}">
+            <span th:if="${info.seccion == 'Titulo-pagina'}">
+                <title th:text="${info.titulo}"></title>
+                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
+            </span>
+        </span>
+
+
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+
     </head>
-    <header>
-        <div class="nav-container">
-            <div class="nav">
-                <ul>
-                    <li><a href="/admin">Inicio</a></li>
-                    <li><a href="/admin#servicios">Servicios</a></li>
-                    <li><a href="/admin#nosotros">Nosotros</a></li>
-                    <li><a href="/admin/usuarios">Ver Usuarios</a></li>
+    <body class="landing is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header" class="alt">
+                 <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
+                </h1>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="/admin">Inicio</a></li>
+                        <li><a href="/admin#servicios">Servicios</a></li>
+                        <li><a href="/admin#nosotros">Nosotros</a></li>
+                        <li><a href="/admin/usuarios">Ver Usuarios</a></li>
+
+                        <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/admin/miPerfil"></a></li>
+                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                    </ul>
+
+                </nav>
+            </header>
 
 
-                </ul>
-                <div class="user-layer">
+            <!-- Main -->
+            <section id="main" class="container">
+                <header>
+
                     <h2 th:text="${nombreUsuario}"></h2>
-                    <li><a href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                </div>
-            </div>
-        </div>
-    </header>
-    <body>
-        <div> 
-            <form th:action="@{|/admin/panelDeManejo/registrarInfo/editarInfo/editar|}" method="post" enctype="multipart/form-data">
+                    <p th:text="${emailUsuario}"></p>
+                </header>
+                <div class="box">
+                    <form th:action="@{|/admin/panelDeManejo/registrarInfo/editarInfo/editar|}" method="post" enctype="multipart/form-data">
 
 
-                <label for="id" >Id:</label>
-                <input type="number" id="id" name="id"  placeholder="id" th:value="${informacion.id}" readonly="true">
-                <label for="seccion" >Seccion:</label>
-                <input type="text" id="seccion" name="seccion" th:value="${informacion.seccion}" placeholder="seccion">
-                <br><br>
-                <label for="titulo" >Titulo:</label>
-                <input type="text" id="titulo" name="titulo" th:value="${informacion.titulo}" placeholder="informacion">
+                        <label for="id" >Id:</label>
+                        <input type="number" id="id" name="id"  placeholder="id" th:value="${informacion.id}" readonly="true">
+                            <label for="seccion" >Seccion:</label>
+                            <input type="text" id="seccion" name="seccion" th:value="${informacion.seccion}" placeholder="seccion">
+                                <br><br>
+                                        <label for="titulo" >Titulo:</label>
+                                        <input type="text" id="titulo" name="titulo" th:value="${informacion.titulo}" placeholder="informacion">
 
-                <br><br>
-                <label for="texto" >Texto:</label>
-                <input type="text" id="texto" name="texto" th:value="${informacion.texto}" placeholder="texto">
+                                            <br><br>
+                                                    <label for="texto" >Texto:</label>
+                                                    <input type="text" id="texto" name="texto" th:value="${informacion.texto}" placeholder="texto">
 
 
-                <label for="imagen" >Imagen:</label>
-                <span th:if="${informacion.imagen?.fileName == null}"></span>
-                <span th:if="${informacion.imagen?.fileName != null}">
-                    <img th:src="${informacion.imagen.ruta}">
-                </span>
+                                                        <label for="imagen" >Imagen:</label>
+                                                        <span th:if="${informacion.imagen?.fileName == null}"></span>
+                                                        <span th:if="${informacion.imagen?.fileName != null}">
+                                                            <img th:src="@{'img/'+${informacion.imagen.fileName}}">
+                                                        </span>
 
-                <input type="file" id="imagen" name="imagen" placeholder="imagen">
-                <span th:if="${errorException != null}" th:text="${errorDuplicado}" style="color: red; visibility: visible;"></span>
+                                                        <input type="file" id="imagen" name="imagen" placeholder="imagen">
+                                                            <span th:if="${errorException != null}" th:text="${errorDuplicado}" style="color: red; visibility: visible;"></span>
 
 
 
 
-                <button type="submit">Editar</button>
-                <button><a th:href="@{/admin/panelDeManejo}">Regresar</a></button>
+                                                            <button type="submit">Editar</button>
+                                                            <button><a th:href="@{/admin/panelDeManejo}">Regresar</a></button>
 
 
-            </form>
-        </div>
-    </body>
-</html>
+                                                            </form>
+                                                            </div>
+                                                            </div>
+                                                            </div>
+                                                            </section>
+
+
+                                                            <div class="center">
+                                                                <div class="col-6 col-12-narrower">
+
+                                                                    <section class="box special">
+
+
+                                                                      
+
+                                                                    </section>
+
+                                                                </div>
+                                                            </div>
+
+                                                            </section>
+
+
+
+                                                            <!-- Footer -->
+                                                            <footer id="footer">
+                                                                <ul th:each="info : ${listaInfo}"class="icons">
+                                                                    <span th:if="${info.seccion == 'Contactanos'}">
+                                                                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
+                                                                    </span>
+                                                                </ul>
+                                                                <ul class="copyright">
+                                                                    <li>&copy; MANTRA. All rights reserved.</li>
+                                                                </ul>
+                                                            </footer>
+
+                                                            </div>
+
+                                                            <!-- Scripts -->
+                                                            <script th:src="@{../static/js/jquery.min.js}"></script>
+                                                            <script th:src="@{../static/js/jquery.dropotron.min.js}"></script>
+                                                            <script th:src="@{../static/js/jquery.scrollex.min.js}"></script>
+                                                            <script th:src="@{../static/js/browser.min.js}"></script>
+                                                            <script th:src="@{../static/js/breakpoints.min.js}"></script>
+                                                            <script th:src="@{../static/js/util.js}"></script>
+                                                            <script th:src="@{../static/js/main.js}"></script>
+                                                            <script th:inline="javascript">
+                                                        console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                                                                                                                                console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
+
+                                                                                                                                                var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                                                                                                                                var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
+
+                                                                                                                                                if (exitoStatus === 'success') {
+                                                                                                                                                    console.log("Exito: ", exitoMensaje);
+                                                                                                                                                    Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                                                                                                                                } 
+        </script>
+                                                            </body>
+
+
+                                                            </html>
