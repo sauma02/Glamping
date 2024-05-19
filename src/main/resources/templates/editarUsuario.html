@@ -6,96 +6,105 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-          <span th:each="info : ${listaInfo}">
-            <span th:if="${info.seccion == 'Titulo-pagina'}">
-                <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
-            </span>
-        </span>
+        <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+          <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
         <title>Mantra</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <header>
-            <div class="nav-container">
-                <div class="nav">
-                    <ul>
-                        <li><a href="/admin">Inicio</a></li>
-                        <li><a href="/admin#servicios">Servicios</a></li>
-                        <li><a href="/admin/verCabanias">Ver Cabañas</a></li>
-                        <li><a href="/admin#nosotros">Nosotros</a></li>
-                        <li><a href="/admin/usuarios">Ver usuarios</a></li>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+                <body>
+                    <header>
+                        <div class="nav-container">
+                            <div class="nav">
+                                <ul>
+                                    <li><a href="/admin">Inicio</a></li>
+                                    <li><a href="/admin#servicios">Servicios</a></li>
+                                    <li><a href="/admin/verCabanias">Ver Cabañas</a></li>
+                                    <li><a href="/admin#nosotros">Nosotros</a></li>
+                                    <li><a href="/admin/usuarios">Ver usuarios</a></li>
 
-                        <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/admin/miPerfil"></a></li>
-                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
-                    </ul>
-                </div>
-            </div>
-        </header>
-        <div> 
-            <form th:action="@{/admin/usuarios/editarUsuario/editar}" method="post">
-
-
-                <label for="id" >Id:</label>
-                <input type="text" id="id" name="id"  placeholder="id" th:value="${usuario.id}" readonly="true">
-                <span th:text="${errorUsuario}" style="color: red"></span>    
-                <br><br>
-                <label for="usuario" >Usuario:</label>
-                <input type="text" id="usuario" name="username" th:value="${usuario.username}" placeholder="Usuario">
-                <span th:text="${errorUsuario}" style="color: red"></span>    
-                <br><br>
-
-                <label for="cabanias">Nombre completo:</label>
-                <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" placeholder="Nombre completo">
-
-                <label for="contrasenia">Contraseña:</label>
-                <input type="password" id="password" name="password"  th:value="${usuario.password}" placeholder="Contraseña"><br><br>
-
-                <label for="contacto">Numero de telefono:</label>
-                <input type="text" id="contacto" name="contacto" th:value="${usuario.contacto}" placeholder="Numero de telefono" ><br><br>
+                                    <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/admin/miPerfil"></a></li>
+                                    <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </header>
+                    <div> 
+                        <form th:action="@{/admin/usuarios/editarUsuario/editar}" method="post">
 
 
-                <label for="contactoDeEmergencia">Contacto de emergencia:</label>
-                <input type="text" id="contactoDeEmergencia" name="contactoEmergencia" th:value="${usuario.contactoEmergencia}" placeholder = "Contacto de emergencia " ><br><br>
+                            <label for="id" >Id:</label>
+                            <input type="text" id="id" name="id"  placeholder="id" th:value="${usuario.id}" readonly="true">
+                                <span th:text="${errorUsuario}" style="color: red"></span>    
+                                <br><br>
+                                        <label for="usuario" >Usuario:</label>
+                                        <input type="text" id="usuario" name="username" th:value="${usuario.username}" placeholder="Usuario">
+                                            <span th:text="${errorUsuario}" style="color: red"></span>    
+                                            <br><br>
 
-                <label for="nombreContactoDeEmergencia">Nombre del contacto de emergencia:</label>
-                <input type="text" id="nombreContactoDeEmergencia" name="nombreContactoEmergencia" th:value="${usuario.nombreContactoEmergencia}" placeholder = "Nombre del contacto de emergencia " ><br><br>
+                                                    <label for="cabanias">Nombre completo:</label>
+                                                    <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" placeholder="Nombre completo">
 
-                <label for="parentesco">Parentesco:</label>
-                <input type="text" id="parentesco" name="parentesco" th:value="${usuario.parentesco}" placeholder="Parentesco" ><br><br>
-                <label for="fechaNacimiento">Fecha de nacimiento:</label>
-                <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="${usuario.fechaNacimiento != null ? usuario.fechaNacimiento : 'Sin fecha'}" ><br><br>
-                <label for="email">Email:</label>
-                <input type="text" id="email" name="email" th:value="${usuario.email}" placeholder="email" >
-                <span th:text="${errorEmail}" style="color: red"></span>    
-                <br><br>
-                <label for="rol">Rol:</label>
-                <span th:if="${usuario.roles != null}">
-                    <input type="text" id="rol" name="rol" th:value="${usuario.roles.name != null ? usuario.roles.name : 'Sin rol'}" ><br><br>
-                </span>
-                <span th:if="${usuario.roles == null}">
-                    <p>Sin rol</p>
-                </span>
+                                                        <label for="contrasenia">Contraseña:</label>
+                                                        <input type="password" id="password" name="password"  th:value="${usuario.password}" placeholder="Contraseña"><br><br>
+
+                                                                    <label for="contacto">Numero de telefono:</label>
+                                                                    <input type="text" id="contacto" name="contacto" th:value="${usuario.contacto}" placeholder="Numero de telefono" ><br><br>
 
 
-                <button type="submit">Editar</button>
-                <button><a th:href="@{/admin/usuarios}">Regresar</a></button>
+                                                                                <label for="contactoDeEmergencia">Contacto de emergencia:</label>
+                                                                                <input type="text" id="contactoDeEmergencia" name="contactoEmergencia" th:value="${usuario.contactoEmergencia}" placeholder = "Contacto de emergencia " ><br><br>
+
+                                                                                            <label for="nombreContactoDeEmergencia">Nombre del contacto de emergencia:</label>
+                                                                                            <input type="text" id="nombreContactoDeEmergencia" name="nombreContactoEmergencia" th:value="${usuario.nombreContactoEmergencia}" placeholder = "Nombre del contacto de emergencia " ><br><br>
+
+                                                                                                        <label for="parentesco">Parentesco:</label>
+                                                                                                        <input type="text" id="parentesco" name="parentesco" th:value="${usuario.parentesco}" placeholder="Parentesco" ><br><br>
+                                                                                                                    <label for="fechaNacimiento">Fecha de nacimiento:</label>
+                                                                                                                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="${usuario.fechaNacimiento != null ? usuario.fechaNacimiento : 'Sin fecha'}" ><br><br>
+                                                                                                                                <label for="email">Email:</label>
+                                                                                                                                <input type="text" id="email" name="email" th:value="${usuario.email}" placeholder="email" >
+                                                                                                                                    <span th:text="${errorEmail}" style="color: red"></span>    
+                                                                                                                                    <br><br>
+                                                                                                                                            <label for="rol">Rol:</label>
+                                                                                                                                            <span th:if="${usuario.roles != null}">
+                                                                                                                                                <input type="text" id="rol" name="rol" th:value="${usuario.roles.name != null ? usuario.roles.name : 'Sin rol'}" ><br><br>
+                                                                                                                                                            </span>
+                                                                                                                                                            <span th:if="${usuario.roles == null}">
+                                                                                                                                                                <p>Sin rol</p>
+                                                                                                                                                            </span>
 
 
-            </form>
-        </div>
-        <script th:inline="javascript">
-                                                        console.log("Exito status:", /*[[${exitoStatus}]]*/);
-                                                                                                                                                console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
+                                                                                                                                                            <button type="submit">Editar</button>
+                                                                                                                                                            <button><a th:href="@{/admin/usuarios}">Regresar</a></button>
 
-                                                                                                                                                var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
-                                                                                                                                                var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
 
-                                                                                                                                                if (exitoStatus === 'success') {
-                                                                                                                                                    console.log("Exito: ", exitoMensaje);
-                                                                                                                                                    Swal.fire("¡Éxito!", exitoMensaje, "success");
-                                                                                                                                                } 
-        </script>
-    </body>
-</html>
+                                                                                                                                                            </form>
+                                                                                                                                                            </div>
+                                                                                                                                                            <footer id="footer">
+                                                                                                                                                                <ul class="iconss">
+                                                                                                                                                                    <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                                                                                                                                                                        <a th:href="${info.texto}" >
+                                                                                                                                                                            <i th:class="${info.iconoServicio}" ></i>
+                                                                                                                                                                        </a>
+                                                                                                                                                                    </li>
+                                                                                                                                                                </ul>
+                                                                                                                                                                <ul class="copyright">
+                                                                                                                                                                    <li>&copy; MANTRA. All rights reserved.</li>
+                                                                                                                                                                </ul>
+                                                                                                                                                            </footer>
+                                                                                                                                                            <script th:inline="javascript">
+                                                                                                                                                                console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                                                                                                                                                console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
+
+                                                                                                                                                                var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                                                                                                                                                var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
+
+                                                                                                                                                                if (exitoStatus === 'success') {
+                                                                                                                                                                    console.log("Exito: ", exitoMensaje);
+                                                                                                                                                                    Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                                                                                                                                                }
+                                                                                                                                                            </script>
+                                                                                                                                                            </body>
+                                                                                                                                                            </html>

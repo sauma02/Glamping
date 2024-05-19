@@ -55,8 +55,10 @@ public class ForgotPasswordController {
             String emailBody = "Click the link below to reset your password:\n" + resetPasswordLink;
             emailService.enviarMensajeSencillo(email, "Reinicio de contraseña", emailBody);
             map.addAttribute("token", token);
+            map.addAttribute("exitoStatus", "success");
+            map.addAttribute("exitoMensaje", "Token enviado a tu email: "+email);
             System.out.println("Token: "+token);
-             return "redirect:/login/forgotPassword/forgotPasswordReset/resetPassword="+token;
+             return "forgotPasswordForm.html";
         }else{
             map.addAttribute("errorEmailOlvidar", "El email indicado no esta asociado a ninguna cuenta");
             return "redirect:/login/forgotPassword";

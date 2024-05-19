@@ -1,12 +1,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-        <span th:each="info : ${listaInfo}">
-            <span th:if="${info.seccion == 'Titulo-pagina'}">
-                <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
-            </span>
-        </span>
+       <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -17,6 +14,7 @@
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+          <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
     </head>
     </head>
     <body class="is-preload">
@@ -97,7 +95,13 @@
 
             <!-- Footer -->
             <footer id="footer">
-               
+                 <ul class="iconss">
+                    <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                        <a th:href="${info.texto}" >
+                            <i th:class="${info.iconoServicio}" ></i>
+                        </a>
+                    </li>
+                </ul>
                 <ul class="copyright">
                     <li>&copy; MANTRA. All rights reserved.</li>
                 </ul>

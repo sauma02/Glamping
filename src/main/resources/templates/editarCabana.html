@@ -1,26 +1,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-        <span th:each="info : ${listaInfo}">
-            <span th:if="${info.seccion == 'Titulo-pagina'}">
-                <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
-            </span>
-        </span>
+         <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+
 
 
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
-
+          <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
     </head>
     <body class="landing is-preload">
         <div id="page-wrapper">
 
             <!-- Header -->
             <header id="header" class="alt">
-                 <h1 style="    display: flex;
+                <h1 style="    display: flex;
                     flex-direction: row;">
                     <img th:src="@{img/MANTRA.png}">
                         <a href="/">M A N T R A</a>
@@ -99,10 +96,12 @@
 
                                                                 <!-- Footer -->
                                                                 <footer id="footer">
-                                                                    <ul th:each="info : ${listaInfo}"class="icons">
-                                                                        <span th:if="${info.seccion == 'Contactanos'}">
-                                                                            <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
-                                                                        </span>
+                                                                    <ul class="iconss">
+                                                                        <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                                                                            <a th:href="${info.texto}" >
+                                                                                <i th:class="${info.iconoServicio}" ></i>
+                                                                            </a>
+                                                                        </li>
                                                                     </ul>
                                                                     <ul class="copyright">
                                                                         <li>&copy; MANTRA. All rights reserved.</li>
@@ -120,17 +119,17 @@
                                                                 <script th:src="@{../static/js/util.js}"></script>
                                                                 <script th:src="@{../static/js/main.js}"></script>
                                                                 <script th:inline="javascript">
-                                                        console.log("Exito status:", /*[[${exitoStatus}]]*/);
-                                                                                                                                                console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
+                                                                    console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                                                    console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
 
-                                                                                                                                                var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
-                                                                                                                                                var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
+                                                                    var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                                                    var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
 
-                                                                                                                                                if (exitoStatus === 'success') {
-                                                                                                                                                    console.log("Exito: ", exitoMensaje);
-                                                                                                                                                    Swal.fire("¡Éxito!", exitoMensaje, "success");
-                                                                                                                                                } 
-        </script>
+                                                                    if (exitoStatus === 'success') {
+                                                                        console.log("Exito: ", exitoMensaje);
+                                                                        Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                                                    }
+                                                                </script>
                                                                 </body>
 
 

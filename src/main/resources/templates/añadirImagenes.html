@@ -1,12 +1,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-        <span th:each="info : ${listaInfo}">
-            <span th:if="${info.seccion == 'Titulo-pagina'}">
-                <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}"">
-            </span>
-        </span>
+         <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -14,13 +11,14 @@
         <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css" 
               th:href="@{'https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css'}" crossorigin="anonymous" />
+          <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
     </head>
     <body class="is-preload">
         <div id="page-wrapper">
 
             <!-- Header -->
             <header id="header" class="alt">
-                 <h1 style="    display: flex;
+                <h1 style="    display: flex;
                     flex-direction: row;">
                     <img th:src="@{img/MANTRA.png}">
                         <a href="/">M A N T R A</a>
@@ -57,98 +55,84 @@
                             <div style="display: flex;
                                  justify-content: center;
                                  "class="w3-content w3-display-container">
-                               <label for="id" >Id:</label>
-            <input type="text" id="id" name="id"  placeholder="id" th:value="${cabana.id}" readonly="true">
 
-            <br><br>
-            <label for="nombre" >Nombre:</label>
-            <input type="text" id="nombre" name="nombre" th:value="${cabana.nombre}" placeholder="Nombre" readonly="true">
+                                <tr>
+                                    <td>Id:</td>
+                                    <td>Nombre:</td>
+                                    <td>Cabaña:</td>
+                                    <td>Acciones:</td>
+                                </tr>
+                                <span th:if="${cabana.imagen != null}">
+                                    <tr th:each="imagen : ${cabana.imagen}">
+                                        <td th:text="${imagen.id} != null ? ${imagen.id} : 'No hay imagen registrada'"></td>
+                                        <td th:text="${imagen.fileName} != null ? ${imagen.fileName} : 'No hay nombre de imagen registrada'"></td>
+                                        <td th:text="${imagen.cabania.nombre}"></td>
+                                        <td>
+                                            <form th:action="@{|/admin/cabania/añadirImagenes/eliminar/${imagen.id}|}" method="post">
+                                                <input type="number" style="display: none;" id="id" name="id"  placeholder="id" th:value="${imagen.id}" readonly="true">
+                                                    <button type="submit">Eliminar</button>
+                                            </form>
+                                            <form th:action="@{|/admin/cabania/aniadirImagenes/editar/${imagen.id}|}" method="post" enctype="multipart/form-data">
+                                                <input type="number" style="display: none;" id="id" name="id"  placeholder="id" th:value="${imagen.id}" readonly="true">
+                                                    <input type="file" id="imagen" name="imagen" multiple> 
+                                                        <button type="submit">Editar</button>
 
-            <br><br>
+                                                        </form>
+                                                        </td>
+                                                        </tr>
 
-            <label for="capacidad">Capacidad:</label>
-            <input type="text" id="capacidad" name="capacidad" th:value="${cabana.capacidad}" placeholder="Capacidad">
+                                                        </span>
+                                                        <span>
+                                                            <form th:action="@{|/admin/cabania/aniadirImagenes/aniadir|}" method="post" enctype="multipart/form-data">
+                                                                <input type="hidden" id="id" name="id"  placeholder="id" th:value="${cabana.id}" readonly="true" >
+                                                                    <input type="file" id="imagen[]" name="imagen[]" multiple> 
+                                                                        <button type="submit">Añadir Imagenes</button>
+                                                                        </form>
+                                                                        </span>
 
-
-
-
-
-            <table>
-                <tr>
-                    <td>Id:</td>
-                    <td>Nombre:</td>
-                    <td>Cabaña:</td>
-                    <td>Acciones:</td>
-                </tr>
-                <span th:if="${cabana.imagen != null}">
-                    <tr th:each="imagen : ${cabana.imagen}">
-                        <td th:text="${imagen.id} != null ? ${imagen.id} : 'No hay imagen registrada'"></td>
-                        <td th:text="${imagen.fileName} != null ? ${imagen.fileName} : 'No hay nombre de imagen registrada'"></td>
-                        <td th:text="${imagen.cabania.nombre}"></td>
-                        <td>
-                            <form th:action="@{|/admin/cabania/aniadirImagenes/eliminar/${imagen.id})|}" method="post">
-                                <input type="number" style="display: none;" id="id" name="id"  placeholder="id" th:value="${imagen.id}" readonly="true">
-                                <button type="submit">Eliminar</button>
-                            </form>
-                            <form th:action="@{|/admin/cabania/aniadirImagenes/editar/${imagen.id}|}" method="post" enctype="multipart/form-data">
-                                <input type="number" style="display: none;" id="id" name="id"  placeholder="id" th:value="${imagen.id}" readonly="true">
-                                <input type="file" id="imagen" name="imagen" multiple> 
-                                <button type="submit">Editar</button>
-
-                            </form>
-                        </td>
-                    </tr>
-
-                </span>
-                <span>
-                    <form th:action="@{|/admin/cabania/aniadirImagenes/aniadir|}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" id="id" name="id"  placeholder="id" th:value="${cabana.id}" readonly="true" >
-                        <input type="file" id="imagen[]" name="imagen[]" multiple> 
-                        <button type="submit">Añadir Imagenes</button>
-                    </form>
-                </span>
-
-            </table>
+                                                                        </table>
 
 
 
 
 
-            <button><a th:href="@{/admin/verCabanias}">Regresar</a></button>
+                                                                        <button><a th:href="@{/admin/verCabanias}">Regresar</a></button>
 
 
-                        </section>
+                                                                        </section>
 
-                    </div>
-                </div>
-
-
-            </section>
+                                                                        </div>
+                                                                        </div>
 
 
+                                                                        </section>
 
-            <!-- Footer -->
-            <footer id="footer">
-                <ul th:each="info : ${listaInfo}"class="icons">
-                    <span th:if="${info.seccion == 'Contactanos'}">
-                        <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
-                    </span>
-                </ul>
-                <ul class="copyright">
-                    <li>&copy; MANTRA. All rights reserved.</li>
-                </ul>
-            </footer>
 
-        </div>
 
-        <!-- Scripts -->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/jquery.dropotron.min.js"></script>
-        <script src="assets/js/jquery.scrollex.min.js"></script>
-        <script src="assets/js/browser.min.js"></script>
-        <script src="assets/js/breakpoints.min.js"></script>
-        <script src="assets/js/util.js"></script>
-        <script src="assets/js/main.js"></script>
+                                                                        <!-- Footer -->
+                                                                        <footer id="footer">
+                                                                            <ul class="iconss">
+                                                                                <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                                                                                    <a th:href="${info.texto}" >
+                                                                                        <i th:class="${info.iconoServicio}" ></i>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                            <ul class="copyright">
+                                                                                <li>&copy; MANTRA. All rights reserved.</li>
+                                                                            </ul>
+                                                                        </footer>
 
-    </body>
-</html>
+                                                                        </div>
+
+                                                                        <!-- Scripts -->
+                                                                        <script src="assets/js/jquery.min.js"></script>
+                                                                        <script src="assets/js/jquery.dropotron.min.js"></script>
+                                                                        <script src="assets/js/jquery.scrollex.min.js"></script>
+                                                                        <script src="assets/js/browser.min.js"></script>
+                                                                        <script src="assets/js/breakpoints.min.js"></script>
+                                                                        <script src="assets/js/util.js"></script>
+                                                                        <script src="assets/js/main.js"></script>
+
+                                                                        </body>
+                                                                        </html>

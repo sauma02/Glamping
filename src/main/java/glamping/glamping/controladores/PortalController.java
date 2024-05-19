@@ -224,7 +224,7 @@ public class PortalController {
             if(verificarUsuario == null && verificarEmail == null){
                 usuarioServicio.crearUsuario(nombre, username, passwordEncoder.encode(password), contacto, contactoEmergencia, nombreContactoEmergencia, parentesco, email, fechaNacimiento);
                 map.addAttribute("Exito", "Usuario creado con exito");
-                return "inicio.html";
+                return "redirect:/";
             }
             return "registroForm.html";
 

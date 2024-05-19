@@ -35,16 +35,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp-mail.outlook.com");
-        mailSender.setPort(587);
-
-        mailSender.setUsername("josedavids123@live.com");
-        mailSender.setPassword("operacion7");
-        Properties pros = mailSender.getJavaMailProperties();
-        pros.put("mail.transport.protocol", "smtp");
-        pros.put("mail.smtp.auth", "true");
-        pros.put("mail.smtp.starttls.enable", "true");
-        pros.put("mail.debug", "true");
+        mailSender.setHost("smtp.hostinger.com");
+        mailSender.setPort(465);
+        
+        mailSender.setUsername("mantrasoporte@xn--mantracabaas-jhb.site");
+        mailSender.setPassword("Quinteroarias.1");
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.fallback", "false");
+        props.put("mail.smtp.ssl.enable", "true");
         return mailSender;
 
     }

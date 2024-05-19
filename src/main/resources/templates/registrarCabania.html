@@ -1,22 +1,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-        <span th:each="info : ${listaInfo}">
-            <span th:if="${info.seccion == 'Titulo-pagina'}">
-                <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
-            </span>
-        </span>
+         <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      
+
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+            <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+              <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
 
     </head>
     <body class="is-preload">
@@ -24,7 +22,7 @@
 
             <!-- Header -->
             <header id="header" class="alt">
-                 <h1 style="    display: flex;
+                <h1 style="    display: flex;
                     flex-direction: row;">
                     <img th:src="@{img/MANTRA.png}">
                         <a href="/">M A N T R A</a>
@@ -40,12 +38,12 @@
 
                         <!-- Text -->
                         <section class="box">
-                             <h2>Crear Cabaña</h2>
+                            <h2>Crear Cabaña</h2>
                             <div style="display: flex;
                                  justify-content: center;
                                  "class="w3-content w3-display-container">
-                               
-                               
+
+
                                 <form th:action="@{/admin/registrarCabañas/registrarCabaña}" method="post" enctype="multipart/form-data" >
                                     <label for="nombre">Nombre de la cabaña:</label>
                                     <input type="text" id="nombre" name="nombre"  >
@@ -83,7 +81,13 @@
 
                                                             <!-- Footer -->
                                                             <footer id="footer">
-
+                                                                <ul class="iconss">
+                                                                    <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                                                                        <a th:href="${info.texto}" >
+                                                                            <i th:class="${info.iconoServicio}" ></i>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
                                                                 <ul class="copyright">
                                                                     <li>&copy; MANTRA. All rights reserved.</li>
                                                                 </ul>
@@ -102,15 +106,15 @@
 
                                                             </body>
                                                             <script th:inline="javascript">
-                                                        console.log("Exito status:", /*[[${exitoStatus}]]*/);
-                                                                                                                                                console.log("Exito cabania:", /*[[${exitoCabania}]]*/);
+                                                                console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                                                console.log("Exito cabania:", /*[[${exitoCabania}]]*/);
 
-                                                                                                                                                var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
-                                                                                                                                                var exitoCabania = /*[[${exitoCabania}]]*/ '';
+                                                                var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                                                var exitoCabania = /*[[${exitoCabania}]]*/ '';
 
-                                                                                                                                                if (exitoStatus === 'Exito') {
-                                                                                                                                                    console.log("Exito: ", exitoCabania);
-                                                                                                                                                    Swal.fire("¡Éxito!", exitoCabania, "success");
-                                                                                                                                                }
+                                                                if (exitoStatus === 'Exito') {
+                                                                    console.log("Exito: ", exitoCabania);
+                                                                    Swal.fire("¡Éxito!", exitoCabania, "success");
+                                                                }
                                                             </script>
                                                             </html>

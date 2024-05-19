@@ -28,6 +28,8 @@ public class ResetPasswordController {
             String email = passwordTokenService.validatePasswordResetToken(token);
         if(email != null){
             map.addAttribute("token", token);
+           
+            
             return "resetPasswordForm.html";
         }else{
             return "redirect:/forgot-password?=invalidToken";
@@ -43,11 +45,13 @@ public class ResetPasswordController {
         
     }
     @PostMapping("/login/forgotPassword/forgotPasswordReset/resetPasswordresetPasswordReset")
-    public String processResetPasswordForm(@RequestParam("token") String token, @RequestParam("password") String password){
+    public String processResetPasswordForm(@RequestParam("token") String token, @RequestParam("password") String password, ModelMap map){
         try {
             
             passwordTokenService.resetPassword(token, password);
-            return "redirect:/login";
+             map.addAttribute("exitoStatus", "success");
+             map.addAttribute("exitoMensaje", "Contraseña cambiada con exito");
+            return "resetPasswordForm.html";
         } catch (Exception e) {
             e.printStackTrace();
             

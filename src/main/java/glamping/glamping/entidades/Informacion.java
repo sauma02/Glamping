@@ -25,15 +25,17 @@ public class Informacion {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     private String titulo;
+    private String iconoServicio;
     private String seccion;
     private String texto;
    @OneToOne(mappedBy="info")
     private Imagen imagen;
 
-    public Informacion(Integer id, String titulo, String texto, String seccion , Imagen imagen) {
+    public Informacion(Integer id, String titulo, String texto, String iconoServicio, String seccion , Imagen imagen) {
         this.id = id;
         this.titulo = titulo;
         this.seccion = seccion;
+         this.iconoServicio = iconoServicio;
         this.texto = texto;
         this.imagen = imagen;
     }
@@ -43,8 +45,9 @@ public class Informacion {
 
     @Override
     public String toString() {
-        return "Informacion{" + "id=" + id + ", titulo=" + titulo + ", texto=" + texto + ", imagen=" + imagen + '}';
+        return "Informacion{" + "id=" + id + ", titulo=" + titulo + ", iconoServicio=" + iconoServicio + ", seccion=" + seccion + ", texto=" + texto + ", imagen=" + imagen + '}';
     }
+
    
     
     

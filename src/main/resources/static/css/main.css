@@ -11,6 +11,69 @@
 
 /* Based on meyerweb.com/eric/tools/css/reset (v2.0 | 20110126 | License: public domain) */
 
+.center {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea */
+    justify-content: center; /* Centra los elementos dentro del contenedor */
+    gap: 20px; /* Espacio entre los elementos */
+}
+
+.service-item {
+    flex: 0 0 calc(50% - 10px); /* Cada item toma 50% del ancho menos el espacio */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+    background-color: #f9f9f9; /* Opcional: color de fondo para el item de servicio */
+    padding: 20px; /* Opcional: padding para el item de servicio */
+    text-align: center; /* Centra el texto */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Opcional: sombra de caja */
+}
+
+@media (max-width: 768px) {
+    .service-item {
+        flex: 0 0 calc(100% - 10px); /* En pantallas más pequeñas, cada item toma el 100% del ancho */
+    }
+}
+.slider-container {
+    position: relative;
+    width: 100%; /* Tamaño del contenedor */
+    height: 200px; /* Altura del contenedor */
+    overflow: hidden;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease; /* Animación suave */
+    width: 100%;
+    height: 100%;
+}
+
+.mySlides {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1;
+}
+
+.slider-btn-left {
+    left: 10px;
+}
+
+.slider-btn-right {
+    right: 10px;
+}
+
+.material-icons {
+    font-size: 24px;
+}
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
 pre, a, abbr, acronym, address, big, cite,
@@ -2402,7 +2465,7 @@ input[type="radio"] + label:before {
 }
 
 .icon.major {
-    background: #666;
+    background: #0e2b01;
     border-radius: 100%;
     color: #ffffff;
     cursor: default;
@@ -2932,7 +2995,7 @@ body.landing #page-wrapper {
 }
 
 #header {
-    background: #444;
+    background: #0e2b01;
     color: #bbb;
     cursor: default;
     height: 3.25em;
@@ -3282,6 +3345,38 @@ body.landing #main {
     transition: opacity 0.2s ease-in-out;
     opacity: 0.35;
 }
+.iconss {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Centra los íconos horizontalmente */
+    flex-wrap: wrap; /* Permite que los íconos se envuelvan a la siguiente línea si es necesario */
+    gap: 15px; /* Espacio entre los íconos */
+}
+
+.iconss li {
+    display: flex;
+}
+
+.iconss a {
+    text-decoration: none;
+    color: inherit; /* Mantiene el color del texto heredado */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 50%; /* Hace que los íconos sean circulares */
+    background-color: #f9f9f9; /* Color de fondo opcional para los íconos */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra opcional para los íconos */
+    width: 50px; /* Ancho fijo para los íconos */
+    height: 50px; /* Altura fija para los íconos */
+}
+
+.iconss i {
+    font-size: 24px; /* Tamaño de fuente para los íconos */
+}
+
+
 
 #footer .icons a:hover {
     opacity: 0.75;

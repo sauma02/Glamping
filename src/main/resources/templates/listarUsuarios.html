@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-      <span th:each="info : ${listaInfo}">
-            <span th:if="${info.seccion == 'Titulo-pagina'}">
-                <title th:text="${info.titulo}"></title>
-                <link rel="icon"  th:href="${'/img/'+info.imagen.fileName}">
-            </span>
+     <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" />
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+      <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
 </head>
 <body class="is-preload">
     <div id="page-wrapper">
 
         <!-- Header -->
         <header id="header" class="alt">
-             <h1 style="    display: flex;
-                    flex-direction: row;">
-                    <img th:src="@{img/MANTRA.png}">
-                        <a href="/">M A N T R A</a>
-                </h1>
+            <h1 style="display: flex; flex-direction: row;">
+                <img th:src="@{/img/MANTRA.png}" alt="MANTRA Logo">
+                <a href="/">M A N T R A</a>
+            </h1>
             <nav id="nav">
                 <ul>
                     <li><a href="/admin">Inicio</a></li>
@@ -31,7 +29,7 @@
                     <li><a href="/admin#nosotros">Nosotros</a></li>
                     <li><a href="/admin/panelDeManejo">Panel de manejo</a></li>
                     <li><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/admin/miPerfil"></a></li>
-                    <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                    <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesión</span></a></li>
                 </ul>
             </nav>
         </header>
@@ -51,7 +49,7 @@
 
                     <!-- Text -->
                     <section class="box">
-                        <button id="userAdmin" name="userAdmin"><a th:href="@{|/admin/usuarios/crearUsuarioAdmin|}">Crear usuario</a></button>
+                        <a id="userAdmin" name="userAdmin" class="button" th:href="@{/admin/usuarios/crearUsuarioAdmin}">Crear usuario</a>
                         <div style="display: flex; justify-content: center;" class="w3-content w3-display-container">
                             <table id="listaUsuarios" class="display">
                                 <thead>
@@ -97,11 +95,9 @@
                                             <span th:unless="${usuario.roles != null}">No hay roles asignados</span>
                                         </td>
                                         <td>
-                                            <form>
-                                                <button id='editar' name="editar"><a th:href="@{|/admin/usuarios/editarUsuario/${usuario.id}|}">Editar</a></button>
-                                            </form>
-                                            <form method="post" th:action="@{|/admin/usuarios/eliminar/${usuario.id}|}">
-                                                <button id='eliminar' name="eliminar">Eliminar</button>
+                                            <a id="editar" name="editar" class="button" th:href="@{/admin/usuarios/editarUsuario/{id}(id=${usuario.id})}">Editar</a>
+                                            <form method="post" th:action="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}">
+                                                <button id="eliminar" name="eliminar" type="submit">Eliminar</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -115,16 +111,17 @@
 
         <!-- Footer -->
         <footer id="footer">
-            <ul th:each="info : ${listaInfo}" class="icons">
-                <span th:if="${info.seccion == 'Contactanos'}">
-                    <li><a th:href="${info.texto}" th:class="${info.titulo}"><img th:src="@{'/img/'+${info.imagen.fileName}}" alt="alt"/></a></li>
-                </span>
-            </ul>
+             <ul class="iconss">
+                    <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                        <a th:href="${info.texto}" >
+                            <i th:class="${info.iconoServicio}" ></i>
+                        </a>
+                    </li>
+                </ul>
             <ul class="copyright">
                 <li>&copy; MANTRA. All rights reserved.</li>
             </ul>
         </footer>
-
     </div>
 
     <!-- Scripts -->

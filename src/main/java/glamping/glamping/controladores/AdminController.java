@@ -110,14 +110,15 @@ public class AdminController {
     }
 
     @PostMapping("/admin/panelDeManejo/registrarInfo/registrar")
-    public String submitRegistroForm(@RequestParam("titulo") String titulo, @RequestParam("texto") String texto, @RequestParam("seccion") String seccion,
+    public String submitRegistroForm(@RequestParam("titulo") String titulo, @RequestParam("iconoServicio") String iconoServicio,
+            @RequestParam("texto") String texto, @RequestParam("seccion") String seccion,
             @RequestParam("imagen") MultipartFile imagen, ModelMap map) {
         try {
             if (imagen == null) {
                 List<Informacion> listaInfo = infoServicio.listarInformacion();
 
                 map.addAttribute("listaInfo", listaInfo);
-                infoServicio.crearNuevaInfo(titulo, texto, seccion, null);
+                infoServicio.crearNuevaInfo(titulo, iconoServicio, texto, seccion, null);
                 map.addAttribute("Exito", "success");
                 map.addAttribute("exitoMensaje", "Exito al crear Informacion");
                 return "registrarInfo.html";
@@ -127,7 +128,7 @@ public class AdminController {
                 map.addAttribute("exitoMensaje", "Exito al crear Informacion");
                 map.addAttribute("listaInfo", listaInfo);
                 storageService.init();
-                infoServicio.crearNuevaInfo(titulo, texto, seccion, imagen);
+                infoServicio.crearNuevaInfo(titulo, iconoServicio, texto, seccion, imagen);
                 return "registrarInfo.html";
             }
         } catch (Exception e) {
@@ -152,7 +153,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/panelDeManejo/registrarInfo/editarInfo/editar")
-    public String editarAccionInfo(@RequestParam("id") Integer id, @RequestParam("titulo") String titulo,
+    public String editarAccionInfo(@RequestParam("id") Integer id, @RequestParam("titulo") String titulo, @RequestParam("iconoServicio") String iconoServicio,
             @RequestParam("texto") String texto, @RequestParam("seccion") String seccion, @RequestParam("imagen") MultipartFile imagen, ModelMap map) {
         try {
             if (imagen.isEmpty()) {
@@ -165,10 +166,11 @@ public class AdminController {
                 info.setTitulo(titulo);
                 info.setImagen(img);
                 info.setSeccion(seccion);
+                info.setIconoServicio(iconoServicio);
                 infoServicio.editarInfo(info);
                  map.addAttribute("exitoStatus", "success");
                map.addAttribute("exitoMensaje", "Exito al editar informacion");
-                return "panelDeManejo.html";
+                return "redirect:/admin/panelDeManejo";
             } else {
                 List<Informacion> listaInfo = infoServicio.listarInformacion();
 
@@ -184,10 +186,11 @@ public class AdminController {
                 info.setTexto(texto);
                 info.setTitulo(titulo);
                 info.setSeccion(seccion);
+                info.setIconoServicio(iconoServicio);
                  map.addAttribute("exitoStatus", "success");
                map.addAttribute("exitoMensaje", "Exito al editar informacion");
                 infoServicio.editarInfo(info);
-                return "panelDeManejo.html";
+                 return "redirect:/admin/panelDeManejo";
 
             }
         } catch (Exception e) {

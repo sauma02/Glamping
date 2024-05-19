@@ -127,14 +127,16 @@ public class ReservaController {
                 }
 
                 if (fechaDisponible) {
+                    String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
                     emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva",
-                            "Reserva realizada con exito para los dias " + fechaInicio + " - " + fechaFinal + " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
+                            "Reserva realizada con exito para los dias " + fechaInicio + " - " + fechaFinal + " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago. Whatsapp: "+urlWp);
                     map.addAttribute("reservationStatus", "success");
                     map.addAttribute("reservationMessage", "Reserva realizada con éxito, a tu correo recibiras informacion sobre tu reserva");
                     reservaServicio.crearReserva(cabania.getId(), usuario.getId(), usuario.getNombre(), fechaInicio, fechaFinal);
 
                     return "reservaForm.html";
                 } else {
+                    String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
                     map.addAttribute("fecha_error", "La cabaña no se encuentra disponible en estas fechas: " + fechaInicio + " - " + fechaFinal);
                     map.addAttribute("fechasNoDisponibles", fechasNoDisponibles);
                     map.addAttribute("nombreUsuario", nombreUsuario); // Mantener el nombre de usuario en el formulario
