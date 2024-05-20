@@ -67,5 +67,14 @@ public class PasswordResetTokenService {
 
         }
     }
+    public PasswordResetToken findByToken(String token){
+        Optional<PasswordResetToken> resToken = passwordResetRepo.findByToken(token);
+        if(resToken.isPresent()){
+            PasswordResetToken pasToken = resToken.get();
+            return pasToken;
+        }else{
+            return null;
+        }
+    }
 
 }

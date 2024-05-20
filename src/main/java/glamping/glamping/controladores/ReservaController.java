@@ -12,6 +12,7 @@ import glamping.glamping.repositorios.ReservaRepositorio;
 import glamping.glamping.repositorios.UsuarioRepositorio;
 import glamping.glamping.servicios.CabaniaServicio;
 import glamping.glamping.servicios.EmailServicioImpl;
+
 import glamping.glamping.servicios.ReservaServicio;
 import glamping.glamping.servicios.UsuarioServicio;
 import java.time.LocalDate;
@@ -58,6 +59,7 @@ public class ReservaController {
     private JavaMailSender javaMail;
     @Autowired
     private EmailServicioImpl emailServicio;
+
 
     @GetMapping("/usuario/reservaForm/fechasNoDisponibles/{cabaniaId}")
     @ResponseBody
@@ -128,8 +130,12 @@ public class ReservaController {
 
                 if (fechaDisponible) {
                     String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
-                    emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva",
-                            "Reserva realizada con exito para los dias " + fechaInicio + " - " + fechaFinal + " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago. Whatsapp: "+urlWp);
+                    emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva", "Reserva realizada con exito para los dias " + 
+                            fechaInicio + " - " + fechaFinal + 
+                            " para la cabaña " + cabania.getNombre() + 
+                            " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago. Whatsapp: "+urlWp);
+                     emailServicio.enviarMensajeSencillo("cabanamantra@gmail.com", "Nueva reserva de usuario: "+usuario.getNombre(), "El usuario "+usuario.getNombre()
+                            +" con el numero de telefono "+usuario.getContacto()+" ha establecido una reserva para los dias "+fechaInicio+ " - "+fechaFinal+" para la cabaña "+cabania.getNombre());
                     map.addAttribute("reservationStatus", "success");
                     map.addAttribute("reservationMessage", "Reserva realizada con éxito, a tu correo recibiras informacion sobre tu reserva");
                     reservaServicio.crearReserva(cabania.getId(), usuario.getId(), usuario.getNombre(), fechaInicio, fechaFinal);
@@ -221,12 +227,21 @@ public class ReservaController {
                 if (fechaDisponible) {
                     Cabania cabaniaNueva = cabaniaServicio.listarCabaniaPorId(cabaniaId);
                     if(cabania != cabaniaNueva){
+                     String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
+
                          emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva",
                             "Reserva editada con exito, sus nuevos dias son " + fechaInicio + " - " + fechaFinal + " y la cabaña ahora sera la " + cabaniaNueva.getNombre() +
                                      " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
+                          emailServicio.enviarMensajeSencillo("cabanamantra@gmail.com", "Nueva reserva de usuario: "+usuario.getNombre(), "El usuario "+usuario.getNombre()
+                            +" con el numero de telefono "+usuario.getContacto()+" ha editado una reserva para los dias "+fechaInicio+ " - "+fechaFinal+" para la cabaña "+cabania.getNombre());
                     }else{
+                        String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
                         emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva",
-                            "Reserva editada con exito, sus nuevos dias son " + fechaInicio + " - " + fechaFinal + " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
+                            "Reserva editada con exito, sus nuevos dias son " + fechaInicio + " - " + fechaFinal 
+                                    + " para la cabaña " +cabania.getNombre()+" para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
+                        emailServicio.enviarMensajeSencillo("cabanamantra@gmail.com", "Nueva reserva de usuario: "+usuario.getNombre(), "El usuario "+usuario.getNombre()
+                            +" con el numero de telefono "+usuario.getContacto()+" ha editado una reserva para los dias "+fechaInicio+ " - "+fechaFinal
+                                +" para la cabaña "+cabania.getNombre());
                     map.addAttribute("reservaExito", "Se ha registrado su reserva con exito");
                     }
                     

@@ -6,6 +6,7 @@ package glamping.glamping.controladores;
 
 import glamping.glamping.entidades.Usuario;
 import glamping.glamping.servicios.EmailServicioImpl;
+
 import glamping.glamping.servicios.PasswordResetTokenService;
 import glamping.glamping.servicios.UsuarioServicio;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,10 +33,15 @@ public class ForgotPasswordController {
     @Autowired
     private PasswordResetTokenService passwordReset;
     
+    
 
     @GetMapping("/login/forgotPassword")
     public String showForgotPasswordForm() {
-        return "forgotPasswordForm.html";
+        
+             return "forgotPasswordForm.html";
+        
+      
+        
     }
 
     @PostMapping("/login/forgotPassword/forgotPasswordReset")
@@ -51,17 +58,21 @@ public class ForgotPasswordController {
            passwordReset.createResetPasswordToken(email, token, expirationTime);
 
             // Send password reset email
-            String resetPasswordLink = "localhost:1012/login/reset-password?token=" + token;
-            String emailBody = "Click the link below to reset your password:\n" + resetPasswordLink;
-            emailService.enviarMensajeSencillo(email, "Reinicio de contraseña", emailBody);
+            String resetToken = "Token: "+token;
+            String emailBody = "Copia y pega este token en la seccion de resetear contraseña, "
+                    + "encontraras un boton en donde ingresaste tu correo electronico que te "
+                    + "redireccionara para que ingreses el token: "+token ;
+           emailService.enviarMensajeSencillo(email, "Reinicio de contraseña", emailBody);
             map.addAttribute("token", token);
             map.addAttribute("exitoStatus", "success");
             map.addAttribute("exitoMensaje", "Token enviado a tu email: "+email);
             System.out.println("Token: "+token);
              return "forgotPasswordForm.html";
         }else{
-            map.addAttribute("errorEmailOlvidar", "El email indicado no esta asociado a ninguna cuenta");
-            return "redirect:/login/forgotPassword";
+            map.addAttribute("errorStatus", "inexistente");
+            map.addAttribute("errorMensaje", "El correo ingresado no pertenece a ninguna cuenta");
+            
+            return "forgotPasswordForm.html";
             
         }
         } catch (Exception e) {

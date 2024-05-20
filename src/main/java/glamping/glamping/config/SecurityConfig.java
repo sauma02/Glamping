@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .requestMatchers("/cabania/**").permitAll()
                 .requestMatchers("/register/**").permitAll()
                 .requestMatchers("/login/**").permitAll()
+                .requestMatchers("/login/reset-password/**").permitAll()
                 .requestMatchers("/admin/**").hasAnyAuthority("admin")
                 .requestMatchers("/usuario/**").hasAnyAuthority("admin", "usuario")
                 .anyRequest().authenticated())

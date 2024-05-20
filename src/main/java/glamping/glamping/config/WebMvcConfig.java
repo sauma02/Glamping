@@ -4,6 +4,7 @@
  */
 package glamping.glamping.config;
 
+import jakarta.mail.Session;
 import java.util.Properties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,22 +35,29 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
     public JavaMailSender getJavaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+          JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.hostinger.com");
         mailSender.setPort(465);
-        
-        mailSender.setUsername("mantrasoporte@xn--mantracabaas-jhb.site");
+
+        // Replace with your Hostinger email and password
+        mailSender.setUsername("mantrasoporte1@xn--mantracabaas-jhb.site");
         mailSender.setPassword("Quinteroarias.1");
+
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.enable", "true");
+        props.put("mail.smtp.host", "smtp.hostinger.com");
+        props.put("mail.smtp.port", "465");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.socketFactory.fallback", "false");
-        props.put("mail.smtp.ssl.enable", "true");
-        return mailSender;
+        props.put("mail.smtp.from", "mantrasoporte1@xn--mantracabaas-jhb.site");
+        
+         Session session = Session.getInstance(props);
 
+        // Set the session for the mail sender
+        mailSender.setSession(session);
+        
+        return mailSender;
     }
 
     @Bean
