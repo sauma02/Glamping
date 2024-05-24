@@ -107,6 +107,9 @@ public class ImagenServicio {
         storageService.deleteFileByName(img);
         imagenRepositorio.delete(img);
     }
+    public void eliminarImagenPorCabania(Cabania cab){
+        imagenRepositorio.deleteByCabaniaId(cab.getId());
+    }
    
     public Imagen imagenPorId(Integer id){
         Optional<Imagen> img = imagenRepositorio.findById(id);

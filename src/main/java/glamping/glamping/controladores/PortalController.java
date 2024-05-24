@@ -140,7 +140,8 @@ public class PortalController {
     @GetMapping("/usuario/cabania")
     public String usuarioCabania(@AuthenticationPrincipal UserDetails userDetails, Model model){
         List<Informacion> listaInfo = informacionServicio.listarInformacion();
-        
+         List<Cabania> cabaniaLista = cabaniaServicio.listarCabanias();
+        model.addAttribute("cabaniaLista", cabaniaLista);
         String username = userDetails.getUsername();
         model.addAttribute("listaInfo", listaInfo);
         model.addAttribute("nombreUsuario", username);

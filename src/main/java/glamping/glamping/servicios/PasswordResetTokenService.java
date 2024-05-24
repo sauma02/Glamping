@@ -32,8 +32,8 @@ public class PasswordResetTokenService {
     private UsuarioRepositorio usuarioRepositorio;
 
     @Transactional
-    public void createResetPasswordToken(String email, String token, LocalDateTime expirationTime) {
-        PasswordResetToken passwordResetToken = new PasswordResetToken(email, token, expirationTime);
+    public void createResetPasswordToken(String email, String token, LocalDateTime expirationTime, Usuario usuario) {
+        PasswordResetToken passwordResetToken = new PasswordResetToken(email, token, expirationTime, usuario);
         passwordResetRepo.save(passwordResetToken);
     }
 

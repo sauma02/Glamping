@@ -222,9 +222,15 @@ public class AdminController {
             model.addAttribute("listaInfo", listaInfo);
             Informacion info = infoServicio.buscarPorId(id);
             Imagen img = info.getImagen();
-            imagenServicio.eliminarImagen(img);
+            if(img != null){
+                imagenServicio.eliminarImagen(img);
             infoServicio.eliminarInfo(id);
             return "redirect:/admin/panelDeManejo";
+            }else{
+                infoServicio.eliminarInfo(id);
+            return "redirect:/admin/panelDeManejo";
+            }
+            
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getCause() != null) {
@@ -323,7 +329,9 @@ public class AdminController {
                 map.addAttribute("imagenVacia", "Imagen nula");
                 map.addAttribute("exitoStatus", "Error");
                 map.addAttribute("exitoCabania", "Error al crear cabaña");
-                throw new Exception("Error, la imagen es nula, no puede ser nula");
+                
+                return "registrarCabania.html";
+               
 
             } else {
                 // Manejar la carga de la imagen y guardarla
@@ -354,7 +362,7 @@ public class AdminController {
                 return mensaje;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new Exception("Error en la creacion de la cabaña", e.getCause());
 
         }
@@ -604,6 +612,8 @@ public class AdminController {
     @PostMapping("/admin/verCabanias/eliminar/{id}")
     public String eliminarCabana(@PathVariable Integer id) {
         try {
+            
+            
             cabaniaServicio.eliminarCabaniaPorId(id);
             return "redirect:/admin/verCabanias";
         } catch (Exception e) {

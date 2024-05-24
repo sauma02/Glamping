@@ -18,5 +18,6 @@ public interface ImagenRepositorio extends JpaRepository<Imagen, Integer> {
     Optional<Imagen> getImagenById(Integer id);
     Optional<Imagen> findById(Integer id);
     public Imagen findByInfoId(Integer id);
+    public void deleteByCabaniaId(Integer id);
     
 }

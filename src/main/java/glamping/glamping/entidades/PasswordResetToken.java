@@ -42,6 +42,12 @@ public class PasswordResetToken {
         this.email = email;
         this.expirationDate = calculateExpirationDate();
     }
+       public PasswordResetToken(String email, String token, LocalDateTime expirationDate, Usuario usuario){
+        this.token = token;
+        this.email = email;
+        this.expirationDate = calculateExpirationDate();
+        this.usuario = usuario;
+    }
     public PasswordResetToken(Usuario usuario){
         this.usuario = usuario;
         this.email = email;

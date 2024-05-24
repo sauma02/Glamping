@@ -23,4 +23,5 @@ public interface ReservaRepositorio extends JpaRepository<Reserva, Integer> {
     public List<Reserva> findByCabania(Cabania cabania);
     public List<Reserva> findByCabaniaId(Integer id);
     public List<Reserva> findByUsuarioId(Integer id);
+    public void deleteByCabaniaId(Integer id);
 }

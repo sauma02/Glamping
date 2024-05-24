@@ -55,7 +55,7 @@ public class ForgotPasswordController {
             // Generate and save password reset token
             String token = UUID.randomUUID().toString();
            LocalDateTime expirationTime = LocalDateTime.now().plusHours(2);
-           passwordReset.createResetPasswordToken(email, token, expirationTime);
+           passwordReset.createResetPasswordToken(email, token, expirationTime, usuario);
 
             // Send password reset email
             String resetToken = "Token: "+token;

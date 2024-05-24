@@ -81,6 +81,9 @@ public class ReservaServicio implements ServicioReserva {
             
         }
     }
+    public void eliminarReservasPorCabania(Cabania cab){
+        reservaRepositorio.deleteByCabaniaId(cab.getId());
+    }
      public boolean isCabinAvailable(Cabania cabin, LocalDate startDate, LocalDate endDate) {
         List<Reserva> overlappingReservations = reservaRepositorio.findByCabaniaAndFechaInicioLessThanEqualAndFechaFinalGreaterThanEqual(cabin, endDate, endDate);
         return overlappingReservations.isEmpty();

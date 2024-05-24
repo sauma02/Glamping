@@ -6,6 +6,7 @@ package glamping.glamping.servicios;
 
 import glamping.glamping.entidades.Cabania;
 import glamping.glamping.entidades.Imagen;
+import glamping.glamping.entidades.Reserva;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.repositorios.CabaniaRepositorio;
 import glamping.glamping.repositorios.ImagenRepositorio;
@@ -32,6 +33,8 @@ public class CabaniaServicio {
     private ImagenServicio imagenServicio;
     @Autowired
     private ImagenRepositorio imagenRepositorio;
+    @Autowired
+    private ReservaServicio reservaServicio;
 
     @Transactional
     public void crearCabania(Cabania cabania) {
@@ -150,11 +153,14 @@ public class CabaniaServicio {
             return null;
         }
     }
-
+@Transactional
     public void eliminarCabaniaPorId(Integer id) {
         Optional<Cabania> respuesta = cabaniaRepositorio.findById(id);
         if (respuesta.isPresent()) {
             Cabania cabania = respuesta.get();
+            imagenServicio.eliminarImagenPorCabania(cabania);
+            reservaServicio.eliminarReservasPorCabania(cabania);
+            
             cabaniaRepositorio.delete(cabania);
         }
     }

@@ -53,16 +53,16 @@ public class ResetPasswordController {
                  PasswordResetToken passToken = passwordTokenService.findByToken(token);
             Usuario us = passToken.getUsuario();
             String passwordVieja = us.getPassword();
-            if(passwordVieja.equals(password)){
-                map.addAttribute("errorStatus", "duplicate");
-                map.addAttribute("errorMensaje", "La contraseña nueva no puede ser igual a la anterior");
-                return "resetPasswordForm.html"; 
-            }else{
-             passwordTokenService.resetPassword(token, password);
-             map.addAttribute("exitoStatus", "success");
-             map.addAttribute("exitoMensaje", "Contraseña cambiada con exito");
-                return "resetPasswordForm.html"; 
-            }
+                if(passwordVieja.equals(password)){
+                    map.addAttribute("errorStatus", "duplicate");
+                    map.addAttribute("errorMensaje", "La contraseña nueva no puede ser igual a la anterior");
+                    return "resetPasswordForm.html"; 
+                }else{
+                 passwordTokenService.resetPassword(token, password);
+                 map.addAttribute("exitoStatus", "success");
+                 map.addAttribute("exitoMensaje", "Contraseña cambiada con exito");
+                    return "resetPasswordForm.html"; 
+                }
             }else{
              map.addAttribute("errorStatus", "expiro");
              map.addAttribute("errorMensaje", "EL token expiro vuelva al login y solicite uno nuevo");

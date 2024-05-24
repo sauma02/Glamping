@@ -66,7 +66,9 @@ public class InformacionServicio {
         Optional<Informacion> optionalInfo = informacionRepositorio.findById(id);
         if(optionalInfo.isPresent()){
             Informacion info = optionalInfo.get();
+            
              Imagen img = imagenServicio.imagenPorId(id);
+             
             
             informacionRepositorio.delete(info);
         }

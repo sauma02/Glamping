@@ -38,8 +38,10 @@ public class Cabania {
     private String nombre;
     private String descripcion;
     private Integer capacidad;
+    @Column(name="imagen_id")
     @ManyToMany(mappedBy = "cabania")
     private List<Imagen> imagen;
+    @Column(name="reserva_id")
     @ManyToMany(mappedBy = "cabania")
     private List<Reserva> reserva;
     private boolean estado;
