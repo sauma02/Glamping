@@ -1,5 +1,6 @@
 package glamping.glamping;
 
+import glamping.glamping.config.CustomConfig;
 import glamping.glamping.entidades.Roles;
 import glamping.glamping.entidades.Usuario;
 import glamping.glamping.repositorios.RolesRepositorio;
@@ -11,10 +12,12 @@ import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
+
 public class GlampingApplication {
 
     @Resource

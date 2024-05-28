@@ -8,6 +8,7 @@ package glamping.glamping.config;
 import glamping.glamping.excepciones.MiExcepcion;
 import glamping.glamping.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -29,9 +31,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Configuration
 
 public class SecurityConfig {
+ 
     @Autowired
     public UsuarioServicio usuarioServicio;
-    
+   
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
