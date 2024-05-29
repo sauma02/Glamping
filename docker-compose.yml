@@ -1,8 +1,8 @@
-version: '3'
+ version: '3'
 
 services:
   app_mantra:
-    build: mantra.final
+    build: Glamping
     mem_limit: 512m
     ports:
       - "8080:8080"
