@@ -1,0 +1,122 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+       <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+          <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
+    </head>
+    </head>
+    <body class="is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header" class="alt">
+                <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
+                </h1>
+               
+            </header>
+
+            <!-- Main -->
+            <section id="main" class="container">
+               
+                <div class="row">
+                    <div class="col-12">
+
+                        <!-- Text -->
+                        <section class="box">
+                           <div style="display: flex;
+                                 justify-content: center;
+                                 "class="w3-content w3-display-container">
+                                 <form th:action="@{|/admin/usuarios/crearUsuarioAdmin/crear|}" method="post">
+
+         
+
+            <label for="usuario" >Usuario:</label>
+            <input type="text" id="usuario" name="username"  placeholder="Usuario" required>
+                <span th:text="${errorUsuario}" style="color: red"></span>    
+                <br><br>
+            
+            <label for="cabanias">Nombre completo:</label>
+            <input type="text" id="nombre" name="nombre"  placeholder="Nombre completo" required>
+            
+            <label for="contrasenia">Contraseña:</label>
+            <input type="password" id="password" name="password"  placeholder="Contraseña"required><br><br>
+            
+            <label for="contacto">Numero de telefono:</label>
+            <input type="text" id="contacto" name="contacto"  placeholder="Numero de telefono" required><br><br>
+                        
+
+            <label for="contactoDeEmergencia">Contacto de emergencia:</label>
+            <input type="text" id="contactoDeEmergencia" name="contactoEmergencia" placeholder = "Contacto de emergencia " ><br><br>
+                        
+            <label for="nombreContactoDeEmergencia">Nombre del contacto de emergencia:</label>
+            <input type="text" id="nombreContactoDeEmergencia" name="nombreContactoEmergencia"  placeholder = "Nombre del contacto de emergencia " ><br><br>
+
+            <label for="parentesco">Parentesco:</label>
+            <input type="text" id="parentesco" name="parentesco"  placeholder="Parentesco" ><br><br>
+            <label for="fechaNacimiento">Fecha de nacimiento:</label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento"  ><br><br>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email"  placeholder="email" required>
+                <span th:text="${errorEmail}" style="color: red"></span>    
+                <br><br>
+             <label for="rol">Rol(Admin/Usuario):</label>
+            <input type="text" id="rol" name="rol"  placeholder="Rol" required>   
+                <br><br>
+            <button type="submit">Registrar</button>
+            <button><a th:href="@{/admin/usuarios}">Regresar</a></button>
+            
+            
+        </form>
+
+                        </section>
+
+                    </div>
+                </div>
+
+
+            </section>
+
+
+
+            <!-- Footer -->
+            <footer id="footer">
+                 <ul class="iconss">
+                    <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                        <a th:href="${info.texto}" >
+                            <i th:class="${info.iconoServicio}" ></i>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="copyright">
+                    <li>&copy; MANTRA. All rights reserved.</li>
+                </ul>
+            </footer>
+
+        </div>
+
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.dropotron.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+
+    </body>
+</html>

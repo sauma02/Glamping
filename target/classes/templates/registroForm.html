@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Mantra</title>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/registerForm.css}" />
+                </head>
+                <body>
+                    <main>
+                        <div class="form-bg">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-offset-3 col-md-6">
+                                        <div class="form-container">
+                                            <h3 class="title">Registrarme</h3>
+
+                                            <form class="form-horizontal" th:action="@{/register/regis}" method="post">
+
+
+                                                <div class="form-group">       
+                                                    <label for="usuario" >Usuario:</label>
+                                                    <input  class="form-control" type="text" id="usuario" name="username"  placeholder="Usuario">
+                                                        <span th:text="${errorUsuario}" style="color: red"></span>    
+                                                </div>   
+                                                <div class="form-group">     
+                                                    <label for="cabanias">Nombre completo:</label>
+                                                    <input  class="form-control" type="text" id="nombre" name="nombre"  placeholder="Nombre completo">
+                                                </div>
+                                                <div class="form-group">     
+                                                    <label for="contrasenia">Contraseña:</label>
+                                                    <input  class="form-control" type="password" id="password" name="password"  placeholder="Contraseña"required> 
+                                                </div>
+                                                <div class="form-group">     
+                                                    <label for="contacto">Numero de telefono:</label>
+                                                    <input   class="form-control" type="text" id="contacto" name="contacto"  placeholder="Numero de telefono" required> 
+                                                </div>
+
+                                                <div class="form-group">                
+                                                    <label for="contactoDeEmergencia">Contacto de emergencia:</label>
+                                                    <input  class="form-control"  type="text" id="contactoDeEmergencia" name="contactoEmergencia" placeholder = "Contacto de emergencia " required> 
+                                                </div>
+                                                <div class="form-group">                
+                                                    <label for="nombreContactoDeEmergencia">Nombre del contacto de emergencia:</label>
+                                                    <input  class="form-control" type="text" id="nombreContactoDeEmergencia" name="nombreContactoEmergencia"  placeholder = "Nombre del contacto de emergencia " required> 
+                                                </div>
+                                                <div class="form-group">     
+                                                    <label for="parentesco">Parentesco:</label>
+                                                    <input class="form-control" type="text" id="parentesco" name="parentesco"  placeholder="Parentesco" required> 
+                                                </div>
+                                                <div class="form-group">     
+                                                    <label for="fechaNacimiento">Fecha de nacimiento:</label>
+                                                    <input class="form-control" type="date" id="fechaNacimiento" name="fechaNacimiento"  required>
+                                                </div>
+                                                <div class="form-group">     
+                                                    <label for="email">Email:</label>
+                                                    <input class="form-control" type="text" id="email" name="email"  placeholder="email" required>
+                                                        <span th:text="${errorEmail}" style="color: red"></span>    
+                                                </div>
+                                                <span class="signin-link">¿Ya tiene una cuenta? Haz click aqui para hacer <a href="/login">Login</a></span>
+                                                <button class="btn signup" type="submit">Registrar</button>
+                                                <button class="btn signup"><a th:href="@{/inicio}">Regresar</a></button>
+
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </body>
+                </html>

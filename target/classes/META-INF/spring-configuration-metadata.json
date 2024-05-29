@@ -1,0 +1,47 @@
+{
+  "groups": [
+    {
+      "name": "custom",
+      "type": "glamping.glamping.config.CustomConfig",
+      "sourceType": "glamping.glamping.config.CustomConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "custom.d-b-name",
+      "type": "java.lang.String",
+      "sourceType": "glamping.glamping.config.CustomConfig"
+    },
+    {
+      "name": "custom.d-b-password",
+      "type": "java.lang.String",
+      "sourceType": "glamping.glamping.config.CustomConfig"
+    },
+    {
+      "name": "custom.d-b-username",
+      "type": "java.lang.String",
+      "sourceType": "glamping.glamping.config.CustomConfig"
+    },
+    {
+      "name": "custom.j-mail",
+      "type": "java.lang.String",
+      "sourceType": "glamping.glamping.config.CustomConfig"
+    },
+    {
+      "name": "custom.j-mail-pass",
+      "type": "java.lang.String",
+      "sourceType": "glamping.glamping.config.CustomConfig"
+    },
+    {
+      "name": "custom.s-v-ip",
+      "type": "java.lang.String",
+      "sourceType": "glamping.glamping.config.CustomConfig"
+    },
+    {
+      "name": "custom.s-v-prt",
+      "type": "java.lang.String",
+      "sourceType": "glamping.glamping.config.CustomConfig"
+    }
+  ],
+  "hints": []
+}

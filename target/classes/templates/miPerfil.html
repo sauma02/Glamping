@@ -1,0 +1,164 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+         <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+
+
+
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+          <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
+
+    </head>
+    <body class="landing is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header" class="alt">
+                <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
+                </h1>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="/usuario">Inicio</a></li>
+                        <li><a href="/usuario#servicios">Servicios</a></li>
+                        <li><a href="/usuario/cabania">Cabañas</a></li>
+                        <li><a href="/usuario#nosotros">Nosotros</a></li>
+                        <li><a href="/usuario/reservaForm">Realizar Reserva</a></li>
+
+                        <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                    </ul>
+
+                </nav>
+            </header>
+
+
+            <!-- Main -->
+            <section id="main" class="container">
+                <header>
+
+                    <h2 th:text="${nombreUsuario}"></h2>
+                    <p th:text="${emailUsuario}"></p>
+                </header>
+                <div class="box">
+                    <form th:action="@{/usuario/miPerfil/editar}" method="post">
+
+
+                        <label for="id" >Id:</label>
+                        <input type="text" id="id" name="id"  placeholder="id" th:value="${usuario.id}" readonly="true">
+                            <span th:text="${errorUsuario}" style="color: red"></span>    
+                            <br><br>
+                                    <label for="usuario" >Usuario:</label>
+                                    <input type="text" id="usuario" name="username" th:value="${usuario.username}" placeholder="Usuario">
+                                        <span th:text="${errorUsuario}" style="color: red"></span>    
+                                        <br><br>
+
+                                                <label for="cabanias">Nombre completo:</label>
+                                                <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" placeholder="Nombre completo">
+
+                                                    <label for="contrasenia">Contraseña:</label>
+                                                    <input type="password" id="password" name="password"  th:value="${usuario.password}" placeholder="Contraseña"><br><br>
+
+                                                                <label for="contacto">Numero de telefono:</label>
+                                                                <input type="text" id="contacto" name="contacto" th:value="${usuario.contacto}" placeholder="Numero de telefono" ><br><br>
+
+
+                                                                            <label for="contactoDeEmergencia">Contacto de emergencia:</label>
+                                                                            <input type="text" id="contactoDeEmergencia" name="contactoEmergencia" th:value="${usuario.contactoEmergencia}" placeholder = "Contacto de emergencia " ><br><br>
+
+                                                                                        <label for="nombreContactoDeEmergencia">Nombre del contacto de emergencia:</label>
+                                                                                        <input type="text" id="nombreContactoDeEmergencia" name="nombreContactoEmergencia" th:value="${usuario.nombreContactoEmergencia}" placeholder = "Nombre del contacto de emergencia " ><br><br>
+
+                                                                                                    <label for="parentesco">Parentesco:</label>
+                                                                                                    <input type="text" id="parentesco" name="parentesco" th:value="${usuario.parentesco}" placeholder="Parentesco" ><br><br>
+                                                                                                                <label for="fechaNacimiento">Fecha de nacimiento:</label>
+                                                                                                                <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="${usuario.fechaNacimiento != null ? usuario.fechaNacimiento : 'Sin fecha'}" ><br><br>
+                                                                                                                            <label for="email">Email:</label>
+                                                                                                                            <input type="text" id="email" name="email" th:value="${usuario.email}" placeholder="email" >
+                                                                                                                                <span th:text="${errorEmail}" style="color: red"></span>    
+
+
+
+                                                                                                                                <button type="submit">Editar</button>
+                                                                                                                                <button><a th:href="@{/usuario/}">Regresar</a></button>
+
+
+                                                                                                                                </form>
+                                                                                                                                </div>
+                                                                                                                                </div>
+                                                                                                                                </div>
+                                                                                                                                </section>
+
+
+                                                                                                                                <div class="center">
+                                                                                                                                    <div class="col-6 col-12-narrower">
+
+                                                                                                                                        <section class="box special">
+
+
+                                                                                                                                            <h3>Nuestras cabañas</h3>
+                                                                                                                                            <p>En el siguiente boton podras conocer nuestra cabañas</p>
+                                                                                                                                            <ul class="actions special">
+                                                                                                                                                <li><a href="/usuario/cabania" class="button alt">Cabañas</a></li>
+                                                                                                                                            </ul>
+
+                                                                                                                                        </section>
+
+                                                                                                                                    </div>
+                                                                                                                                </div>
+
+                                                                                                                                </section>
+
+
+
+                                                                                                                                <!-- Footer -->
+                                                                                                                                <footer id="footer">
+                                                                                                                                    <ul class="iconss">
+                                                                                                                                        <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                                                                                                                                            <a th:href="${info.texto}" >
+                                                                                                                                                <i th:class="${info.iconoServicio}" ></i>
+                                                                                                                                            </a>
+                                                                                                                                        </li>
+                                                                                                                                    </ul>
+                                                                                                                                    <ul class="copyright">
+                                                                                                                                        <li>&copy; MANTRA. All rights reserved.</li>
+                                                                                                                                    </ul>
+                                                                                                                                </footer>
+
+                                                                                                                                </div>
+
+                                                                                                                                <!-- Scripts -->
+                                                                                                                                <script th:src="@{../static/js/jquery.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/jquery.dropotron.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/jquery.scrollex.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/browser.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/breakpoints.min.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/util.js}"></script>
+                                                                                                                                <script th:src="@{../static/js/main.js}"></script>
+                                                                                                                                <script th:inline="javascript">
+                                                                                                                                    console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                                                                                                                    console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
+
+                                                                                                                                    var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                                                                                                                    var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
+
+                                                                                                                                    if (exitoStatus === 'success') {
+                                                                                                                                        console.log("Exito: ", exitoMensaje);
+                                                                                                                                        Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                                                                                                                    } else if (exitoStatus !== 'success') {
+                                                                                                                                        console.log("Error: ", "Error al crear info");
+                                                                                                                                        Swal.fire("¡Error!", "Error al editar usuario", "error");
+                                                                                                                                    }
+                                                                                                                                </script>
+                                                                                                                                </body>
+
+
+                                                                                                                                </html>

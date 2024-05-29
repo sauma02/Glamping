@@ -1,0 +1,136 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+         <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+
+
+
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+          <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="landing is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header" class="alt">
+                <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
+                </h1>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="/admin">Inicio</a></li>
+                        <li><a href="/admin#servicios">Servicios</a></li>
+                        <li><a href="/admin/verCabanias">Ver Cabañas</a></li>
+                        <li><a href="/admin#nosotros">Nosotros</a></li>
+                        <li><a href="/admin/usuarios">Ver usuarios</a></li>
+
+                        <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/admin/miPerfil"></a></li>
+                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                    </ul>
+
+                </nav>
+            </header>
+
+
+            <!-- Main -->
+            <section id="main" class="container">
+                <header>
+
+                    <h2 th:text="${nombreUsuario}"></h2>
+                    <p th:text="${emailUsuario}"></p>
+                </header>
+                <div class="box">
+                    <form th:action="@{/admin/cabania/editarCabaña/editar}" method="post">
+
+
+                        <label for="id" >Id:</label>
+                        <input type="text" id="id" name="id"  placeholder="id" th:value="${cabana.id}" readonly="true">
+
+                            <br><br>
+                                    <label for="nombre" >Nombre:</label>
+                                    <input type="text" id="nombre" name="nombre" th:value="${cabana.nombre}" placeholder="Nombre">
+
+                                        <br><br>
+
+                                                <label for="capacidad">Capacidad:</label>
+                                                <input type="number" id="capacidad" name="capacidad" th:value="${cabana.capacidad}" placeholder="Capacidad">
+                                                    <br><br>
+
+                                                            <label for="descripcion">Descripcion:</label>
+                                                            <input type="text" id="descripcion" name="descripcion" th:value="${cabana.descripcion}" placeholder="descripcion">
+
+
+                                                                <button type="submit">Editar</button>
+                                                                <button><a th:href="@{/admin/verCabanias}">Regresar</a></button>
+
+
+                                                                </form>
+                                                                </div>
+                                                                </div>
+                                                                </div>
+                                                                </section>
+
+
+                                                                <div class="center">
+                                                                    <div class="col-6 col-12-narrower">
+
+                                                                        <section class="box special">
+
+
+
+
+                                                                        </section>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                </section>
+
+
+
+                                                                <!-- Footer -->
+                                                                <footer id="footer">
+                                                                    <ul class="iconss">
+                                                                        <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                                                                            <a th:href="${info.texto}" >
+                                                                                <i th:class="${info.iconoServicio}" ></i>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <ul class="copyright">
+                                                                        <li>&copy; MANTRA. All rights reserved.</li>
+                                                                    </ul>
+                                                                </footer>
+
+                                                                </div>
+
+                                                                <!-- Scripts -->
+                                                                <script th:src="@{../static/js/jquery.min.js}"></script>
+                                                                <script th:src="@{../static/js/jquery.dropotron.min.js}"></script>
+                                                                <script th:src="@{../static/js/jquery.scrollex.min.js}"></script>
+                                                                <script th:src="@{../static/js/browser.min.js}"></script>
+                                                                <script th:src="@{../static/js/breakpoints.min.js}"></script>
+                                                                <script th:src="@{../static/js/util.js}"></script>
+                                                                <script th:src="@{../static/js/main.js}"></script>
+                                                                <script th:inline="javascript">
+                                                                    console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                                                    console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
+
+                                                                    var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                                                    var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
+
+                                                                    if (exitoStatus === 'success') {
+                                                                        console.log("Exito: ", exitoMensaje);
+                                                                        Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                                                    }
+                                                                </script>
+                                                                </body>
+
+
+                                                                </html>

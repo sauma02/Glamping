@@ -1,0 +1,206 @@
+
+<!DOCTYPE HTML>
+<!--
+        Alpha by HTML5 UP
+        html5up.net | @ajlkn
+        Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
+
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+            <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+              <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
+
+
+    </head>
+
+    <body class="is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header" class="alt">
+                <h1 style="    display: flex;
+                    flex-direction: row;">
+                    <img th:src="@{img/MANTRA.png}">
+                        <a href="/">M A N T R A</a>
+                </h1>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="/usuario">Inicio</a></li>
+                        <li><a href="/usuario#servicios">Servicios</a></li>
+                        <li><a href="/usuario/cabania">Cabañas</a></li>
+                        <li><a href="/usuario#nosotros">Nosotros</a></li>
+                        <li><a href="/usuario/reservaForm">Realizar Reserva</a></li>
+                        <li><a href="/usuario/misReservas">Mis reservas</a></li>
+
+                        <li ><a style="color: #ffbd59;" th:text="${nombreUsuario}" href="/usuario/miPerfil"></a></li>
+                        <li><a style="color: #ffbd59;" href="/logout"><span class="logout-icon">Cerrar sesion</span></a></li>
+                    </ul>
+
+                </nav>
+            </header>
+
+            <!-- Main -->
+            <section id="main" class="container">
+                <header>
+                    <span th:each="info : ${listaInfo}">
+                        <span th:if="${info.seccion == 'cabaña'}">
+                            <h2 th:text="${info.titulo}"></h2>
+                            <p th:text="${info.texto}"></p>
+                        </span>
+                    </span>
+                </header>
+                <div class="row">
+                    <div class="col-12">
+
+                        <!-- Text -->
+                        <section class="box">
+                            <div style="display: flex;
+                                 justify-content: center;
+                                 "class="w3-content w3-display-container">
+                                <form th:action="@{/usuario/reservaForm/reserva}" method="post">
+                                    <label for="usuario" >Usuario:</label>
+                                    <input type="text" th:value="${nombreUsuario}" id="usuario" name="nombreUsuario" readOnly="true"><br><br>
+
+                                                <label for="cabanias">Cabañas:</label>
+                                                <select type ="number" id="cabanias"  name="cabaniaId" required>
+                                                    <option value="">Seleccionar Cabaña</option>
+                                                    <option name="cabaniaId" th:each ="cabania : ${cabaniasDisponibles}" th:value="${cabania.id}" th:text="${cabania.nombre}"></option>
+
+                                                </select><br><br>
+
+                                                        <label for="fechaInicio">Fecha de inicio:</label>
+                                                        <input type="date" id="fechaInicio" name="fechaInicio" required>
+                                                            <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
+                                                            <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+
+
+                                                            <br><br>
+
+                                                                    <label for="fechaFinal">Fecha final:</label>
+                                                                    <input type="date" id="fechaFinal" name="fechaFinal" required>
+                                                                        <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
+                                                                        <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
+
+
+                                                                        <br><br>
+
+                                                                                <button id="botonReserva" type="submit">Reservar</button>
+                                                                                <button><a href="/usuario"></a>Regresar</button>
+                                                                                </form>
+
+                                                                                </div>
+
+
+                                                                                </section>
+
+                                                                                </div>
+                                                                                </div>
+
+
+                                                                                </section>
+
+                                                                                <script th:object ="${cabania}" th:inline="javascript" type="text/javascript" >
+
+                                                                                    $(document).ready(function () {
+                                                                                        // Initialize the datepicker
+                                                                                        var arrayOfDates = [];
+                                                                                        // Function to initialize datepicker
+                                                                                        function initializeDatepicker() {
+                                                                                            $("#fechaInicio, #fechaFinal").datepicker({
+                                                                                                dateFormat: 'yy-mm-dd',
+                                                                                                minDate: 0, // Establecer la fecha mínima como hoy
+                                                                                                beforeShowDay: function (date) {
+                                                                                                    var dateString = $.datepicker.formatDate('dd/mm/yy', date);
+                                                                                                    var highlight = arrayOfDates.indexOf(dateString) !== -1;
+
+                                                                                                    console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight); // Add this line to log the output
+                                                                                                    console.log(arrayOfDates, ' , ');
+                                                                                                    if (highlight) {
+                                                                                                        return[false, 'highlight', 'Esta fecha ya se encuentra reservada o es pasada'];
+                                                                                                    } else {
+                                                                                                        return[true, '', ''];
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+                                                                                        }
+
+                                                                                        // Initialize datepicker on document ready
+                                                                                        initializeDatepicker();
+                                                                                        // Event listener for cabin selection change
+                                                                                        $("#cabanias").change(function () {
+                                                                                            var cabinId = $(this).val();
+                                                                                            updateUnavailableDates(cabinId);
+                                                                                        });
+                                                                                        // Function to update unavailable dates based on selected cabin
+                                                                                        function updateUnavailableDates(cabinId) {
+                                                                                            $.ajax({
+                                                                                                url: "/usuario/reservaForm/fechasNoDisponibles/" + cabinId,
+                                                                                                method: "GET",
+                                                                                                dataType: "json",
+                                                                                                success: function (availability) {
+                                                                                                    arrayOfDates = availability;
+                                                                                                    // Refresh datepicker
+                                                                                                    $("#fechaInicio, #fechaFinal").datepicker("destroy");
+                                                                                                    initializeDatepicker();
+                                                                                                },
+                                                                                                error: function () {
+                                                                                                    console.error("Failed to fetch cabin availability.");
+                                                                                                }
+                                                                                            });
+                                                                                        }
+                                                                                        console.log("Reservation Status:", /*[[${reservationStatus}]]*/);
+                                                                                        console.log("Reservation Message:", /*[[${reservationMessage}]]*/);
+
+                                                                                        var reservationStatus = /*[[${reservationStatus}]]*/ 'none';
+                                                                                        var reservationMessage = /*[[${reservationMessage}]]*/ '';
+
+                                                                                        if (reservationStatus === 'success') {
+                                                                                            console.log("Exito: ", reservationMessage);
+                                                                                            Swal.fire("¡Éxito!", reservationMessage, "success");
+                                                                                        } else if (reservationStatus === 'error') {
+                                                                                            console.log("Error: ", reservationMessage);
+                                                                                            Swal.fire("¡Error!", reservationMessage, "error");
+                                                                                        }
+                                                                                    });
+
+
+
+                                                                                </script>
+
+                                                                                <!-- Footer -->
+                                                                                <footer id="footer">
+                                                                                    <ul class="iconss">
+                                                                                        <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'Contactanos'}">
+                                                                                            <a th:href="${info.texto}" >
+                                                                                                <i th:class="${info.iconoServicio}" ></i>
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                    <ul class="copyright">
+                                                                                        <li>&copy; MANTRA. All rights reserved.</li>
+                                                                                    </ul>
+                                                                                </footer>
+
+                                                                                </div>
+
+                                                                                <!-- Scripts -->
+
+
+
+
+                                                                                </script>
+                                                                                </body>
+                                                                                </html>
