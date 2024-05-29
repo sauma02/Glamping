@@ -60,7 +60,6 @@ public class ReservaController {
     @Autowired
     private EmailServicioImpl emailServicio;
 
-
     @GetMapping("/usuario/reservaForm/fechasNoDisponibles/{cabaniaId}")
     @ResponseBody
     public List<String> obtenerFechasNoDispo(@PathVariable("cabaniaId") Integer id) {
@@ -68,12 +67,13 @@ public class ReservaController {
         return obtenerFechasNoDisponibles(reservas);
 
     }
+
     @GetMapping("/usuario/misReservas/editar/fechasNoDisponibles/{cabaniaId}")
     @ResponseBody
     public List<String> obtenerFechasNoDispo2(@PathVariable("cabaniaId") Integer cabId) {
-       
+
         List<Reserva> reservas = reservaServicio.buscarReservaPorCabañaId(cabId);
-        
+
         return obtenerFechasNoDisponibles(reservas);
 
     }
@@ -115,7 +115,13 @@ public class ReservaController {
 
             if (usuario != null && optionalCabania.isPresent()) {
                 Cabania cabania = optionalCabania.get();
-
+                if (cabania.getId() == 0) {
+                    map.addAttribute("reservationStatus", "error");
+                    map.addAttribute("reservationMessage", "No puede realizar una reserva sin seleccionar una cabañas");
+                    map.addAttribute("nombreUsuario", nombreUsuario); // Mantener el nombre de usuario en el formulario
+                    map.addAttribute("cabaniasDisponibles", cabaniaRepositorio.findAll()); // Recargar la lista de cabañas disponibles
+                    return "reservaForm.html";
+                }
                 List<Reserva> reservas = reservaRepositorio.findByCabaniaAndFechaInicioLessThanEqualAndFechaFinalGreaterThanEqual(cabania, fechaInicio, fechaFinal);
                 List<String> fechasNoDisponibles = obtenerFechasNoDisponibles(reservas);
 
@@ -130,17 +136,17 @@ public class ReservaController {
 
                 if (fechaDisponible) {
                     String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
-                    emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva", "Reserva realizada con exito para los dias " + 
-                            fechaInicio + " - " + fechaFinal + 
-                            " para la cabaña " + cabania.getNombre() + 
-                            " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago. Whatsapp: "+urlWp);
-                     emailServicio.enviarMensajeSencillo("mantracabana@gmail.com", "Nueva reserva de usuario: "+usuario.getNombre(), "El usuario "+usuario.getNombre()
-                            +" con el numero de telefono "+usuario.getContacto()+" ha establecido una reserva para los dias "+fechaInicio+ " - "+fechaFinal+" para la cabaña "+cabania.getNombre());
-                     map.addAttribute("nombreUsuario", nombreUsuario);
+                    emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva", "Reserva realizada con exito para los dias "
+                            + fechaInicio + " - " + fechaFinal
+                            + " para la cabaña " + cabania.getNombre()
+                            + " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago. Whatsapp: " + urlWp);
+                    emailServicio.enviarMensajeSencillo("mantracabana@gmail.com", "Nueva reserva de usuario: " + usuario.getNombre(), "El usuario " + usuario.getNombre()
+                            + " con el numero de telefono " + usuario.getContacto() + " ha establecido una reserva para los dias " + fechaInicio + " - " + fechaFinal + " para la cabaña " + cabania.getNombre());
+                    map.addAttribute("nombreUsuario", nombreUsuario);
                     map.addAttribute("reservationStatus", "success");
                     map.addAttribute("reservationMessage", "Reserva realizada con éxito, a tu correo recibiras informacion sobre tu reserva");
                     reservaServicio.crearReserva(cabania.getId(), usuario.getId(), usuario.getNombre(), fechaInicio, fechaFinal);
-
+                    map.addAttribute("cabaniasDisponibles", cabaniaRepositorio.findAll());
                     return "reservaForm.html";
                 } else {
                     String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
@@ -148,8 +154,8 @@ public class ReservaController {
                     map.addAttribute("fechasNoDisponibles", fechasNoDisponibles);
                     map.addAttribute("nombreUsuario", nombreUsuario); // Mantener el nombre de usuario en el formulario
                     map.addAttribute("cabaniasDisponibles", cabaniaRepositorio.findAll()); // Recargar la lista de cabañas disponibles
-                     map.addAttribute("reservationStatus", "error");
-            map.addAttribute("reservationMessage", "Hubo un error al realizar la reserva");
+                    map.addAttribute("reservationStatus", "error");
+                    map.addAttribute("reservationMessage", "Hubo un error al realizar la reserva");
                     return "reservaForm.html";
                 }
             } else {
@@ -182,7 +188,8 @@ public class ReservaController {
         model.addAttribute("nombreUsuario", username);
         return "misReservas.html";
     }
-      @GetMapping("/usuario/misReservas/editar/{id}")
+
+    @GetMapping("/usuario/misReservas/editar/{id}")
     public String misReservas(@PathVariable Integer id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         Usuario usuario = usuarioServicio.encontrarPorUsername(username);
@@ -198,25 +205,29 @@ public class ReservaController {
     }
 
     @PostMapping("/usuario/misReservas/editar/editarReserva")
-    public String editarReserva( 
-            @RequestParam("fechaInicio") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaInicio, 
-            @RequestParam("fechaFinal") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaFinal,  ModelMap map, @RequestParam("nombreUsuario") String nombreUsuario, 
-            @RequestParam("cabaniaId") Integer cabaniaId, @RequestParam("reservaId") Integer reservaId ) {
+    public String editarReserva(
+            @RequestParam("fechaInicio") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaInicio,
+            @RequestParam("fechaFinal") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaFinal, ModelMap map, @RequestParam("nombreUsuario") String nombreUsuario,
+            @RequestParam("cabaniaId") Integer cabaniaId, @RequestParam("reservaId") Integer reservaId) {
         try {
-             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String username = userDetails.getUsername();
             Reserva reserva = reservaServicio.listarReservaPorId(reservaId);
             Usuario usuario = reserva.getUsuario();
             Cabania cabania = reserva.getCabania();
-            
-            if (usuario != null && cabania != null) {
-                
 
+            if (usuario != null && cabania != null) {
+                   if (cabania.getId() == 0) {
+                    map.addAttribute("reservationStatus", "error");
+                    map.addAttribute("reservationMessage", "No puede realizar una reserva sin seleccionar una cabañas");
+                    map.addAttribute("nombreUsuario", nombreUsuario); // Mantener el nombre de usuario en el formulario
+                    map.addAttribute("cabaniasDisponibles", cabaniaRepositorio.findAll()); // Recargar la lista de cabañas disponibles
+                     return "redirect:/usuario/misReservas/editar/" + reserva.getId();
+                }
                 List<Reserva> reservas = reservaRepositorio.findByCabaniaAndFechaInicioLessThanEqualAndFechaFinalGreaterThanEqual(cabania, fechaInicio, fechaFinal);
                 List<String> fechasNoDisponibles = obtenerFechasNoDisponibles(reservas);
-               
+
                 boolean fechaDisponible = fechasNoDisponibles.isEmpty();
-                
 
                 for (Reserva r : reservas) {
                     if (r.getFechaInicio().isBefore(fechaFinal) && r.getFechaFinal().isAfter(fechaFinal)) {
@@ -224,39 +235,39 @@ public class ReservaController {
                         break;
                     }
                 }
-                
+
                 if (fechaDisponible) {
                     Cabania cabaniaNueva = cabaniaServicio.listarCabaniaPorId(cabaniaId);
-                    if(cabania != cabaniaNueva){
-                     String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
+                    if (cabania != cabaniaNueva) {
+                        String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
 
-                         emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva",
-                            "Reserva editada con exito, sus nuevos dias son " + fechaInicio + " - " + fechaFinal + " y la cabaña ahora sera la " + cabaniaNueva.getNombre() +
-                                     " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
-                          emailServicio.enviarMensajeSencillo("mantracabana@gmail.com", "Nueva reserva de usuario: "+usuario.getNombre(), "El usuario "+usuario.getNombre()
-                            +" con el numero de telefono "+usuario.getContacto()+" ha editado una reserva para los dias "+fechaInicio+ " - "+fechaFinal+" para la cabaña "+cabania.getNombre());
-                    }else{
+                        emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva",
+                                "Reserva editada con exito, sus nuevos dias son " + fechaInicio + " - " + fechaFinal + " y la cabaña ahora sera la " + cabaniaNueva.getNombre()
+                                + " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
+                        emailServicio.enviarMensajeSencillo("mantracabana@gmail.com", "Nueva reserva de usuario: " + usuario.getNombre(), "El usuario " + usuario.getNombre()
+                                + " con el numero de telefono " + usuario.getContacto() + " ha editado una reserva para los dias " + fechaInicio + " - " + fechaFinal + " para la cabaña " + cabania.getNombre());
+                    } else {
                         String urlWp = "https://api.whatsapp.com/send/?phone=573052126060&text&type=phone_number&app_absent=0";
                         emailServicio.enviarMensajeSencillo(usuario.getEmail(), "Reserva",
-                            "Reserva editada con exito, sus nuevos dias son " + fechaInicio + " - " + fechaFinal 
-                                    + " para la cabaña " +cabania.getNombre()+" para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
-                        emailServicio.enviarMensajeSencillo("mantracabana@gmail.com", "Nueva reserva de usuario: "+usuario.getNombre(), "El usuario "+usuario.getNombre()
-                            +" con el numero de telefono "+usuario.getContacto()+" ha editado una reserva para los dias "+fechaInicio+ " - "+fechaFinal
-                                +" para la cabaña "+cabania.getNombre());
-                    map.addAttribute("reservaExito", "Se ha registrado su reserva con exito");
+                                "Reserva editada con exito, sus nuevos dias son " + fechaInicio + " - " + fechaFinal
+                                + " para la cabaña " + cabania.getNombre() + " para terminar la confirmacion de la reserva escribenos a nuestro numero para proceder con el pago");
+                        emailServicio.enviarMensajeSencillo("mantracabana@gmail.com", "Nueva reserva de usuario: " + usuario.getNombre(), "El usuario " + usuario.getNombre()
+                                + " con el numero de telefono " + usuario.getContacto() + " ha editado una reserva para los dias " + fechaInicio + " - " + fechaFinal
+                                + " para la cabaña " + cabania.getNombre());
+                        map.addAttribute("reservaExito", "Se ha registrado su reserva con exito");
                     }
-                    
+
                     reservaServicio.editarReserva(reserva.getId(), cabaniaId, usuario.getUsername(), fechaInicio, fechaFinal);
                     map.addAttribute("exitoStatus", "success");
-               map.addAttribute("exitoMensaje", "Exito al editar reserva");
+                    map.addAttribute("exitoMensaje", "Exito al editar reserva");
                     return "editarReserva.html";
-                    
+
                 } else {
                     map.addAttribute("fecha_error", "La cabaña no se encuentra disponible en estas fechas: " + fechaInicio + " - " + fechaFinal);
                     map.addAttribute("fechasNoDisponibles", fechasNoDisponibles);
                     map.addAttribute("nombreUsuario", usuario.getUsername()); // Mantener el nombre de usuario en el formulario
                     map.addAttribute("cabaniasDisponibles", cabaniaRepositorio.findAll()); // Recargar la lista de cabañas disponibles
-                    return "redirect:/usuario/misReservas/editar/"+reserva.getId();
+                    return "redirect:/usuario/misReservas/editar/" + reserva.getId();
                 }
             } else {
                 throw new IllegalArgumentException("Usuario o cabaña no encontrados");
@@ -267,26 +278,26 @@ public class ReservaController {
             map.addAttribute("fecha_error", e.getMessage());
             map.addAttribute("nombreUsuario", nombreUsuario); // Mantener el nombre de usuario en el formulario
             map.addAttribute("cabaniasDisponibles", cabaniaRepositorio.findAll()); // Recargar la lista de cabañas disponibles
-            return "redirect:/usuario/misReservas/editar/"+reserva.getId();
+            return "redirect:/usuario/misReservas/editar/" + reserva.getId();
         } catch (Exception e) {
             Reserva reserva = reservaServicio.listarReservaPorId(reservaId);
             // Manejar otras excepciones
             map.addAttribute("error_message", "La cabaña no se encuentra disponible en las fechas " + fechaInicio + " a la " + fechaFinal);
             map.addAttribute("nombreUsuario", nombreUsuario); // Mantener el nombre de usuario en el formulario
             map.addAttribute("cabaniasDisponibles", cabaniaRepositorio.findAll()); // Recargar la lista de cabañas disponibles
-            return "redirect:/usuario/misReservas/editar/"+reserva.getId();
+            return "redirect:/usuario/misReservas/editar/" + reserva.getId();
 
         }
-      
 
     }
+
     @PostMapping("/usuario/misReservas/eliminar/{id}")
-    public String eliminarReserva(@PathVariable Integer id){
+    public String eliminarReserva(@PathVariable Integer id) {
         try {
             Reserva reserva = reservaServicio.listarReservaPorId(id);
             reservaServicio.eliminarReserva(reserva.getId());
             return "redirect:/usuario/misReservas";
-        
+
         } catch (Exception e) {
             e.printStackTrace();
 

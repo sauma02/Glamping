@@ -1,17 +1,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-         <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
+        <title th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina'}" th:text="${info.titulo}"></title>
         <link th:each="info : ${listaInfo}" th:if="${info.seccion == 'Titulo-pagina' and info.imagen != null}" rel="icon" th:href="${'/img/' + info.imagen.fileName}" />
 
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <script th:src="${'https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js'}" crossorigin="anonymous" defer></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css" 
-              th:href="@{'https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.css'}" crossorigin="anonymous" />
-      <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+            <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" />
+            <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
     </head>
     <body class="is-preload">
         <div id="page-wrapper">
@@ -73,7 +76,7 @@
                                                                     </select><br><br>
 
                                                                             <label for="fechaInicio">Fecha de inicio:</label>
-                                                                            <input type="date" id="fechaInicio" name="fechaInicio"  pattern="\d{2}-\d{2}-\d{4}" required>
+                                                                            <input type="date" id="fechaInicio" name="fechaInicio" required>
                                                                                 <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
                                                                                 <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
 
@@ -81,7 +84,7 @@
                                                                                 <br><br>
 
                                                                                         <label for="fechaFinal">Fecha final:</label>
-                                                                                        <input type="date" id="fechaFinal" name="fechaFinal"  required>
+                                                                                        <input type="date" id="fechaFinal" name="fechaFinal" required>
                                                                                             <span th:if="${error_message != null}" th:text="${error_message}" style="color: red"></span>
                                                                                             <span th:if="${fecha_error != null}" th:text="${fecha_error}" style="color: red"></span>
 
@@ -112,18 +115,19 @@
                                                                                                             function initializeDatepicker() {
                                                                                                                 $("#fechaInicio, #fechaFinal").datepicker({
                                                                                                                     dateFormat: 'yy-mm-dd',
-                                                                                                                    minDate: 0, // Establecer la fecha mínima como hoy
+                                                                                                                    minDate: 0, // Set the minimum date to today
                                                                                                                     beforeShowDay: function (date) {
-
                                                                                                                         var dateString = $.datepicker.formatDate('dd/mm/yy', date);
                                                                                                                         var highlight = arrayOfDates.indexOf(dateString) !== -1;
 
-                                                                                                                        console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight); // Add this line to log the output
-                                                                                                                        console.log(arrayOfDates, ' , ');
+                                                                                                                        // Log the output for debugging
+                                                                                                                        console.log('beforeShowDay called for date:', dateString, 'Highlight:', highlight);
+                                                                                                                        console.log(arrayOfDates);
+
                                                                                                                         if (highlight) {
-                                                                                                                            return[false, 'highlight', 'Esta fecha ya se encuentra reservada o es una fecha pasada'];
+                                                                                                                            return [false, 'highlight', 'Esta fecha ya se encuentra reservada o es pasada'];
                                                                                                                         } else {
-                                                                                                                            return[true, '', ''];
+                                                                                                                            return [true, '', ''];
                                                                                                                         }
                                                                                                                     }
                                                                                                                 });
@@ -146,6 +150,7 @@
                                                                                                                     dataType: "json",
                                                                                                                     success: function (availability) {
                                                                                                                         arrayOfDates = availability;
+
                                                                                                                         // Refresh datepicker
                                                                                                                         $("#fechaInicio, #fechaFinal").datepicker("destroy");
                                                                                                                         initializeDatepicker();
@@ -186,10 +191,8 @@
                                                                                                     <script th:inline="javascript">
                                                                                                         console.log("Exito status:", /*[[${exitoStatus}]]*/);
                                                                                                         console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
-
                                                                                                         var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
                                                                                                         var exitoMensaje = /*[[${exitoMensaje}]]*/ '';
-
                                                                                                         if (exitoStatus === 'success') {
                                                                                                             console.log("Exito: ", exitoMensaje);
                                                                                                             Swal.fire("¡Éxito!", exitoMensaje, "success");
