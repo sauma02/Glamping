@@ -1,4 +1,4 @@
- version: '3'
+version: '3'
 
 services:
   app_mantra:
@@ -7,28 +7,28 @@ services:
     ports:
       - "8080:8080"
     environment:
-     DB_USERNAME: u949606062_admin
-     DB_PASSWORD: Supergamo123.@
-     SV_PORT: 8080
-     SV_IP: 213.210.13.192
-     DB_NAME: jdbc:mysql://srv1069.hstgr.io:3306/u949606062_mantra?zertoToDateTimeBehavior=CONVERT_TO_NULL
-     J_MAIL: mantrasoporte1@xn--mantracabaas-jhb.site
-     J_MAIL_PASS: Quinteroarias.1
+      DB_USERNAME: u949606062_admin
+      DB_PASSWORD: Supergamo123.@
+      SV_PORT: 8080
+      SV_IP: 213.210.13.192
+      DB_NAME: jdbc:mysql://srv1069:3306/u949606062_mantra?zertoToDateTimeBehavior=CONVERT_TO_NULL
+      J_MAIL: mantrasoporte1@xn--mantracabaas-jhb.site
+      J_MAIL_PASS: Quinteroarias.1
     restart: always
     depends_on:
-      srv1069.hstgr.io:
-          condition: service_healthy
-  srv1069.hstgr.io:
+      srv1069:
+        condition: service_healthy
+
+  srv1069:
     image: mysql:8.1.0 
     ports:
       - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: Supergamo123.@
-      MYSQL_ALLOW_EMPTY_PASSWORD: Supergamo123.@
-      MYSQL_RANDOM_ROOT_PASSWORD: Supergamo123.@
-      MYSQL_DATABASE: srv1069.hstgr.io
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: u949606062_mantra
     restart: always
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 10s
       retries: 10
