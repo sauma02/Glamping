@@ -25,7 +25,8 @@ services:
       - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: Supergamo123.@
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_USER: u949606062_admin
+      MYSQL_PASSWORD: Supergamo123.@
       MYSQL_DATABASE: u949606062_mantra
     restart: always
     healthcheck:
