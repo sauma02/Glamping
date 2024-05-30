@@ -11,14 +11,14 @@ services:
       SV_PORT: 8080
       SV_IP: 213.210.13.192
       DB_NAME: >-
-        jdbc:mysql://srv1069:3306/u949606062_mantra?zeroDateTimeBehavior=CONVERT_TO_NULL
+        jdbc:mysql://srv1069.hstgr.io:3306/u949606062_mantra?zeroDateTimeBehavior=CONVERT_TO_NULL
       J_MAIL: mantrasoporte1@xn--mantracabaas-jhb.site
       J_MAIL_PASS: Quinteroarias.1
     restart: always
     depends_on:
-      srv1069:
+      srv1069.hstgr.io:
         condition: service_healthy
-  srv1069:
+  srv1069.hstgr.io:
     image: 'mysql:8.1.0'
     ports:
       - '3307:3306'
