@@ -15,26 +15,3 @@ services:
       J_MAIL: mantrasoporte1@xn--mantracabaas-jhb.site
       J_MAIL_PASS: Quinteroarias.1
     restart: always
-    depends_on:
-      srv1069.hstgr.io:
-        condition: service_healthy
-  srv1069.hstgr.io:
-    image: 'mysql:8.1.0'
-    ports:
-      - '3307:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: Supergamo123@.
-      MYSQL_USER: u949606062_admin
-      MYSQL_PASSWORD: Supergamo123@.
-      MYSQL_DATABASE: u949606062_mantra
-    restart: always
-    healthcheck:
-      test:
-        - CMD
-        - mysqladmin
-        - ping
-        - '-h'
-        - localhost
-      interval: 10s
-      timeout: 10s
-      retries: 5
