@@ -11,7 +11,7 @@ services:
       DB_PASSWORD: Supergamo123.@
       SV_PORT: 8080
       SV_IP: 213.210.13.192
-      DB_NAME: jdbc:mysql://srv1069:3306/u949606062_mantra?zertoToDateTimeBehavior=CONVERT_TO_NULL
+      DB_NAME: jdbc:mysql://srv1069:3306/u949606062_mantra?zeroDateTimeBehavior=CONVERT_TO_NULL
       J_MAIL: mantrasoporte1@xn--mantracabaas-jhb.site
       J_MAIL_PASS: Quinteroarias.1
     restart: always
@@ -31,5 +31,6 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
       timeout: 10s
-      retries: 10
+      retries: 5
