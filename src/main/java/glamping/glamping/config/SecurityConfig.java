@@ -44,8 +44,8 @@ public class SecurityConfig {
         try {
         return https.formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
-                .requestMatchers("/").permitAll()
-                .requestMatchers("/" , "/js/**", "/css/**").permitAll()
+                .requestMatchers("/**").permitAll()
+                .requestMatchers("/**" , "/js/**", "/css/**").permitAll()
                 .requestMatchers("/templates/**").permitAll()
                 .requestMatchers("/img/**").permitAll()
                 .requestMatchers("/cabania/**").permitAll()
