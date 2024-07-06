@@ -12,7 +12,7 @@
             <properties>
                 <Env.FOO>bar</Env.FOO>
                 <Env.DB_USERNAME>u949606062_admin</Env.DB_USERNAME>
-                <Env.DB_PASSWORD>Supergamo123.@</Env.DB_PASSWORD>
+                <Env.DB_PASSWORD>Supergamo123@.</Env.DB_PASSWORD>
                 <Env.SV_PORT>8080</Env.SV_PORT>
                 <Env.SV_IP>154.49.247.173</Env.SV_IP>
                 <Env.DB_NAME>jdbc:mysql://srv1069.hstgr.io:3306/u949606062_mantra?zertoToDateTimeBehavior=CONVERT_TO_NULL</Env.DB_NAME>
@@ -89,6 +89,7 @@
         </action>
         <action>
             <actionName>run.single.main</actionName>
+            <preAction>build-with-dependencies</preAction>
             <packagings>
                 <packaging>*</packaging>
             </packagings>
@@ -103,7 +104,7 @@
                 <exec.mainClass>${packageClassName}</exec.mainClass>
                 <exec.classpathScope>${classPathScope}</exec.classpathScope>
                 <Env.DB_USERNAME>u949606062_admin</Env.DB_USERNAME>
-                <Env.DB_PASSWORD>Supergamo123.@</Env.DB_PASSWORD>
+                <Env.DB_PASSWORD>Supergamo123@.</Env.DB_PASSWORD>
                 <Env.SV_PORT>8080</Env.SV_PORT>
                 <Env.SV_IP>154.49.247.173</Env.SV_IP>
                 <Env.DB_NAME>jdbc:mysql://srv1069.hstgr.io:3306/u949606062_mantra?zertoToDateTimeBehavior=CONVERT_TO_NULL</Env.DB_NAME>

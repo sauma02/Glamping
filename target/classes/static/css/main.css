@@ -3241,7 +3241,7 @@ body.landing #page-wrapper {
     background-position: center;
     background-repeat:							no-repeat;
     background-size: 						cover;
-    filter:blur(2px);
+    filter:blur(0.5px);
     color: #fff;
     padding: 12em 0 20em 0;
     text-align: center;
@@ -3848,6 +3848,7 @@ body.landing #main {
 
     #banner {
         padding: 4em 0;
+        height: 500px;
     }
 
     #banner h2 {
@@ -4002,6 +4003,9 @@ body.landing #main {
 
     #cta {
         padding: 2.5em 1em 3em 1em;
+    }
+    #video{
+        height: 300px;
     }
 
 }
